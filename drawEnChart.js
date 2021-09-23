@@ -1,4 +1,4 @@
-//お絵かきアプリ　ログ　グラフ生成用
+//学習者用デジタル教科書　英語　ログ　グラフ生成用
 
 function drawChart(result, dataLength) {
 
