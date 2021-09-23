@@ -1,2 +1,2 @@
 # LogChart
-JavaScript HTML ログ可視化用
+JavaScript HTML ＜お絵かきアプリ＞ログ可視化用
