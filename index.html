@@ -3,17 +3,17 @@
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <!--<script src="./node_modules/chart.js/dist/Chart.js"></script>-->
+    <!--Chart.jsの読み込み-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"></script>
 
     <title>Chart.js</title>
 </head>
 
 <body>
-    <!--<script type="text/javascript" src="main.js"></script>-->
+    <!--"drawChart.js"と連携させる-->
     <script type="text/javascript" src="drawChart.js"></script>
 
-    <!--CSVファイルの読み取り1-->
+    <!--CSVファイルの読み取り-->
     <p>＝CSVファイルの読み取り＝</p>
     <input type="file" name="file" id="file">
 
@@ -32,10 +32,10 @@
     <!--<script type="text/javascript" src="main.js"></script>-->
 
     <script>
-        var result = [];
-        var dataLength = 0;
+        var result = []; //csvの中身
+        var dataLength = 0; //データの長さ
         //drawChart(result[0]);
-        drawChart(result, dataLength);
+        drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
     
         let fileInput = document.getElementById('file');
         let fileReader = new FileReader();
@@ -61,7 +61,7 @@
           if (myChart) {
               myChart.destroy();
           }
-          drawChart(result, dataLength);
+          drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動
         }
     </script>
       
