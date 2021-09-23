@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <!--<script src="./node_modules/chart.js/dist/Chart.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"></script>
+
+    <title>Chart.js</title>
+</head>
+
+<body>
+    <!--<script type="text/javascript" src="main.js"></script>-->
+    <script type="text/javascript" src="drawChart.js"></script>
+
+    <!--CSVファイルの読み取り1-->
+    <p>＝CSVファイルの読み取り＝</p>
+    <input type="file" name="file" id="file">
+
+    <!--CSVファイルの内容を表示する-->
+    <!--<p>＝CSVファイルの詳細＝</p>-->
+    <!--<div id="result"></div>-->
+    <!--<script type="text/javascript" src="main.js"></script>-->
+    <!--<script type="text/javascript" src="file_read.js"></script>-->
+
+    <br>
+    <br>
+    <p>＝回数グラフの表示＝</p>
+    <!--グラフの表示　-->
+    <!--<div style="width:50%;">-->
+    <canvas id="myChart" width="300" height=" 150"></canvas>
+    <!--<script type="text/javascript" src="main.js"></script>-->
+
+    <script>
+        var result = [];
+        var dataLength = 0;
+        //drawChart(result[0]);
+        drawChart(result, dataLength);
+    
+        let fileInput = document.getElementById('file');
+        let fileReader = new FileReader();
+        fileInput.onchange = () => {
+          let file = fileInput.files[0];
+          fileReader.readAsText(file, 'Shift_JIS');
+        };
+    
+        //ファイルを読み取ったら実行
+        fileReader.onload = () => {
+          var txt = fileReader.result
+    
+          //読み取ったcsvデータを配列に格納
+          var arr = txt.split("\n");
+          for (var i = 0; i < arr.length; ++i) {
+            result[i] = arr[i].split(',');
+          }
+          //console.log(result);
+          dataLength = arr.length;
+          //console.log(dataLength);
+          //console.log("あ");
+
+          if (myChart) {
+              myChart.destroy();
+          }
+          drawChart(result, dataLength);
+        }
+    </script>
+      
+    <script>console.log("通過しました1111");</script>
+    <!--</div>-->
+
+    <br>
+    <br>
+    <!--CSVファイルの内容を表示する-->
+    <!--
+    <p>＝CSVファイルの詳細＝</p>
+    <div id="result"></div>
+    -->
+    <!--<script type="text/javascript" src="main.js"></script>-->
+    <!--
+    <script type="text/javascript" src="file_read.js"></script>
+    -->
+    
+</body>
+</html>
