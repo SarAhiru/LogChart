@@ -15,39 +15,48 @@
 
     <!--"drawChart.js"と連携させる(デジタル教科書のログの際)-->
     <script type="text/javascript" src="drawEnChart.js"></script>
-
-
+    <script type="text/javascript" src="drawEnChartTarget.js"></script>
+    
     <!--CSVファイルの読み取り-->
     <p>＝CSVファイルの読み取り＝</p>
     <input type="file" name="file" id="file">
 
-    <!--CSVファイルの内容を表示する-->
-    <!--<p>＝CSVファイルの詳細＝</p>-->
-    <!--<div id="result"></div>-->
-    <!--<script type="text/javascript" src="main.js"></script>-->
-    <!--<script type="text/javascript" src="file_read.js"></script>-->
+    <br>
+    <br>
 
-    <br>
-    <br>
-    <p>＝回数グラフの表示＝</p>
-    <!--グラフの表示　-->
-    <!--<div style="width:50%;">-->
-    <canvas id="myChart" width="300" height=" 150"></canvas>
+    <div>
+      <p>＝回数グラフの表示１＝</p>
+      <!--<div style="width:50%;"></div>-->
+      <canvas id="myChart" width="300" height=" 150"></canvas>
+    </div>
+    <div>
+      <canvas id="myChart" width="300" height=" 150"></canvas>
+    </div>
+    
+    <div>
+      <p>＝回数グラフの表示２＝</p>
+      <!--<script type="text/javascript" src="drawEnChartTarget.js"></script>-->
+      <canvas id="myChart2" width="300" height=" 150"></canvas>
+    </div>
+    
     <!--<script type="text/javascript" src="main.js"></script>-->
 
     <script>
+        console.log("通過しました!!!");
         var result = []; //csvの中身
         var dataLength = 0; //データの長さ
         //drawChart(result[0]);
         drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
-    
+
+        drawChartTarget(result, dataLength);
+
         let fileInput = document.getElementById('file');
         let fileReader = new FileReader();
         fileInput.onchange = () => {
           let file = fileInput.files[0];
           fileReader.readAsText(file, 'Shift_JIS');
         };
-    
+
         //ファイルを読み取ったら実行
         fileReader.onload = () => {
           var txt = fileReader.result
@@ -60,29 +69,29 @@
           //console.log(result);
           dataLength = arr.length;
           //console.log(dataLength);
-          //console.log("あ");
 
           if (myChart) {
               myChart.destroy();
+              console.log("あ");
           }
+          if (myChart2) {
+              myChart2.destroy();
+              console.log("い");
+          }
+          
           drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動
+          drawChartTarget(result, dataLength);
         }
     </script>
-      
+
     <script>console.log("通過しました1111");</script>
-    <!--</div>-->
 
     <br>
     <br>
     <!--CSVファイルの内容を表示する-->
-    <!--
-    <p>＝CSVファイルの詳細＝</p>
-    <div id="result"></div>
-    -->
+    <!--<p>＝CSVファイルの詳細＝</p>-->
+    <!--<div id="result"></div>-->
     <!--<script type="text/javascript" src="main.js"></script>-->
-    <!--
-    <script type="text/javascript" src="file_read.js"></script>
-    -->
-    
+    <!--<script type="text/javascript" src="file_read.js"></script>-->
 </body>
 </html>

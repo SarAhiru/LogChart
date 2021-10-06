@@ -1,4 +1,4 @@
-//お絵かきアプリ　ログ　グラフ生成用
+//お絵かきアプリC#　ログ　グラフ生成用
 
 function drawChart(result, dataLength) {
 
