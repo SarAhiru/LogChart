@@ -25,16 +25,16 @@
     <br>
 
     <div>
-      <p>＝回数グラフの表示１＝</p>
+      <p>＝回数グラフの表示 [全体合計]＝</p>
       <!--<div style="width:50%;"></div>-->
       <canvas id="myChart" width="300" height=" 150"></canvas>
     </div>
-    <div>
-      <canvas id="myChart" width="300" height=" 150"></canvas>
-    </div>
     
+    <br>
+    <br>
+
     <div>
-      <p>＝回数グラフの表示２＝</p>
+      <p>＝回数グラフの表示 [機能ごと]＝</p>
       <!--<script type="text/javascript" src="drawEnChartTarget.js"></script>-->
       <canvas id="myChart2" width="300" height=" 150"></canvas>
     </div>
@@ -63,6 +63,7 @@
     
           //読み取ったcsvデータを配列に格納
           var arr = txt.split("\n");
+          var arr = txt.split("\r\n");
           for (var i = 0; i < arr.length; ++i) {
             result[i] = arr[i].split(',');
           }
@@ -72,11 +73,9 @@
 
           if (myChart) {
               myChart.destroy();
-              console.log("あ");
           }
           if (myChart2) {
               myChart2.destroy();
-              console.log("い");
           }
           
           drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動

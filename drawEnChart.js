@@ -2,8 +2,8 @@
 
 function drawChart(result, dataLength) {
 
-    console.log(result);
-    console.log(dataLength);
+    //console.log(result);
+    //console.log(dataLength);
 
     let lavel = []; //グラフ横軸ラベル
     let num = []; // 操作回数
@@ -27,7 +27,7 @@ function drawChart(result, dataLength) {
             //console.log(x + "  " + result[x][9]);
 
             let date = new Date(logDate); //letとletの違い何？？？
-            console.log(date.toLocaleString());
+            //console.log(date.toLocaleString());
             
             //10秒の始めだけfirst timeを設定
             if(judge == 0){
@@ -65,14 +65,14 @@ function drawChart(result, dataLength) {
               else{
                 lavel[0] = fhour + ":" + fminute + ":" + fsecond ;
               }
-              console.log(lavel);
+              //console.log(lavel);
             }
             judge = 1;
             
             //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録させたい
             while(date.getTime() > ftime.getTime()){ //10秒経過したのかを判断
                 ftime.setSeconds(ftime.getSeconds() + 10);
-                console.log(ftime.toLocaleString());
+                //console.log(ftime.toLocaleString());
                 
                 //グラフの軸ラベル設定
                 fsecond = fsecond + 10;
@@ -104,10 +104,10 @@ function drawChart(result, dataLength) {
                 else{
                   lavel[datanum + 1] = fhour + ":" + fminute + ":" + fsecond ;
                 }
-                console.log(lavel);
+                //console.log(lavel);
 
                 datanum ++;
-                console.log("**");
+                //console.log("**");
                 
                 if(num[datanum-1] == null){
                   num[datanum-1] =0;
@@ -118,7 +118,7 @@ function drawChart(result, dataLength) {
             num[datanum-1] ++;
             num[datanum] =0;
 
-            console.log(num);
+            //console.log(num);
         }
     }
     
