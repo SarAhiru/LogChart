@@ -14,33 +14,38 @@
     <!--<script type="text/javascript" src="drawChart.js"></script>-->
 
     <!--"drawChart.js"と連携させる(デジタル教科書のログの際)-->
+    <!--英語　ログ　(折れ線グラフ)　[全体合計]-->
     <script type="text/javascript" src="drawEnChart.js"></script>
+    <!--英語　ログ　(折れ線グラフ)　[機能ごと]-->
     <script type="text/javascript" src="drawEnChartTarget.js"></script>
+    <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
+    <script type="text/javascript" src="drawEnChart2.js"></script>
     
     <!--CSVファイルの読み取り-->
     <p>＝CSVファイルの読み取り＝</p>
     <input type="file" name="file" id="file">
-
-    <br>
-    <br>
+    <br><br>
 
     <div>
       <p>＝回数グラフの表示 [全体合計]＝</p>
       <!--<div style="width:50%;"></div>-->
       <canvas id="myChart" width="300" height=" 150"></canvas>
     </div>
-    
-    <br>
-    <br>
+    <br><br>
 
     <div>
       <p>＝回数グラフの表示 [機能ごと]＝</p>
-      <!--<script type="text/javascript" src="drawEnChartTarget.js"></script>-->
+      <canvas id="myChart1" width="300" height=" 150"></canvas>
+    </div>
+
+    <div>
+      <p>＝人数合計 [全体]＝</p>
       <canvas id="myChart2" width="300" height=" 150"></canvas>
     </div>
     
     <!--<script type="text/javascript" src="main.js"></script>-->
 
+    <!--以下でデータの読み込みを行う-->
     <script>
         console.log("通過しました!!!");
         var result = []; //csvの中身
@@ -49,6 +54,7 @@
         drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
 
         drawChartTarget(result, dataLength);
+        drawChart2(result, dataLength);
 
         let fileInput = document.getElementById('file');
         let fileReader = new FileReader();
@@ -74,19 +80,19 @@
           if (myChart) {
               myChart.destroy();
           }
+          if (myChart1) {
+              myChart1.destroy();
+          }
           if (myChart2) {
               myChart2.destroy();
           }
           
           drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動
           drawChartTarget(result, dataLength);
+          drawChart2(result, dataLength);
         }
     </script>
-
-    <script>console.log("通過しました1111");</script>
-
-    <br>
-    <br>
+    <br><br>
     <!--CSVファイルの内容を表示する-->
     <!--<p>＝CSVファイルの詳細＝</p>-->
     <!--<div id="result"></div>-->
