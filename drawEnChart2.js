@@ -6,40 +6,40 @@ function drawChart2(result, dataLength) {
     //console.log(dataLength);
 
     let lavel = []; //グラフ横軸ラベル
-    let num = []; // 操作回数
-    //let num = [0,0,0,0,0,0,0,0]; // 操作回数
+    let num = []; // グラフ縦軸
+    let actor = []; //操作者管理用
+    let actorJudge = 0; //操作者　重複回避用
 
     let datanum = 0; //配列番号カウント用
-    let ftime = 0; //first time
-    let judge = 0; //初回かどうかを判断
 
-    let flavel = 0; //グラフの軸ラベル用
-    let fsecond = 0;
+    let ftime = 0; //first time
+    let fjudge = 0; //初回かどうかを判断
+
+    let fsecond = 0;  //グラフの軸ラベル用
     let fminute = 0;
     let fhour = 0;
 
     if(dataLength > 0){
-        for(let x = 1; x < dataLength-1 ; ++x){
+        for(let x = 1 ; x < dataLength ; ++x){
             let logDate = result[x][0]; // date取得
-            let logTarget = result[x][9]; // target取得
+            let logActor = result[x][2]; // actor取得
 
             //console.log(x + "  " + result[x][0]);
-            //console.log(x + "  " + result[x][9]);
+            //console.log(x + "  " + result[x][2]);
 
-            let date = new Date(logDate); //letとletの違い何？？？
-            //console.log(date.toLocaleString());
+            let date = new Date(logDate); //時刻型のデータに変換
             
-            //10秒の始めだけfirst timeを設定
-            if(judge == 0){
+            //はじめだけfirst timeを設定
+            if(fjudge == 0){
               ftime = new Date(logDate);
               let time = Math.floor(date.getSeconds() / 10) * 10 ;
               ftime.setSeconds(time);
               //console.log(ftime.toLocaleString());
 
               //グラフの軸ラベル設定(最初)
-              fsecond = logDate.substr( 18 );
-              fminute = logDate.slice( 15, 17 );
-              fhour = logDate.slice( 12, 14 );
+              fsecond = logDate.substr( 17 );
+              fminute = logDate.slice( 14, 16 );
+              fhour = logDate.slice( 11, 13 );
               
               fsecond = Math.floor(fsecond / 10) *10;
               
@@ -65,15 +65,21 @@ function drawChart2(result, dataLength) {
               else{
                 lavel[0] = fhour + ":" + fminute + ":" + fsecond ;
               }
+              datanum ++;
               //console.log(lavel);
+              if(num[datanum-1] == null){
+                num[datanum-1] =0;
+              }
             }
-            judge = 1;
+            fjudge = 1;
             
             //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録させたい
             while(date.getTime() > ftime.getTime()){ //10秒経過したのかを判断
                 ftime.setSeconds(ftime.getSeconds() + 10);
                 //console.log(ftime.toLocaleString());
-                
+                //actor= [];
+                //console.log(actor);
+
                 //グラフの軸ラベル設定
                 fsecond = fsecond + 10;
                 if(fsecond >= 60){
@@ -86,6 +92,7 @@ function drawChart2(result, dataLength) {
                   }
                 }
 
+                //lavel(横軸) の設定
                 if(fsecond == 0 || fminute < 10 || fhour < 10){
                   let second2 = fsecond;
                   let minute2 = fminute;
@@ -99,27 +106,61 @@ function drawChart2(result, dataLength) {
                   if(fhour < 10){
                     hour2 = "0" + String(fhour);
                   }
-                  lavel[datanum + 1] = hour2 + ":" + minute2 + ":" + second2 ;
+                  lavel[datanum] = hour2 + ":" + minute2 + ":" + second2 ;
+                  //console.log("datanum"+datanum);
+                  //num[datanum-2] = actor.length;
+                  //console.log(num);
+                  actor= [];
+                  actorJudge = 0;
                 }
                 else{
-                  lavel[datanum + 1] = fhour + ":" + fminute + ":" + fsecond ;
+                  lavel[datanum] = fhour + ":" + fminute + ":" + fsecond ;
+                  //console.log("datanum"+datanum);
+                  //num[datanum-2] = actor.length;
+                  //console.log(num);
+                  actor= [];
+                  actorJudge = 0;
                 }
                 //console.log(lavel);
 
                 datanum ++;
-                //console.log("**");
-                
-                if(num[datanum-1] == null){
-                  num[datanum-1] =0;
+
+                if(num[datanum-2] == null){
+                  num[datanum-2] =0;
                 }
                 
-                
+               
             }
-            num[datanum-1] ++;
-            num[datanum] =0;
+
+            
+            //actorを最後までたどって一致するものがあるのか判断させたい
+            for(let i = 0 ; i <= actor.length ; i++){
+              if(actor[i] == logActor){
+                actorJudge = 1;
+                //console.log("break");
+                break;
+              }
+            }
+            if(actorJudge == 0){
+              actor.push(logActor);
+              //console.log(datanum);
+              num[datanum-1] ++;
+              //console.log(num);
+            }
+            
+            if(num[datanum-1] == null){
+              num[datanum-1] =0;
+            }
+            //console.log(actor);
+
+            //num[datanum-1] ++;
+            //num[datanum] =0;
+            num[datanum-2] = actor.length;
+            //console.log(num);
 
             //console.log(num);
         }
+        //console.log(num);
     }
     
 
@@ -150,5 +191,4 @@ function drawChart2(result, dataLength) {
         }
       }
     });
-    //console.log(num);
 }

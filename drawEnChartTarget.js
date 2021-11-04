@@ -2,8 +2,8 @@
 
 function drawChartTarget(result, dataLength) {
 
-    console.log(result);
-    console.log(dataLength);
+    //console.log(result);
+    //console.log(dataLength);
 
     let lavel = []; //グラフ横軸ラベル
     let indexCount = []; //目次を見た回数
@@ -22,7 +22,7 @@ function drawChartTarget(result, dataLength) {
     let fhour = 0;
 
     if(dataLength > 0){
-        for(let x = 1; x < dataLength-1 ; ++x){
+        for(let x = 1; x < dataLength ; ++x){
             let logDate = result[x][0]; // date取得
             let logTarget = result[x][9]; // target取得
 
@@ -50,9 +50,9 @@ function drawChartTarget(result, dataLength) {
               //console.log(ftime.toLocaleString());
 
               //グラフの軸ラベル設定(最初)
-              fsecond = logDate.substr( 18 );
-              fminute = logDate.slice( 15, 17 );
-              fhour = logDate.slice( 12, 14 );
+              fsecond = logDate.substr( 17 );
+              fminute = logDate.slice( 14, 16 );
+              fhour = logDate.slice( 11, 13 );
               
               fsecond = Math.floor(fsecond / 10) *10;
               
@@ -159,7 +159,7 @@ function drawChartTarget(result, dataLength) {
               penColorCount[datanum-1] ++;
             }
             else if(logTarget.includes('true') || logTarget.includes('penType')){
-              console.log(logTarget);
+              //console.log(logTarget);
               penCount[datanum-1] ++;
             }
 
@@ -172,7 +172,7 @@ function drawChartTarget(result, dataLength) {
             penColorCount[datanum] =0;
             penCount[datanum] =0;
 
-            console.log(penCount);
+            //console.log(penCount);
         }
     }
     
@@ -233,5 +233,4 @@ function drawChartTarget(result, dataLength) {
         }
       }
     });
-    //console.log(num);
 }

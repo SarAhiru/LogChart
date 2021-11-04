@@ -2,8 +2,8 @@
 
 function drawChart(result, dataLength) {
 
-    //console.log(result);
-    //console.log(dataLength);
+    console.log(result);
+    console.log(dataLength);
 
     let lavel = []; //グラフ横軸ラベル
     let num = []; // 操作回数
@@ -13,33 +13,36 @@ function drawChart(result, dataLength) {
     let ftime = 0; //first time
     let judge = 0; //初回かどうかを判断
 
-    let flavel = 0; //グラフの軸ラベル用
-    let fsecond = 0;
+    let fsecond = 0;  //グラフの軸ラベル用
     let fminute = 0;
     let fhour = 0;
 
     if(dataLength > 0){
-        for(let x = 1; x < dataLength-1 ; ++x){
+        for(let x = 1; x < dataLength ; x++){
             let logDate = result[x][0]; // date取得
-            let logTarget = result[x][9]; // target取得
+            //let logTarget = result[x][9]; // target取得
 
-            //console.log(x + "  " + result[x][0]);
-            //console.log(x + "  " + result[x][9]);
+            console.log(x + "  " + result[x][0]);
+            console.log(x + "  " + result[x][9]);
 
-            let date = new Date(logDate); //letとletの違い何？？？
+            let date = new Date(logDate);
             //console.log(date.toLocaleString());
             
             //10秒の始めだけfirst timeを設定
             if(judge == 0){
               ftime = new Date(logDate);
-              let time = Math.floor(date.getSeconds() / 10) * 10 ;
+              let time = Math.floor(date.getSeconds() / 10) * 10 ; //秒の一桁を0にする
               ftime.setSeconds(time);
-              //console.log(ftime.toLocaleString());
+              console.log(ftime.toLocaleString());
 
-              //グラフの軸ラベル設定(最初)
-              fsecond = logDate.substr( 18 );
-              fminute = logDate.slice( 15, 17 );
-              fhour = logDate.slice( 12, 14 );
+              //////////////////ここら辺変更したよ
+              fsecond = logDate.substr( 17 );
+              fminute = logDate.slice( 14, 16 );
+              fhour = logDate.slice( 11, 13 );
+              console.log(fsecond);
+              console.log(fminute);
+              console.log(fhour);
+              
               
               fsecond = Math.floor(fsecond / 10) *10;
               
@@ -65,12 +68,12 @@ function drawChart(result, dataLength) {
               else{
                 lavel[0] = fhour + ":" + fminute + ":" + fsecond ;
               }
-              //console.log(lavel);
+              console.log(lavel);
             }
             judge = 1;
             
             //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録させたい
-            while(date.getTime() > ftime.getTime()){ //10秒経過したのかを判断
+            while(date.getTime() >= ftime.getTime()){ //10秒経過したのかを判断
                 ftime.setSeconds(ftime.getSeconds() + 10);
                 //console.log(ftime.toLocaleString());
                 
@@ -105,20 +108,28 @@ function drawChart(result, dataLength) {
                   lavel[datanum + 1] = fhour + ":" + fminute + ":" + fsecond ;
                 }
                 //console.log(lavel);
+                //
+                console.log("**");
+                
+                if(num[datanum] == null){
+                  num[datanum] =0;
+                }
 
                 datanum ++;
-                //console.log("**");
-                
-                if(num[datanum-1] == null){
-                  num[datanum-1] =0;
-                }
-                
                 
             }
+            //num[datanum-1] ++;
+            
+            if(num[datanum] == null){
+              num[datanum] =0;
+            }
             num[datanum-1] ++;
-            num[datanum] =0;
+            console.log(datanum);
 
-            //console.log(num);
+            //num[datanum-1] ++;
+            //num[datanum + 1] =0;
+
+            console.log(num);
         }
     }
     
@@ -150,5 +161,4 @@ function drawChart(result, dataLength) {
         }
       }
     });
-    //console.log(num);
 }

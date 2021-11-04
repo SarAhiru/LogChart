@@ -51,8 +51,8 @@
         var result = []; //csvの中身
         var dataLength = 0; //データの長さ
         //drawChart(result[0]);
+        
         drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
-
         drawChartTarget(result, dataLength);
         drawChart2(result, dataLength);
 
@@ -68,12 +68,14 @@
           var txt = fileReader.result
     
           //読み取ったcsvデータを配列に格納
-          var arr = txt.split("\n");
-          var arr = txt.split("\r\n");
+          var arr = txt.split("\r\n" || "\n" || "\r");
+          //var arr = txt.split("\r\n");
           for (var i = 0; i < arr.length; ++i) {
             result[i] = arr[i].split(',');
           }
+          //console.log(arr);
           //console.log(result);
+          
           dataLength = arr.length;
           //console.log(dataLength);
 
