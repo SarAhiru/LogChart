@@ -10,36 +10,58 @@
 </head>
 
 <body>
+    
+    <p>
+      <a href="total.html">全体をみる</a>
+    </p>
+
+    <!--CSVファイルの読み取り-->
+    <p>＝CSVファイルの読み取り＝</p>
+    <input type="file" name="file" id="file" multiple>
+    <br><br>
+    
+    <!--"drawChart.js"と連携させる(デジタル教科書のログの際)-->
+    <!--英語　ログ　(折れ線グラフ)　[機能合計]-->
+    <script type="text/javascript" src="drawEnTotalChart.js"></script>
+
     <!--"drawChart.js"と連携させる(お絵かきアプリのログの際)-->
     <!--<script type="text/javascript" src="drawChart.js"></script>-->
 
     <!--"drawChart.js"と連携させる(デジタル教科書のログの際)-->
-    <!--英語　ログ　(折れ線グラフ)　[全体合計]-->
+    <!--英語　ログ　(折れ線グラフ)　[機能合計]-->
     <script type="text/javascript" src="drawEnChart.js"></script>
     <!--英語　ログ　(折れ線グラフ)　[機能ごと]-->
     <script type="text/javascript" src="drawEnChartTarget.js"></script>
     <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
     <script type="text/javascript" src="drawEnChart2.js"></script>
-    
-    <!--CSVファイルの読み取り-->
-    <p>＝CSVファイルの読み取り＝</p>
-    <input type="file" name="file" id="file">
-    <br><br>
+
+
+    <h1>全体表示</h1>
 
     <div>
-      <p>＝回数グラフの表示 [全体合計]＝</p>
+      <p>＝回数グラフの表示 [全体合計](折れ線グラフ)＝</p>
+      <!--<div style="width:50%;"></div>-->
+      <canvas id="myCharttt" width="300" height=" 150"></canvas>
+    </div>
+    <br><br>
+
+
+    <h1>個人表示</h1>
+
+    <div>
+      <p>＝回数グラフの表示 [全体合計](折れ線グラフ)＝</p>
       <!--<div style="width:50%;"></div>-->
       <canvas id="myChart" width="300" height=" 150"></canvas>
     </div>
     <br><br>
 
     <div>
-      <p>＝回数グラフの表示 [機能ごと]＝</p>
+      <p>＝回数グラフの表示 [機能ごと]（折れ線グラフ）＝</p>
       <canvas id="myChart1" width="300" height=" 150"></canvas>
     </div>
 
     <div>
-      <p>＝人数合計 [全体]＝</p>
+      <p>＝人数合計 [全体]（棒グラフ）＝</p>
       <canvas id="myChart2" width="300" height=" 150"></canvas>
     </div>
     
@@ -52,6 +74,7 @@
         var dataLength = 0; //データの長さ
         //drawChart(result[0]);
         
+        drawCharttt(result, dataLength);
         drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
         drawChartTarget(result, dataLength);
         drawChart2(result, dataLength);
@@ -68,17 +91,27 @@
           var txt = fileReader.result
     
           //読み取ったcsvデータを配列に格納
-          var arr = txt.split("\r\n" || "\n" || "\r");
+          //var arr = txt.split("\r\n" || "\n" || "\r");
+          var arr = txt.split("\r\n");
+          arr = txt.split("\n");
+          //arr = txt.split("\r");
           //var arr = txt.split("\r\n");
           for (var i = 0; i < arr.length; ++i) {
             result[i] = arr[i].split(',');
           }
           //console.log(arr);
-          //console.log(result);
+          console.log(result);
           
+          //逆順
+          //result.reverse();
+          console.log(result);
+
           dataLength = arr.length;
           //console.log(dataLength);
 
+          if (myCharttt) {
+              myCharttt.destroy();
+          }
           if (myChart) {
               myChart.destroy();
           }
@@ -89,6 +122,7 @@
               myChart2.destroy();
           }
           
+          drawCharttt(result, dataLength);
           drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動
           drawChartTarget(result, dataLength);
           drawChart2(result, dataLength);

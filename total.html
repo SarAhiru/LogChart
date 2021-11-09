@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Chart.jsの読み込み-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"></script>
+
+    <title>全体表示</title>
+</head>
+<body>
+    <p>ここにきたよ</p>
+    <p>
+        <a href="index.html">個人をみる</a>
+        <h1>全体表示</h1>
+
+        <!--"drawChart.js"と連携させる(デジタル教科書のログの際)-->
+    　　<!--英語　ログ　(折れ線グラフ)　[機能合計]-->
+    　　<script type="text/javascript" src="drawEnTotalChart.js"></script>
+    </p>
+
+    <!--CSVファイルの読み取り-->
+    <br><br>
+    <div id="csv_list"></div>
+
+    <div>
+        <p>＝回数グラフの表示 [全体合計](折れ線グラフ)＝</p>
+        <!--<div style="width:50%;"></div>-->
+        <canvas id="myChart" width="300" height=" 150"></canvas>
+    </div>
+
+
+    <!--以下でデータの読み込みを行う-->
+    <script>
+        var result = []; //csvの中身
+        var dataLength = 0; //データの長さ
+        //drawChart(result[0]);
+        
+        drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
+        //drawChartTarget(result, dataLength);
+        //drawChart2(result, dataLength);
+
+        const output_svg = document.getElementById('csv_list');
+        function csv_data(dataPath) {
+            const request = new XMLHttpRequest(); // HTTPでファイルを読み込む
+            request.addEventListener('load', (event) => { // ロードさせ実行
+                const response = event.target.responseText; // 受け取ったテキストを返す
+                output_svg.innerHTML = response; // 表示
+            });
+            request.open('GET', dataPath, true); // csvのパスを指定
+            request.send();
+        }
+        function csv_array(data) {
+            const dataArray = []; //配列を用意
+            const dataString = data.split('\n'); //改行で分割
+            for (let i = 0; i < dataString.length; i++) { //あるだけループ
+                dataArray[i] = dataString[i].split(',');
+            }
+            output_csv.innerHTML = dataArray; //表示
+            console.log(dataArray);
+
+        }
+
+        csv_data('20211027_naokikato_study_log.csv'); // csvのパス
+
+        /*
+        let fileInput = document.getElementById('csv_list');
+        let fileReader = new FileReader();
+        fileInput.onchange = () => {
+          let file = fileInput.files[0];
+          fileReader.readAsText(file, 'Shift_JIS');
+        };
+        */
+
+        /*
+        //ファイルを読み取ったら実行
+        fileReader.onload = () => {
+          var txt = fileReader.result
+    
+          //読み取ったcsvデータを配列に格納
+          //var arr = txt.split("\r\n" || "\n" || "\r");
+          var arr = txt.split("\r\n");
+          arr = txt.split("\n");
+          //arr = txt.split("\r");
+          //var arr = txt.split("\r\n");
+          for (var i = 0; i < arr.length; ++i) {
+            result[i] = arr[i].split(',');
+          }
+          //console.log(arr);
+          console.log(result);
+
+          //逆順
+          result.reverse();
+          console.log(result);
+
+          dataLength = arr.length;
+          //console.log(dataLength);
+
+          if (myChart) {
+              myChart.destroy();
+          }
+          /*
+          if (myChart1) {
+              myChart1.destroy();
+          }
+          if (myChart2) {
+              myChart2.destroy();
+          }*/
+          
+          /*
+          drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動
+          //drawChartTarget(result, dataLength);
+          //drawChart2(result, dataLength);
+        }*/
+        
+    </script>
+    <br><br>
+</body>
+</html>
