@@ -6,8 +6,9 @@ function drawCharttt(result, dataLength) {
     console.log(dataLength);
 
     let lavel = []; //グラフ横軸ラベル
+    let totalnum = [];
     let num = []; // 操作回数
-    //let num = [0,0,0,0,0,0,0,0]; // 操作回数
+    let num2 = []; // 操作回数
 
     let datanum = 0; //配列番号カウント用
     let ftime = 0; //first time
@@ -20,10 +21,11 @@ function drawCharttt(result, dataLength) {
     if(dataLength > 0){
         for(let x = 1; x < dataLength ; x++){
             let logDate = result[x][0]; // date取得
+            let logActor = result[x][2]; // actor取得
             //let logTarget = result[x][9]; // target取得
 
-            console.log(x + "  " + result[x][0]);
-            console.log(x + "  " + result[x][9]);
+            //console.log(x + "  " + result[x][0]);
+            console.log(x + "  " + result[x][2]);
 
             let date = new Date(logDate);
             //console.log(date.toLocaleString());
@@ -39,9 +41,9 @@ function drawCharttt(result, dataLength) {
               fsecond = logDate.substr( 17 );
               fminute = logDate.slice( 14, 16 );
               fhour = logDate.slice( 11, 13 );
-              console.log(fsecond);
-              console.log(fminute);
-              console.log(fhour);
+              //console.log(fsecond);
+              //console.log(fminute);
+              //console.log(fhour);
               
               
               fsecond = Math.floor(fsecond / 10) *10;
@@ -68,6 +70,11 @@ function drawCharttt(result, dataLength) {
               else{
                 lavel[0] = fhour + ":" + fminute + ":" + fsecond ;
               }
+
+
+
+
+
               console.log(lavel);
             }
             judge = 1;
@@ -108,26 +115,40 @@ function drawCharttt(result, dataLength) {
                   lavel[datanum + 1] = fhour + ":" + fminute + ":" + fsecond ;
                 }
                 //console.log(lavel);
-                //
-                console.log("**");
+                //console.log("**");
                 
+                if(totalnum[datanum] == null){
+                  totalnum[datanum] =0;
+                }
                 if(num[datanum] == null){
                   num[datanum] =0;
+                }
+                if(num2[datanum] == null){
+                  num2[datanum] =0;
                 }
 
                 datanum ++;
                 
             }
-            //num[datanum-1] ++;
             
+            if(totalnum[datanum] == null){
+              totalnum[datanum] =0;
+            }
             if(num[datanum] == null){
               num[datanum] =0;
             }
-            num[datanum-1] ++;
-            console.log(datanum);
+            if(num2[datanum] == null){
+              num2[datanum] =0;
+            }
 
-            //num[datanum-1] ++;
-            //num[datanum + 1] =0;
+            totalnum[datanum-1] ++;
+            if(logActor == '12748_imlstudent'){
+              num[datanum-1] ++;
+            }
+            if(logActor == '12748_naokikato'){
+              num2[datanum-1] ++;
+            }
+            console.log(datanum);
 
             console.log(num);
         }
@@ -137,22 +158,42 @@ function drawCharttt(result, dataLength) {
     let ctx = document.getElementById('myCharttt').getContext('2d');
     window.myCharttt = new Chart(ctx, {
     　//線グラフ
-      type: 'line',
+      type: 'bar',
       //データ
       data: {
         labels: lavel,
-        //labels: ['14:09:10~', '14:09:20~', '14:09:30~', '14:09:40~', '14:09:50~', '14:10:00~', '14:10:10', '14:10:20'],
         //データセット
+        
         datasets: [{
-          label: '操作回数',
-          data: num,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          label: '全体',
+          data: totalnum,
+          backgroundColor: 'rgba(255, 99, 132, 1)',
           borderColor:'rgba(255, 99, 132, 1)',
           borderWidth: 1
+        },
+        {
+          label: '12748_imlstudent',
+          data: num,
+          backgroundColor: 'rgba(0, 255, 0, 1)',
+          borderColor:'rgba(0, 255, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '12748_naokikato',
+          data: num2,
+          backgroundColor: 'rgba(0, 128, 255, 1)',
+          borderColor:'rgba(0, 128, 255, 1)',
+          borderWidth: 1,
+          lavel: true,
+          hidden: false,
         }]
       },
       options: {
         scales: {
+          xAxes: [{
+            categoryPercentage: 1.1,
+            barPercentage: 1,
+          }],
           yAxes: [{
             ticks: {
               beginAtZero: true

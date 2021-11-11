@@ -142,7 +142,7 @@ function drawChartTarget(result, dataLength) {
             //indexCount[datanum-1] ++;
             //indexCount[datanum] =0;
 
-            console.log(logTarget);
+            //console.log(logTarget);
             if(logTarget.includes('index')){ // indexの文字を含んでいるのかどうか
               //console.log(logTarget);
               indexCount[datanum-1] ++;

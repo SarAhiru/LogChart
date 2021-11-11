@@ -2,8 +2,8 @@
 
 function drawChart(result, dataLength) {
 
-    console.log(result);
-    console.log(dataLength);
+    //console.log(result);
+    //console.log(dataLength);
 
     let lavel = []; //グラフ横軸ラベル
     let num = []; // 操作回数
@@ -22,8 +22,8 @@ function drawChart(result, dataLength) {
             let logDate = result[x][0]; // date取得
             //let logTarget = result[x][9]; // target取得
 
-            console.log(x + "  " + result[x][0]);
-            console.log(x + "  " + result[x][9]);
+            //console.log(x + "  " + result[x][0]);
+            //console.log(x + "  " + result[x][9]);
 
             let date = new Date(logDate);
             //console.log(date.toLocaleString());
@@ -33,15 +33,15 @@ function drawChart(result, dataLength) {
               ftime = new Date(logDate);
               let time = Math.floor(date.getSeconds() / 10) * 10 ; //秒の一桁を0にする
               ftime.setSeconds(time);
-              console.log(ftime.toLocaleString());
+              //console.log(ftime.toLocaleString());
 
               //////////////////ここら辺変更したよ
               fsecond = logDate.substr( 17 );
               fminute = logDate.slice( 14, 16 );
               fhour = logDate.slice( 11, 13 );
-              console.log(fsecond);
-              console.log(fminute);
-              console.log(fhour);
+              //console.log(fsecond);
+              //console.log(fminute);
+              //console.log(fhour);
               
               
               fsecond = Math.floor(fsecond / 10) *10;
@@ -68,7 +68,7 @@ function drawChart(result, dataLength) {
               else{
                 lavel[0] = fhour + ":" + fminute + ":" + fsecond ;
               }
-              console.log(lavel);
+              //console.log(lavel);
             }
             judge = 1;
             
@@ -109,7 +109,7 @@ function drawChart(result, dataLength) {
                 }
                 //console.log(lavel);
                 //
-                console.log("**");
+                //console.log("**");
                 
                 if(num[datanum] == null){
                   num[datanum] =0;
@@ -124,12 +124,12 @@ function drawChart(result, dataLength) {
               num[datanum] =0;
             }
             num[datanum-1] ++;
-            console.log(datanum);
+            //console.log(datanum);
 
             //num[datanum-1] ++;
             //num[datanum + 1] =0;
 
-            console.log(num);
+            //console.log(num);
         }
     }
     
@@ -137,7 +137,7 @@ function drawChart(result, dataLength) {
     let ctx = document.getElementById('myChart').getContext('2d');
     window.myChart = new Chart(ctx, {
     　//線グラフ
-      type: 'line',
+      type: 'bar',
       //データ
       data: {
         labels: lavel,

@@ -110,7 +110,7 @@ function drawChart2(result, dataLength) {
                   //console.log("datanum"+datanum);
                   //num[datanum-2] = actor.length;
                   //console.log(num);
-                  actor= [];
+                  actor = [];
                   actorJudge = 0;
                 }
                 else{
@@ -118,7 +118,7 @@ function drawChart2(result, dataLength) {
                   //console.log("datanum"+datanum);
                   //num[datanum-2] = actor.length;
                   //console.log(num);
-                  actor= [];
+                  actor = [];
                   actorJudge = 0;
                 }
                 //console.log(lavel);
