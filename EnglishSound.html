@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+    <title>EnglishSound.js</title>
+</head>
+
+<body>
+    <p>
+        <a href="index.html">グラフへ</a>
+    </p>
+    
+    <script type="text/javascript" src="EnglishSound.js"></script>
+
+    <!--CSVファイルの読み取り-->
+    <p>＝CSVファイルの読み取り＝</p>
+    <input type="file" name="file" id="file" multiple>
+    <br><br>
+
+    <div id="table"></div>
+    <br><br>
+
+    <table border="1" id="targetTable">
+        <thead>
+            <tr>
+                <td>名前</td>
+                <td>再生回数</td>
+                <!--<td>再生時間</td>
+                <td>再生コンテンツ数</td>-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>鈴木</td>
+                <td>12</td>
+            </tr>
+        <tbody>
+    </table>
+ 
+    <div class="sound">
+        <h1>オーディオ使用履歴</h1>
+        <table class="border" border="1">
+            <script>
+              //xの行を作る
+              document.write('<tr>');
+      
+              //何も掛け算をしない空白のthを作成
+              document.write('<th></th>');
+      
+              //xの行を記述するため、1から9の数字を繰り返しHTMLに記述する
+              for(var i=1; i <= 9; i++){
+                document.write('<th>'+ i +' x</th>');
+              }
+      
+              //ここでxの行を閉じる
+              document.write('</tr>');
+      
+              //ここまでxの行
+      
+              //jの列を作る
+              document.write('<tr>');
+      
+              //jの列を記述するため、1から9の数字を繰り返しHTMLに記述する
+              for(var j=1; j <= 9; j++){
+                document.write('<th>' + j + 'y</th>');
+      
+              //j*kを繰り返すことで、計算結果をtdタグの中に表示する
+                for(var k=1; k <=9; k++){
+                  document.write('<td>'+ j*k +'</td>');
+                }
+              //ここでjの行を閉じる
+                document.write('</tr>');
+              }
+            </script>
+        </table>
+
+    </div>
+
+
+    <!--以下でデータの読み込みを行う-->
+    <script>
+        console.log("通過しました!!!");
+        var result = []; //csvの中身
+        var dataLength = 0; //データの長さ
+
+        table(result, dataLength);
+
+        let fileInput = document.getElementById('file');
+        let fileReader = new FileReader();
+        fileInput.onchange = () => {
+          let file = fileInput.files[0];
+          fileReader.readAsText(file, 'Shift_JIS');
+        };
+
+        //ファイルを読み取ったら実行
+        fileReader.onload = () => {
+          var txt = fileReader.result
+    
+          //読み取ったcsvデータを配列に格納
+          //var arr = txt.split("\r\n" || "\n" || "\r");
+          var arr = txt.split("\r\n");
+          arr = txt.split("\n");
+          //arr = txt.split("\r");
+          //var arr = txt.split("\r\n");
+          for (var i = 0; i < arr.length; ++i) {
+            result[i] = arr[i].split(',');
+          }
+          //console.log(arr);
+          console.log(result);
+          
+          //逆順
+          //result.reverse();
+          console.log(result);
+
+          dataLength = arr.length;
+          //console.log(dataLength);
+
+          /*
+          if (myChart) {
+              myChart.destroy();
+          }
+          if (myChart1) {
+              myChart1.destroy();
+          }
+          if (myChart2) {
+              myChart2.destroy();
+          }
+          */
+          
+          table(result, dataLength);
+          console.log("データは読み取り終わった");
+        }
+    </script>
+    <br><br>
+</body>
+</html>
