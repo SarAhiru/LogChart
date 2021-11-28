@@ -18,27 +18,35 @@
     <p>＝CSVファイルの読み取り＝</p>
     <input type="file" name="file" id="file" multiple>
     <br><br>
-
-    <div id="table"></div>
-    <br><br>
-
+    
+    <h1>オーディオ使用履歴</h1>
+    <!--2個目のグラフ-->
     <table border="1" id="targetTable">
         <thead>
             <tr>
                 <td>名前</td>
                 <td>再生回数</td>
-                <!--<td>再生時間</td>
-                <td>再生コンテンツ数</td>-->
+                <td>再生時間</td>
+                <td>再生コンテンツ数</td>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>鈴木</td>
-                <td>12</td>
+                <td>12748_imlstudent</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>12748_naokikato</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
             </tr>
         <tbody>
     </table>
  
+    <!--3個目のグラフ-->
     <div class="sound">
         <h1>オーディオ使用履歴</h1>
         <table class="border" border="1">
@@ -85,7 +93,7 @@
         var result = []; //csvの中身
         var dataLength = 0; //データの長さ
 
-        table(result, dataLength);
+        //table(result, dataLength);
 
         let fileInput = document.getElementById('file');
         let fileReader = new FileReader();
@@ -111,23 +119,10 @@
           console.log(result);
           
           //逆順
-          //result.reverse();
-          console.log(result);
+          result.reverse();
+          //console.log(result);
 
           dataLength = arr.length;
-          //console.log(dataLength);
-
-          /*
-          if (myChart) {
-              myChart.destroy();
-          }
-          if (myChart1) {
-              myChart1.destroy();
-          }
-          if (myChart2) {
-              myChart2.destroy();
-          }
-          */
           
           table(result, dataLength);
           console.log("データは読み取り終わった");
