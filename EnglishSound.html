@@ -18,7 +18,7 @@
     <p>＝CSVファイルの読み取り＝</p>
     <input type="file" name="file" id="file" multiple>
     <br><br>
-    
+
     <h1>オーディオ使用履歴</h1>
     <!--2個目のグラフ-->
     <table border="1" id="targetTable">
@@ -31,60 +31,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>12748_imlstudent</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>12748_naokikato</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
+            
         <tbody>
     </table>
- 
-    <!--3個目のグラフ-->
-    <div class="sound">
-        <h1>オーディオ使用履歴</h1>
-        <table class="border" border="1">
-            <script>
-              //xの行を作る
-              document.write('<tr>');
-      
-              //何も掛け算をしない空白のthを作成
-              document.write('<th></th>');
-      
-              //xの行を記述するため、1から9の数字を繰り返しHTMLに記述する
-              for(var i=1; i <= 9; i++){
-                document.write('<th>'+ i +' x</th>');
-              }
-      
-              //ここでxの行を閉じる
-              document.write('</tr>');
-      
-              //ここまでxの行
-      
-              //jの列を作る
-              document.write('<tr>');
-      
-              //jの列を記述するため、1から9の数字を繰り返しHTMLに記述する
-              for(var j=1; j <= 9; j++){
-                document.write('<th>' + j + 'y</th>');
-      
-              //j*kを繰り返すことで、計算結果をtdタグの中に表示する
-                for(var k=1; k <=9; k++){
-                  document.write('<td>'+ j*k +'</td>');
-                }
-              //ここでjの行を閉じる
-                document.write('</tr>');
-              }
-            </script>
-        </table>
-
-    </div>
 
 
     <!--以下でデータの読み込みを行う-->
@@ -93,7 +42,7 @@
         var result = []; //csvの中身
         var dataLength = 0; //データの長さ
 
-        //table(result, dataLength);
+        table(result, dataLength);
 
         let fileInput = document.getElementById('file');
         let fileReader = new FileReader();
