@@ -35,7 +35,6 @@
     <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
     <script type="text/javascript" src="drawEnChart2.js"></script>
 
-
     <h1>個人表示</h1>
     <div>
       <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p>
@@ -47,9 +46,10 @@
     <div>
       <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p>
       <!--<div style="width:50%;"></div>-->
-      <canvas id="myChart" width="300" height=" 150"></canvas>
+      <canvas id="myChart" width="2500" height="350"></canvas>
     </div>
     <br><br>
+
     <div>
       <p>＝回数グラフの表示 [機能ごと]（折れ線グラフ）＝</p>
       <canvas id="myChart1" width="300" height=" 150"></canvas>
@@ -99,8 +99,8 @@
           console.log(result);
           
           //逆順
-          //result.reverse();
-          console.log(result);
+          result.reverse();
+          //console.log(result);
 
           dataLength = arr.length;
           //console.log(dataLength);

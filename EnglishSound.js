@@ -3,7 +3,8 @@
 function table(result, dataLength){
     console.log("Jsに来たよ");
     let table = document.getElementById('targetTable');
-    let member = ['12748_imlstudent', '12748_naokikato']; //これは今後外部から読み取りできるようにする
+    //let member = ['12748_imlstudent', '12748_naokikato']; //これは今後外部から読み取りできるようにする
+    let member = ['1_student', '2_student', '3_student', '4_student', '5_student', '6_student'];
 
     let audioData = new Array(member.length);
     let initial_value = 0;  // 初期化する固定値
@@ -86,6 +87,61 @@ function table(result, dataLength){
         }
     }
 
+/*
+    //ここに計算式を入れてセルの色変更をする
+    //再生回数の最大値ー最小値をした時間を５分割にする
+    let count = new Array();
+    for(let x = 0; x < member.length ; x++){
+        time[x] = minute[x]*60 + second[x];
+    }
+    //時間の最大値判定【再生回数】
+    let maxtime = time[0];
+    for(let x = 0; x < member.length ; x++){
+        if(maxtime < time[x]){
+            maxtime = time[x];
+        }
+    }
+    //時間の最小値判定【再生回数】
+    let mintime = time[0];
+    for(let x = 0; x < member.length ; x++){
+        if(mintime > time[x]){
+            mintime = time[x];
+        }
+    }
+    //５分割【再生回数】
+    let divetime = (maxtime - mintime)/5
+    console.log(time);
+    console.log(divetime);
+*/
+
+    //ここに計算式を入れてセルの色変更をする
+    //再生時間の最大値ー最小値をした時間を５分割にする
+    let time = new Array();
+    for(let x = 0; x < member.length ; x++){
+        time[x] = minute[x]*60 + second[x];
+    }
+    //時間の最大値判定【再生回数】
+    let maxtime = time[0];
+    for(let x = 0; x < member.length ; x++){
+        if(maxtime < time[x]){
+            maxtime = time[x];
+        }
+    }
+    //時間の最小値判定【再生回数】
+    let mintime = time[0];
+    for(let x = 0; x < member.length ; x++){
+        if(mintime > time[x]){
+            mintime = time[x];
+        }
+    }
+    //５分割【再生回数】
+    let divetime = (maxtime - mintime)/5
+    console.log(time);
+    console.log(divetime);
+
+    
+    
+
     //再生時間の修正
     for(let a = 0; a < member.length ; a++){
         if(second[a] == 0){
@@ -95,13 +151,11 @@ function table(result, dataLength){
             minute[a] = "0" + String(minute[a]);
         }
         audioData[a][2] =  minute[a] + ":" + second[a] ;
-        console.log(audioData);
-        console.log(minute);
-        console.log(second);
     }
 
+
     //テーブルのセルを１行目以外削除する
-    while( table.rows[ 1 ] ) table.deleteRow( 1 );
+    while( table.rows[1] ) table.deleteRow( 1 );
 
     //テーブルのセルを追加する
     for(let x = 0; x < member.length ; x++){
@@ -110,7 +164,62 @@ function table(result, dataLength){
         for(let y = 0; y < 4 ; y++){
             let newCell = newRow.insertCell();
             let newText = document.createTextNode(audioData[x][y]);
+
+/*
+            //再生回数の色分け
+            if(y == 1){
+                if(time[x] <= (mintime+divetime)){
+                    newCell.style.backgroundColor = "#ffffff";
+                    console.log(1);
+                }
+                else if(time[x] <= (mintime+divetime*2)){
+                    newCell.style.backgroundColor = "#ffcc99";//S40
+                    console.log(2);
+                }
+                else if(time[x] <= (mintime+divetime*3)){
+                    newCell.style.backgroundColor = "#ffb566";//S60
+                    console.log(3);
+                }
+                else if(time[x] <= (mintime+divetime*4)){
+                    newCell.style.backgroundColor = "#ff9c32";//S80
+                    console.log(4);
+                }
+                else if(time[x] <= maxtime){
+                    newCell.style.backgroundColor = "#ff8300";//S100
+                    console.log(5);
+                } 
+            }
+*/
+
+            //再生時間の色分け
+            if(y == 2){
+                if(time[x] <= (mintime+divetime)){
+                    newCell.style.backgroundColor = "#ffffff";
+                    console.log(1);
+                }
+                else if(time[x] <= (mintime+divetime*2)){
+                    newCell.style.backgroundColor = "#ffcc99";//S40
+                    console.log(2);
+                }
+                else if(time[x] <= (mintime+divetime*3)){
+                    newCell.style.backgroundColor = "#ffb566";//S60
+                    console.log(3);
+                }
+                else if(time[x] <= (mintime+divetime*4)){
+                    newCell.style.backgroundColor = "#ff9c32";//S80
+                    console.log(4);
+                }
+                else if(time[x] <= maxtime){
+                    newCell.style.backgroundColor = "#ff8300";//S100
+                    console.log(5);
+                } 
+            }
+            else{
+                // newCell.style.backgroundColor = "red";
+            }
             newCell.appendChild(newText);
         }
     }
+
+
 }

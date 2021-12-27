@@ -174,7 +174,7 @@ function drawChart2(result, dataLength) {
         //labels: ['14:09:10~', '14:09:20~', '14:09:30~', '14:09:40~', '14:09:50~', '14:10:00~', '14:10:10', '14:10:20'],
         //データセット
         datasets: [{
-          label: '操作回数',
+          label: '操作人数',
           data: num,
           backgroundColor: 'rgba(255, 99, 132, 0.2)',
           borderColor:'rgba(255, 99, 132, 1)',

@@ -181,7 +181,7 @@ function drawChartTarget(result, dataLength) {
     let ctx = document.getElementById('myChart1').getContext('2d');
     window.myChart1 = new Chart(ctx, {
     　//線グラフ
-      type: 'line',
+      type: 'bar', //'line',
       //データ
       data: {
         labels: lavel,

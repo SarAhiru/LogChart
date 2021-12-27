@@ -17,6 +17,8 @@ function drawChart(result, dataLength) {
     let fminute = 0;
     let fhour = 0;
 
+    
+
     if(dataLength > 0){
         for(let x = 1; x < dataLength ; x++){
             let logDate = result[x][0]; // date取得
@@ -133,10 +135,14 @@ function drawChart(result, dataLength) {
         }
     }
     
+    //var xAxisLabelMinWidth = 5; // データ当たりの幅を設定
+    //var width = num.length*xAxisLabelMinWidth; // グラフ全体の幅を計算
+    //document.getElementById('myChart').style.width = width+"px"; //　グラフの幅を設定
+    //document.getElementById('myChart').style.height = "500px"; //htmlと同じ高さを設定
 
     let ctx = document.getElementById('myChart').getContext('2d');
     window.myChart = new Chart(ctx, {
-    　//線グラフ
+      //線グラフ
       type: 'bar',
       //データ
       data: {
@@ -152,6 +158,7 @@ function drawChart(result, dataLength) {
         }]
       },
       options: {
+        responsive: false, //trueにすると画面の幅に合わせて作図してしまう
         scales: {
           yAxes: [{
             ticks: {

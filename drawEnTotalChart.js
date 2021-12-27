@@ -153,7 +153,10 @@ function drawCharttt(result, dataLength) {
             console.log(num);
         }
     }
-    
+    for(let x = 1; x < dataLength ; x++){
+      totalnum[x] = totalnum[x]/2  //人数で割って平均を出したい
+    }
+
 
     let ctx = document.getElementById('myCharttt').getContext('2d');
     window.myCharttt = new Chart(ctx, {
@@ -165,21 +168,21 @@ function drawCharttt(result, dataLength) {
         //データセット
         
         datasets: [{
-          label: '全体',
+          label: '全体平均',
           data: totalnum,
           backgroundColor: 'rgba(255, 99, 132, 1)',
           borderColor:'rgba(255, 99, 132, 1)',
           borderWidth: 1
         },
         {
-          label: '12748_imlstudent',
+          label: '1_生徒1',//12748_imlstudent
           data: num,
           backgroundColor: 'rgba(0, 255, 0, 1)',
           borderColor:'rgba(0, 255, 0, 1)',
           borderWidth: 1
         },
         {
-          label: '12748_naokikato',
+          label: '2_生徒2',//12748_naokikato
           data: num2,
           backgroundColor: 'rgba(0, 128, 255, 1)',
           borderColor:'rgba(0, 128, 255, 1)',
