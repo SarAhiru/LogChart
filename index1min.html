@@ -20,15 +20,19 @@
     <input type="file" name="file" id="file" multiple>
     <br><br>
     
+
+    <script type="text/javascript" src="actor.js"></script>
+    <script type="text/javascript" src="lavel.js"></script>
+
     <!--"drawChart.js"と連携させる(デジタル教科書のログ)-->
     <!--英語　ログ　(棒グラフ)　[機能合計]-->
     <script type="text/javascript" src="totalChart1min.js"></script>
     <!--英語　ログ　(棒グラフ)　[機能合計]-->
     <script type="text/javascript" src="totalChart1min_2.js"></script>
     <!--英語　ログ　(棒グラフ)　[機能ごと]-->
-    <script type="text/javascript" src="targetEnChart10sec.js"></script>
+    <script type="text/javascript" src="targetEnChart1min.js"></script>
     <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
-    <script type="text/javascript" src="numChart10sec.js"></script>
+    <script type="text/javascript" src="numChart1min.js"></script>
 
     <h1>個人表示</h1>
     <div>
@@ -61,14 +65,16 @@
     <!--以下でデータの読み込みを行う-->
     <script>
         console.log("通過しました!!!");
-        var result = []; //csvの中身
-        var dataLength = 0; //データの長さ
+        let result = []; //csvの中身
+        let dataLength = 0; //データの長さ
+        let member = [];
+        let time = [];
         //drawChart(result[0]);
         
-        drawCharttt(result, dataLength);
-        drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
-        drawChartTarget(result, dataLength);
-        drawChart2(result, dataLength);
+        drawCharttt(result, dataLength, member, time); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
+        drawChart(result, dataLength, member, time);
+        drawChartTarget(result, dataLength, member, time);
+        drawChart2(result, dataLength, member, time);
 
         let fileInput = document.getElementById('file');
         let fileReader = new FileReader();
@@ -94,11 +100,17 @@
           console.log(result);
           
           //逆順
-          //result.reverse();
-          //console.log(result);
+        //   result.reverse();
+        //   console.log(result);
 
           dataLength = arr.length;
           //console.log(dataLength);
+
+          //操作している人を取り出す
+          member = actor(result, dataLength);
+          //横軸を決定
+          time = lavel(result, dataLength);
+          //console.log(lavel);
 
           if (myCharttt) {
               myCharttt.destroy();
@@ -113,10 +125,10 @@
               myChart2.destroy();
           }
           
-          drawCharttt(result, dataLength);
-          drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動
-          drawChartTarget(result, dataLength);
-          drawChart2(result, dataLength);
+          drawCharttt(result, dataLength, member,time);
+          drawChart(result, dataLength, member, time); //データと長さを持ってdrawChart関数に移動
+          drawChartTarget(result, dataLength, member, time);
+          drawChart2(result, dataLength, member, time);
         }
     </script>
     <br><br>

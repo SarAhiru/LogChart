@@ -1,141 +1,84 @@
 //学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計]
 
-function drawCharttt(result, dataLength) {
+function drawCharttt(result, dataLength, member, time) {
 
-    //console.log(result);
-    //console.log(dataLength);
-
-    let lavel = []; //グラフ横軸ラベル
+    console.log(member);
+  
     let totalnum = []; //全体平均用
     let num = []; // 操作回数
-    let num2 = []; // 操作回数
+    let membernum = 0; //何人目のデータか
 
     let datanum = 0; //配列番号カウント用
     let ftime = 0; //first time
     let judge = 0; //初回かどうかを判断
-
     let fminute = 0; //グラフの軸ラベル用
     let fhour = 0;
+
+    // 初期化
+    for(let x = 0; x < time.length ; x++){
+      totalnum[x] = 0;
+    }
+    for(let i = 0 ; i < member.length ; i++){
+        num.push(Array(time.length));
+        for(let x = 0; x < time.length ; x++){
+          num[i][x] = 0;
+        }
+    }
 
     if(dataLength > 0){
         for(let x = 1; x < dataLength ; x++){
             let logDate = result[x][0]; // date取得
             let logActor = result[x][2]; // actor取得
-            //let logTarget = result[x][9]; // target取得
 
             //console.log(x + "  " + result[x][0]);
-            console.log(x + "  " + result[x][2]);// actor表示
+            //console.log(x + "  " + result[x][2]);// actor表示
 
+            //今回のデータは何人目の生徒なのか
+            for(let i = 0 ; i < member.length ; i++){
+              if(member[i] == logActor){
+                membernum = i;
+                break;
+              }
+            }
+
+            //横軸時間管理
             let date = new Date(logDate);
-            console.log(date.toLocaleString());
-            
+
             //始めだけfirst timeを設定
             if(judge == 0){
               ftime = new Date(logDate);
               let time =date.getMinutes(); //分
-              // let time = Math.floor(date.getMinutes() / 10) * 10 ; //分
-              //ftime.setSeconds(time);
-              console.log(ftime.toLocaleString());
 
               //時間・分をそれぞれ「文字として」切り取り
               fminute = logDate.slice( 13, 16 );
               fhour = logDate.slice( 10, 12 );
-              console.log(fminute);
-              console.log(fhour);
               
               //文字を数字に直す変換
               fminute = parseInt(fminute);
               fhour = parseInt(fhour);
-
-              //10より小さい場合には最初に0を付ける
-              if(fminute < 10 || fhour < 10){
-                let minute2 = fminute;
-                let hour2 = fhour;
-
-                if(fminute < 10){
-                  minute2 = "0" + String(fminute);
-                }
-                if(fhour < 10){
-                  hour2 = "0" + String(fhour);
-                }
-                lavel[0] = hour2 + ":" + minute2;
-              }
-              else{
-                lavel[0] = fhour + ":" + fminute;
-              }
-
-              console.log(lavel);
             }
             judge = 1;
             
             //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録させたい
             while(date.getTime() >= ftime.getTime()){ //1分経過したのかを判断
                 ftime.setMinutes(ftime.getMinutes() + 1);
-                //console.log(ftime.toLocaleString());
-                
-                //グラフの軸ラベル設定
-                fminute = fminute + 1;    
+                fminute = fminute + 1;
                 if(fminute >= 60){
                   fminute = 00;
                   fhour = fhour + 1;
                 }
-
-                //10より小さい場合には最初に0を付ける
-                if(fminute < 10 || fhour < 10){
-                  let minute2 = fminute;
-                  let hour2 = fhour;
-                  if(fminute < 10){
-                    minute2 = "0" + String(fminute);
-                  }
-                  if(fhour < 10){
-                    hour2 = "0" + String(fhour);
-                  }
-                  lavel[datanum + 1] = hour2 + ":" + minute2;
-                }
-                else{
-                  lavel[datanum + 1] = fhour + ":" + fminute;
-                }
-                console.log(lavel);
-                //console.log("**");
-                
-                if(totalnum[datanum] == null){
-                  totalnum[datanum] =0;
-                }
-                if(num[datanum] == null){
-                  num[datanum] =0;
-                }
-                if(num2[datanum] == null){
-                  num2[datanum] =0;
-                }
-
                 datanum ++;
-                
             }
-            
-            if(totalnum[datanum] == null){
-              totalnum[datanum] =0;
-            }
-            if(num[datanum] == null){
-              num[datanum] =0;
-            }
-            if(num2[datanum] == null){
-              num2[datanum] =0;
-            }
-
+            num[membernum][datanum-1] ++;
             totalnum[datanum-1] ++;
-            if(logActor == '12748_imlstudent'){
-              num[datanum-1] ++;
-            }
-            if(logActor == '12748_naokikato'){
-              num2[datanum-1] ++;
-            }
-            console.log(datanum);
-
-            console.log(num);
         }
+
     }
-    for(let x = 1; x < dataLength ; x++){
-      totalnum[x] = totalnum[x]/2  //人数で割って平均を出したい
+    console.log(time);
+    console.log(num);
+
+    for(let x = 0; x < time.length ; x++){
+      totalnum[x] = totalnum[x]/member.length;  //人数で割って平均を出したい
     }
 
 
@@ -145,28 +88,159 @@ function drawCharttt(result, dataLength) {
       type: 'bar',
       //データ
       data: {
-        labels: lavel,
+        labels: time,
         //データセット
         
         datasets: [{
           label: '全体平均',
           data: totalnum,
-          backgroundColor: 'rgba(255, 99, 132, 1)',
-          borderColor:'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(255, 0, 0, 1)',
+          borderColor:'rgba(255, 0, 0, 1)',
           borderWidth: 1
         },
         {
-          label: '1_生徒1',//12748_imlstudent
-          data: num,
+          label: '1_生徒1',
+          data: num[0],
           backgroundColor: 'rgba(0, 255, 0, 1)',
           borderColor:'rgba(0, 255, 0, 1)',
           borderWidth: 1
         },
         {
-          label: '2_生徒2',//12748_naokikato
-          data: num2,
-          backgroundColor: 'rgba(0, 128, 255, 1)',
-          borderColor:'rgba(0, 128, 255, 1)',
+          label: '1_生徒2',
+          data: num[1],
+          backgroundColor: 'rgba(128, 0, 0, 1)',
+          borderColor:'rgba(128, 0, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒3',
+          data: num[2],
+          backgroundColor: 'rgba(255, 255, 0, 1)',
+          borderColor:'rgba(255, 255, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒4',
+          data: num[3],
+          backgroundColor: 'rgba(128, 128, 0, 1)',
+          borderColor:'rgba(128, 128, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒5',
+          data: num[4],
+          backgroundColor: 'rgba(0, 128, 0, 1)',
+          borderColor:'rgba(0, 128, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒6',
+          data: num[5],
+          backgroundColor: 'rgba(0, 255, 255, 1)',
+          borderColor:'rgba(0, 255, 255, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒7',
+          data: num[6],
+          backgroundColor: 'rgba(0, 128, 128, 1)',
+          borderColor:'rgba(0, 128, 128, 1)',
+          borderWidth: 1
+        },{
+          label: '1_生徒8',
+          data: num[7],
+          backgroundColor: 'rgba(0, 0, 255, 1)',
+          borderColor:'rgba(0, 0, 255, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒9',
+          data: num[8],
+          backgroundColor: 'rgba(0, 0, 128, 1)',
+          borderColor:'rgba(0, 0, 128, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒10',
+          data: num[9],
+          backgroundColor: 'rgba(255, 0, 255, 1)',
+          borderColor:'rgba(255, 0, 255, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒11',
+          data: num[10],
+          backgroundColor: 'rgba(128, 0, 128, 1)',
+          borderColor:'rgba(128, 0, 128, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒12',
+          data: num[11],
+          backgroundColor: 'rgba(0, 255, 0, 1)',
+          borderColor:'rgba(0, 255, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒13',
+          data: num[12],
+          backgroundColor: 'rgba(128, 0, 0, 1)',
+          borderColor:'rgba(128, 0, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒14',
+          data: num[13],
+          backgroundColor: 'rgba(255, 255, 0, 1)',
+          borderColor:'rgba(255, 255, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒15',
+          data: num[14],
+          backgroundColor: 'rgba(128, 128, 0, 1)',
+          borderColor:'rgba(128, 128, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒16',
+          data: num[15],
+          backgroundColor: 'rgba(0, 128, 0, 1)',
+          borderColor:'rgba(0, 128, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒17',
+          data: num[16],
+          backgroundColor: 'rgba(0, 255, 255, 1)',
+          borderColor:'rgba(0, 255, 255, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒18',
+          data: num[17],
+          backgroundColor: 'rgba(0, 128, 128, 1)',
+          borderColor:'rgba(0, 128, 128, 1)',
+          borderWidth: 1
+        },{
+          label: '1_生徒19',
+          data: num[18],
+          backgroundColor: 'rgba(0, 0, 255, 1)',
+          borderColor:'rgba(0, 0, 255, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒20',
+          data: num[19],
+          backgroundColor: 'rgba(0, 0, 128, 1)',
+          borderColor:'rgba(0, 0, 128, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '2_生徒21',
+          data: num[20],
+          backgroundColor: 'rgba(255, 0, 255, 1)',
+          borderColor:'rgba(255, 0, 255, 1)',
           borderWidth: 1,
           lavel: true,
           hidden: false,
