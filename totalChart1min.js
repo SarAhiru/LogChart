@@ -2,7 +2,7 @@
 
 function drawCharttt(result, dataLength, member, time) {
 
-    console.log(member);
+    //console.log(member);
   
     let totalnum = []; //全体平均用
     let num = []; // 操作回数
@@ -47,35 +47,19 @@ function drawCharttt(result, dataLength, member, time) {
             //始めだけfirst timeを設定
             if(judge == 0){
               ftime = new Date(logDate);
-              let time =date.getMinutes(); //分
-
-              //時間・分をそれぞれ「文字として」切り取り
-              fminute = logDate.slice( 13, 16 );
-              fhour = logDate.slice( 10, 12 );
-              
-              //文字を数字に直す変換
-              fminute = parseInt(fminute);
-              fhour = parseInt(fhour);
+              datanum = 1;
             }
             judge = 1;
             
             //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録させたい
             while(date.getTime() >= ftime.getTime()){ //1分経過したのかを判断
                 ftime.setMinutes(ftime.getMinutes() + 1);
-                fminute = fminute + 1;
-                if(fminute >= 60){
-                  fminute = 00;
-                  fhour = fhour + 1;
-                }
                 datanum ++;
             }
             num[membernum][datanum-1] ++;
             totalnum[datanum-1] ++;
         }
-
     }
-    console.log(time);
-    console.log(num);
 
     for(let x = 0; x < time.length ; x++){
       totalnum[x] = totalnum[x]/member.length;  //人数で割って平均を出したい
@@ -90,7 +74,6 @@ function drawCharttt(result, dataLength, member, time) {
       data: {
         labels: time,
         //データセット
-        
         datasets: [{
           label: '全体平均',
           data: totalnum,

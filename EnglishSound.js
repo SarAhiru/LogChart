@@ -219,6 +219,4 @@ function table(result, dataLength){
             newCell.appendChild(newText);
         }
     }
-
-
 }
