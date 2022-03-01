@@ -28,6 +28,7 @@ function actor(result, dataLength) {
             //console.log(actor);            
         }
     }
+    console.log(actor);
     return actor;
 
 }

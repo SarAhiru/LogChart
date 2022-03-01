@@ -98,8 +98,8 @@ function drawCharttt(result, dataLength, member, time) {
         {
           label: '1_生徒3',
           data: num[2],
-          backgroundColor: 'rgba(255, 255, 0, 1)',
-          borderColor:'rgba(255, 255, 0, 1)',
+          backgroundColor: 'rgba(0, 0, 128, 1)',
+          borderColor:'rgba(0, 0, 128, 1)',
           borderWidth: 1
         },
         {
@@ -129,7 +129,8 @@ function drawCharttt(result, dataLength, member, time) {
           backgroundColor: 'rgba(0, 128, 128, 1)',
           borderColor:'rgba(0, 128, 128, 1)',
           borderWidth: 1
-        },{
+        },
+        {
           label: '1_生徒8',
           data: num[7],
           backgroundColor: 'rgba(0, 0, 255, 1)',
@@ -191,7 +192,7 @@ function drawCharttt(result, dataLength, member, time) {
           backgroundColor: 'rgba(0, 128, 0, 1)',
           borderColor:'rgba(0, 128, 0, 1)',
           borderWidth: 1
-        },
+        },/*
         {
           label: '1_生徒17',
           data: num[16],
@@ -218,7 +219,7 @@ function drawCharttt(result, dataLength, member, time) {
           backgroundColor: 'rgba(0, 0, 128, 1)',
           borderColor:'rgba(0, 0, 128, 1)',
           borderWidth: 1
-        },
+        },/*
         {
           label: '2_生徒21',
           data: num[20],
@@ -227,7 +228,121 @@ function drawCharttt(result, dataLength, member, time) {
           borderWidth: 1,
           lavel: true,
           hidden: false,
-        }]
+        },
+        {
+          label: '1_生徒22',
+          data: num[21],
+          backgroundColor: 'rgba(128, 0, 128, 1)',
+          borderColor:'rgba(128, 0, 128, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒23',
+          data: num[22],
+          backgroundColor: 'rgba(0, 255, 0, 1)',
+          borderColor:'rgba(0, 255, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒24',
+          data: num[23],
+          backgroundColor: 'rgba(128, 0, 0, 1)',
+          borderColor:'rgba(128, 0, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒25',
+          data: num[24],
+          backgroundColor: 'rgba(255, 255, 0, 1)',
+          borderColor:'rgba(255, 255, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒26',
+          data: num[25],
+          backgroundColor: 'rgba(128, 128, 0, 1)',
+          borderColor:'rgba(128, 128, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒27',
+          data: num[26],
+          backgroundColor: 'rgba(0, 128, 0, 1)',
+          borderColor:'rgba(0, 128, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒28',
+          data: num[27],
+          backgroundColor: 'rgba(0, 255, 255, 1)',
+          borderColor:'rgba(0, 255, 255, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒29',
+          data: num[28],
+          backgroundColor: 'rgba(0, 128, 128, 1)',
+          borderColor:'rgba(0, 128, 128, 1)',
+          borderWidth: 1
+        },{
+          label: '1_生徒30',
+          data: num[29],
+          backgroundColor: 'rgba(0, 0, 255, 1)',
+          borderColor:'rgba(0, 0, 255, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒31',
+          data: num[30],
+          backgroundColor: 'rgba(0, 0, 128, 1)',
+          borderColor:'rgba(0, 0, 128, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '2_生徒32',
+          data: num[31],
+          backgroundColor: 'rgba(255, 0, 255, 1)',
+          borderColor:'rgba(255, 0, 255, 1)',
+          borderWidth: 1,
+          lavel: true,
+          hidden: false,
+        },
+        {
+          label: '1_生徒33',
+          data: num[32],
+          backgroundColor: 'rgba(128, 0, 128, 1)',
+          borderColor:'rgba(128, 0, 128, 1)',
+          borderWidth: 1
+        },/*
+        {
+          label: '1_生徒34',
+          data: num[33],
+          backgroundColor: 'rgba(0, 255, 0, 1)',
+          borderColor:'rgba(0, 255, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒35',
+          data: num[34],
+          backgroundColor: 'rgba(128, 0, 0, 1)',
+          borderColor:'rgba(128, 0, 0, 1)',
+          borderWidth: 1
+        },/*
+        {
+          label: '1_生徒36',
+          data: num[35],
+          backgroundColor: 'rgba(255, 255, 0, 1)',
+          borderColor:'rgba(255, 255, 0, 1)',
+          borderWidth: 1
+        },
+        {
+          label: '1_生徒37',
+          data: num[36],
+          backgroundColor: 'rgba(128, 128, 0, 1)',
+          borderColor:'rgba(128, 128, 0, 1)',
+          borderWidth: 1
+        }*/
+      ]
       },
       options: {
         scales: {

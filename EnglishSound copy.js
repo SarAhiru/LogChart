@@ -1,16 +1,19 @@
 //事前に生徒登録は完了している全体で行う。
 
-function table(result, dataLength){
+function table(result, dataLength, member){
     console.log("Jsに来たよ");
     let table = document.getElementById('targetTable');
     //let member = ['12748_imlstudent', '12748_naokikato']; //これは今後外部から読み取りできるようにする
-    let member = ['1_student', '2_student', '3_student', '4_student', '5_student', '6_student','7_student', '8_student', '9_student', '10_student', '11_student', '12_student', '13_student', '14_student', '15_student', '16_student','17_student', '18_student', '19_student', '20_student', '11_student', '21_student'];
+    // let member = ['1_student', '2_student', '3_student', '4_student', '5_student', '6_student','7_student', '8_student', '9_student', '10_student', '11_student', '12_student', '13_student', '14_student', '15_student', '16_student','17_student', '18_student', '19_student', '20_student', '11_student', '21_student'];
 
     let audioData = new Array(member.length);
     let initial_value = 0;  // 初期化する固定値
     let minute = new Array(member.length);
     let second = new Array(member.length);
-    
+
+    // if(member == null){
+    //     member = ['1_student', '2_student', '3_student', '4_student', '5_student', '6_student','7_student', '8_student', '9_student', '10_student', '11_student', '12_student', '13_student', '14_student', '15_student', '16_student','17_student', '18_student', '19_student', '20_student', '11_student', '21_student'];
+    // }
 
     for (var x = 0; x < member.length; x++){
         // 2次元配列の「列」部分を作成
@@ -40,7 +43,6 @@ function table(result, dataLength){
                 for(let a = 0; a < member.length ; a++){
                     if(logActor.includes(audioData[a][0]) ){
                         user = a; //ユーザーの識別
-                        console.log(user);
                     }
                 }
                 audioData[user][1] ++ ; //再生回数のカウントを+1
@@ -49,7 +51,8 @@ function table(result, dataLength){
                 //再生時間
                 let addminute = logTarget.slice( 11, 13 );
                 addminute = parseInt(addminute);
-                let addsecond = logTarget.substr( 14 );
+                let addsecond = logTarget.substr( 13, 14 );
+                console.log(addsecond);
                 addsecond = parseInt(addsecond);
 
                 minute[user] = minute[user] + addminute;
@@ -74,7 +77,7 @@ function table(result, dataLength){
                 //再生時間
                 let addminute = logTarget.slice( 11, 13 );
                 addminute = parseInt(addminute);
-                let addsecond = logTarget.substr( 14 );
+                let addsecond = logTarget.substr( 13, 14 );
                 addsecond = parseInt(addsecond);
 
                 minute[user] = minute[user] + addminute;
@@ -146,6 +149,9 @@ function table(result, dataLength){
         if(second[a] == 0){
             second[a] = "00";
         }
+        if(second[a] < 10){
+            second[a] = "0" + String(second[a]);
+        }
         if(minute[a] < 10){
             minute[a] = "0" + String(minute[a]);
         }
@@ -161,7 +167,7 @@ function table(result, dataLength){
     while( table.rows[1] ) table.deleteRow( 1 );
 
     //テーブルのセルを追加する
-    for(let x = 0; x < member.length ; x++){
+    for(let x = 0; x < member.length-1 ; x++){
         let newRow = table.insertRow();
 
         for(let y = 0; y < 4 ; y++){
@@ -198,23 +204,23 @@ function table(result, dataLength){
             if(y == 2){
                 if(time[x] <= (mintime+divetime)){
                     newCell.style.backgroundColor = "#ffffff";
-                    console.log(1);
+                    // console.log(1);
                 }
                 else if(time[x] <= (mintime+divetime*2)){
                     newCell.style.backgroundColor = "#ffcc99";//S40
-                    console.log(2);
+                    // console.log(2);
                 }
                 else if(time[x] <= (mintime+divetime*3)){
                     newCell.style.backgroundColor = "#ffb566";//S60
-                    console.log(3);
+                    // console.log(3);
                 }
                 else if(time[x] <= (mintime+divetime*4)){
                     newCell.style.backgroundColor = "#ff9c32";//S80
-                    console.log(4);
+                    // console.log(4);
                 }
                 else if(time[x] <= maxtime){
                     newCell.style.backgroundColor = "#ff8300";//S100
-                    console.log(5);
+                    // console.log(5);
                 } 
             }
             newCell.appendChild(newText);

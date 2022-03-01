@@ -12,13 +12,16 @@
     <p>
         <a href="index.html">グラフへ</a>
     </p>
+
     
-    <script type="text/javascript" src="EnglishSound.js"></script>
+    <script type="text/javascript" src="actor.js"></script>
+    <script type="text/javascript" src="EnglishSound copy.js"></script>
 
     <!--CSVファイルの読み取り-->
     <p>＝CSVファイルの読み取り＝</p>
     <input type="file" name="file" id="file" multiple>
     <br><br>
+
 
     <style type="text/css">
         .Title { background-color: #cccccc; font-weight: bold; }
@@ -31,7 +34,8 @@
 
     <h1>オーディオ使用履歴</h1>
     <table border="1" id="targetTable">
-        <caption>オーディオ使用履歴</caption>
+        <!-- <caption>オーディオ使用履歴</caption> -->
+        <caption>音声・動画利用時間</caption>
         <colgroup span="1" class="Title"></colgroup><!--１行を"Title"に-->
         <colgroup span="1" class="Num"></colgroup>
         <colgroup span="2" class="Other"></colgroup>
@@ -54,8 +58,9 @@
         console.log("通過しました!!!");
         var result = []; //csvの中身
         var dataLength = 0; //データの長さ
+        let member = [];
 
-        table(result, dataLength);
+        table(result, dataLength, member);
 
         let fileInput = document.getElementById('file');
         let fileReader = new FileReader();
@@ -85,8 +90,11 @@
           //console.log(result);
 
           dataLength = arr.length;
+
+          //操作している人を取り出す
+          member = actor(result, dataLength);
           
-          table(result, dataLength);
+          table(result, dataLength, member);
           console.log("データは読み取り終わった");
         }
     </script>
