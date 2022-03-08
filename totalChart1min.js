@@ -1,7 +1,7 @@
 //学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計]
 
-function drawCharttt(result, dataLength, member, time) {
-
+function drawCharttt(member, time, num) {
+/*
     //console.log(member);
   
     let totalnum = []; //全体平均用
@@ -34,12 +34,14 @@ function drawCharttt(result, dataLength, member, time) {
             //console.log(x + "  " + result[x][2]);// actor表示
 
             //今回のデータは何人目の生徒なのか
-            for(let i = 0 ; i < member.length ; i++){
-              if(member[i] == logActor){
-                membernum = i;
-                break;
-              }
-            }
+            // for(let i = 0 ; i < member.length ; i++){
+            //   if(member[i] == logActor){
+            //     membernum = i;
+            //     break;
+            //   }
+            // }
+            membernum = member.indexOf(logActor);
+            console.log(membernum);
 
             //横軸時間管理
             let date = new Date(logDate);
@@ -52,6 +54,7 @@ function drawCharttt(result, dataLength, member, time) {
             judge = 1;
             
             //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録させたい
+            
             while(date.getTime() >= ftime.getTime()){ //1分経過したのかを判断
                 ftime.setMinutes(ftime.getMinutes() + 1);
                 datanum ++;
@@ -64,11 +67,12 @@ function drawCharttt(result, dataLength, member, time) {
     for(let x = 0; x < time.length ; x++){
       totalnum[x] = totalnum[x]/member.length;  //人数で割って平均を出したい
     }
-
+*/
+console.log(num);
 
     let ctx = document.getElementById('myCharttt').getContext('2d');
     window.myCharttt = new Chart(ctx, {
-    　//線グラフ
+      //線グラフ
       type: 'bar',
       //データ
       data: {
@@ -76,7 +80,7 @@ function drawCharttt(result, dataLength, member, time) {
         //データセット
         datasets: [{
           label: '全体平均',
-          data: totalnum,
+          data: num[0], //totalnum,
           backgroundColor: 'rgba(255, 0, 0, 1)',
           borderColor:'rgba(255, 0, 0, 1)',
           borderWidth: 1
@@ -358,4 +362,5 @@ function drawCharttt(result, dataLength, member, time) {
         }
       }
     });
+    console.log("表示完了！");
 }

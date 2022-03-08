@@ -14,7 +14,6 @@
   <!--.jsと連携-->
   <script type="text/javascript" src="actor.js"></script>
   <script type="text/javascript" src="lavel.js"></script>
-  <script type="text/javascript" src="count.js"></script>
   <!--英語　ログ　(棒グラフ)　[機能合計]-->
   <script type="text/javascript" src="totalChart1min.js"></script>
   <!--英語　ログ　(棒グラフ)　[機能合計]-->
@@ -34,7 +33,7 @@
     <input type="file" name="file" id="file" multiple>
   </p>
   <p>
-    ②日付を選択　　　　　▷　
+    ②日付を選択　　　　　▷　(これ意味ない選択)
     <input type="date" name="date">
   </p>
   <p id="output">Change the Date</p>
@@ -50,11 +49,11 @@
 
   <!-- <h1>全体表示</h1> -->
   <div>
-    <!-- <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p> -->
+    <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p>
     <!--<div style="width:50%;"></div>-->
-    <!-- <canvas id="myChart" width="2500" height="350"></canvas> -->
+    <canvas id="myChart" width="2500" height="350"></canvas>
   </div>
-  <!-- <br><br> -->
+  <br><br>
 
   <div>
     <p>＝機能ごとの操作回数の合計＝</p>
@@ -69,21 +68,17 @@
 
   <!--以下でデータの読み込みを行う-->
   <script>
-    // console.log("通過しました!!!");
+    console.log("通過しました!!!");
     let result = []; //csvの中身
     let dataLength = 0; //データの長さ
     let member = [];
     let time = [];
-    let num = [];
+    //drawChart(result[0]);
 
-    let startnum = 0;
-    let finishnum = 0;
-
-    drawCharttt(member, time, num);
-    // drawCharttt(result, dataLength, member, time); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
-    // drawChart(result, dataLength, member, time, startnum, finishnum);
-    drawChartTarget(result, dataLength, member, time, startnum, finishnum);
-    drawChart2(result, dataLength, member, time, startnum, finishnum);
+    drawCharttt(result, dataLength, member, time); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
+    drawChart(result, dataLength, member, time);
+    drawChartTarget(result, dataLength, member, time);
+    drawChart2(result, dataLength, member, time);
 
     let fileInput = document.getElementById('file');
     let fileReader = new FileReader();
@@ -101,36 +96,31 @@
       var arr = txt.split("\r\n");
       arr = txt.split("\n");
       //arr = txt.split("\r");
-      for (var i = 1; i < arr.length; ++i) {
+      for (var i = 0; i < arr.length; ++i) {
         result[i] = arr[i].split(',');
       }
-      // console.log(result);
+      //console.log(arr);
+      console.log(result);
 
       //逆順
       // result.reverse();
-      console.log(result);
+      // console.log(result);
 
       dataLength = arr.length;
+      //console.log(dataLength);
 
-      //操作している人を取り出す(※本当は児童を指定しておきたい)
+      //操作している人を取り出す
       member = actor(result, dataLength);
-    }
-
-    // 日付選択をしたら開始されるようにする
-    let choicedate = document.querySelector(`input[type='date'][name='date']`);
-    choicedate.addEventListener(`change`, function () {
-      document.querySelector(`#output`).innerHTML = choicedate.value;
       //横軸を決定
-      [time, startnum, finishnum] = lavel(result, dataLength, choicedate, member);
-      // console.log(time);
-      num = count(result, dataLength, member, time, startnum, finishnum);
+      time = lavel(result, dataLength);
+      //console.log(lavel);
 
       if (myCharttt) {
         myCharttt.destroy();
       }
-      // if (myChart) {
-      //   myChart.destroy();
-      // }
+      if (myChart) {
+        myChart.destroy();
+      }
       if (myChart1) {
         myChart1.destroy();
       }
@@ -138,12 +128,34 @@
         myChart2.destroy();
       }
 
-      // console.log(num);
-      drawCharttt(member, time, num);
-      // drawCharttt(result, dataLength, member, time);
-      //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
-      drawChartTarget(result, dataLength, member, time, startnum, finishnum);
-      drawChart2(result, dataLength, member, time, startnum, finishnum);
+      drawCharttt(result, dataLength, member, time);
+      drawChart(result, dataLength, member, time); //データと長さを持ってdrawChart関数に移動
+      drawChartTarget(result, dataLength, member, time);
+      drawChart2(result, dataLength, member, time);
+    }
+
+    let choicedate = document.querySelector(`input[type='date'][name='date']`);
+    choicedate.addEventListener(`change`, function () {
+      //横軸を決定
+      time = lavel(result, dataLength);
+
+      if (myCharttt) {
+        myCharttt.destroy();
+      }
+      if (myChart) {
+        myChart.destroy();
+      }
+      if (myChart1) {
+        myChart1.destroy();
+      }
+      if (myChart2) {
+        myChart2.destroy();
+      }
+
+      drawCharttt(result, dataLength, member, time);
+      drawChart(result, dataLength, member, time); //データと長さを持ってdrawChart関数に移動
+      drawChartTarget(result, dataLength, member, time);
+      drawChart2(result, dataLength, member, time);
     });
   </script>
   <br><br>

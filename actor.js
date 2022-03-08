@@ -6,9 +6,11 @@ function actor(result, dataLength) {
     let actornum = 0; //配列番号カウント用
     let actorJudge = 0; //操作者　重複回避用
 
+
     if(dataLength > 0){
-        for(let x = 1; x < dataLength ; x++){
-            let logActor = result[x][2]; // ログからactor取得
+        for(let x = 1; x < dataLength-1 ; x++){ //逆順の時にはdataLength-1
+          // console.log(result[x][2]);
+          let logActor = result[x][2]; // ログからactor取得
 
             //操作者管理
             if(actor.length != 0){
@@ -24,11 +26,9 @@ function actor(result, dataLength) {
               actor.push(logActor);
               actornum = actor.length;
             }
-            actorJudge = 0;
-            //console.log(actor);            
+            actorJudge = 0;          
         }
     }
     console.log(actor);
     return actor;
-
 }

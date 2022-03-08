@@ -1,6 +1,6 @@
 //学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計]
 
-function drawChart(result, dataLength, member, time) {
+function drawChart(result, dataLength, member, time, startnum, finishnum) {
 
   // console.log(member);
   
@@ -26,7 +26,7 @@ function drawChart(result, dataLength, member, time) {
     }
 
     if(dataLength > 0){
-        for(let x = 1; x < dataLength ; x++){
+        for(let x = startnum; x <= finishnum ; x++){
             let logDate = result[x][0]; // date取得
             let logActor = result[x][2]; // actor取得
 
