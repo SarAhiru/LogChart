@@ -1,6 +1,6 @@
 //学習者用デジタル教科書　英語　ログ　グラフ生成　[機能ごと]
 
-function drawChartTarget(result, dataLength, member, time) {
+function drawChartTarget(result, dataLength, member, time, startnum, finishnum) {
 
     //console.log(result);
     //console.log(dataLength);
@@ -28,7 +28,7 @@ function drawChartTarget(result, dataLength, member, time) {
     }
 
     if(dataLength > 0){
-        for(let x = 1; x < dataLength ; ++x){
+        for(let x = startnum; x <= finishnum ; ++x){
             let logDate = result[x][0]; // date取得
             let logTarget = result[x][9]; // target取得
 

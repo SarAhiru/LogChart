@@ -1,6 +1,6 @@
 //学習者用デジタル教科書　英語　ログ　人数合計グラフ生成　[全体]
 
-function drawChart2(result, dataLength, member, time) {
+function drawChart2(result, dataLength, member, time, startnum, finishnum) {
 
     let num = []; // グラフ縦軸
     let actor = []; //操作者　重複回避用
@@ -23,7 +23,7 @@ function drawChart2(result, dataLength, member, time) {
     }
 
     if(dataLength > 0){
-        for(let x = 1 ; x < dataLength ; ++x){
+        for(let x = startnum ; x <= finishnum ; ++x){
             let logDate = result[x][0]; // date取得
             let logActor = result[x][2]; // actor取得
 
