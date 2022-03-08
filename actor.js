@@ -1,21 +1,14 @@
-//学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計]
+//学習者用デジタル教科書　英語　ログ　生徒管理用
 
 function actor(result, dataLength) {
 
-    //console.log(result);
-    //console.log(dataLength);
-
-    let actor = []; //操作者管理用
+    let actor = []; //操作者管理用　配列
+    let actornum = 0; //配列番号カウント用
     let actorJudge = 0; //操作者　重複回避用
-    let actornum = 0; //何番目の人なのか
-
 
     if(dataLength > 0){
         for(let x = 1; x < dataLength ; x++){
-            let logActor = result[x][2]; // actor取得
-
-            //console.log(x + "  " + result[x][0]);
-            //console.log(x + "  " + result[x][2]);// actor表示
+            let logActor = result[x][2]; // ログからactor取得
 
             //操作者管理
             if(actor.length != 0){
@@ -35,6 +28,7 @@ function actor(result, dataLength) {
             //console.log(actor);            
         }
     }
+    console.log(actor);
     return actor;
 
 }
