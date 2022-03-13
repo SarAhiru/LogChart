@@ -70,6 +70,25 @@ function drawCharttt(member, time, num) {
 */
 console.log(num);
 
+    function generateRandomCode() {
+      var myRandomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+      return myRandomColor;
+    }
+
+    const studentDatasets = function () {
+      const datasets = []
+
+      for(let i = 0; i < member.length; i++){
+        datasets.push({
+          label: '生徒' + (i+1),
+          data: num[i],
+          // backgroundColor: 'rgba(255, 0, 0, 1)',
+          backgroundColor: generateRandomCode() ,
+        })
+      }
+      return datasets
+    }
+
     let ctx = document.getElementById('myCharttt').getContext('2d');
     window.myCharttt = new Chart(ctx, {
       //線グラフ
@@ -77,6 +96,8 @@ console.log(num);
       //データ
       data: {
         labels: time,
+        datasets: studentDatasets(),
+        /*
         //データセット
         datasets: [{
           label: '全体平均',
@@ -196,7 +217,7 @@ console.log(num);
           backgroundColor: 'rgba(0, 128, 0, 1)',
           borderColor:'rgba(0, 128, 0, 1)',
           borderWidth: 1
-        },/*
+        },
         {
           label: '1_生徒17',
           data: num[16],
@@ -223,7 +244,7 @@ console.log(num);
           backgroundColor: 'rgba(0, 0, 128, 1)',
           borderColor:'rgba(0, 0, 128, 1)',
           borderWidth: 1
-        },/*
+        },
         {
           label: '2_生徒21',
           data: num[20],
@@ -317,7 +338,7 @@ console.log(num);
           backgroundColor: 'rgba(128, 0, 128, 1)',
           borderColor:'rgba(128, 0, 128, 1)',
           borderWidth: 1
-        },/*
+        },
         {
           label: '1_生徒34',
           data: num[33],
@@ -331,7 +352,7 @@ console.log(num);
           backgroundColor: 'rgba(128, 0, 0, 1)',
           borderColor:'rgba(128, 0, 0, 1)',
           borderWidth: 1
-        },/*
+        },
         {
           label: '1_生徒36',
           data: num[35],
@@ -345,20 +366,20 @@ console.log(num);
           backgroundColor: 'rgba(128, 128, 0, 1)',
           borderColor:'rgba(128, 128, 0, 1)',
           borderWidth: 1
-        }*/
-      ]
+        }
+      ]*/
       },
       options: {
         scales: {
-          xAxes: [{
+          x: {
             categoryPercentage: 1.1,
             barPercentage: 1,
-          }],
-          yAxes: [{
+          },
+          y: {
             ticks: {
               beginAtZero: true
             }
-          }]
+          }
         }
       }
     });

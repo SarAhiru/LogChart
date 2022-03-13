@@ -6,6 +6,8 @@
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <!--Chart.jsの読み込み-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
   <title>Chart.js</title>
 </head>
@@ -24,6 +26,8 @@
   <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
   <script type="text/javascript" src="numChart1min.js"></script>
 
+  <script src="heatmap.js"></script>
+
   <p>
     <a href="EnglishSound.html">音声再生</a>
   </p>
@@ -40,14 +44,16 @@
   <p id="output">Change the Date</p>
   <br><br>
 
-
   <!-- <h1>個人表示</h1> -->
   <div>
     <p>＝児童ごとの操作回数の合計＝</p>
     <!--<div style="width:50%;"></div>-->
-    <canvas id="myCharttt" width="300" height="150"></canvas>
+    <canvas id="myCharttt" width="300" height="100"></canvas>
   </div>
-
+  <div>
+    <canvas id="heatMap"  width="300" height=" 150"></canvas>
+  </div>
+  <br><br>
   <!-- <h1>全体表示</h1> -->
   <div>
     <!-- <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p> -->
@@ -58,13 +64,19 @@
 
   <div>
     <p>＝機能ごとの操作回数の合計＝</p>
-    <canvas id="myChart1" width="300" height=" 150"></canvas>
-  </div>
-  <div>
-    <p>＝操作人数の合計＝</p>
-    <canvas id="myChart2" width="300" height=" 150"></canvas>
+    <canvas id="myChart1" width="300" height=" 100"></canvas>
   </div>
   <br><br>
+  <div>
+    <p>＝操作人数の合計＝</p>
+    <canvas id="myChart2" width="300" height=" 100"></canvas>
+  </div>
+  <br><br>
+
+  <!-- <div style="height:400px; width:800px"> -->
+  <!-- <div>
+    <canvas id="heatMap"  width="300" height=" 150"></canvas>
+  </div> -->
 
 
   <!--以下でデータの読み込みを行う-->
@@ -84,6 +96,7 @@
     // drawChart(result, dataLength, member, time, startnum, finishnum);
     drawChartTarget(result, dataLength, member, time, startnum, finishnum);
     drawChart2(result, dataLength, member, time, startnum, finishnum);
+    heatmap(member, time, num);
 
     let fileInput = document.getElementById('file');
     let fileReader = new FileReader();
@@ -137,6 +150,9 @@
       if (myChart2) {
         myChart2.destroy();
       }
+      if (heatMap) {
+        heatMap.destroy();
+      }
 
       // console.log(num);
       drawCharttt(member, time, num);
@@ -144,6 +160,7 @@
       //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
       drawChartTarget(result, dataLength, member, time, startnum, finishnum);
       drawChart2(result, dataLength, member, time, startnum, finishnum);
+      heatmap(member, time, num);
     });
   </script>
   <br><br>
