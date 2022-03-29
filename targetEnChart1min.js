@@ -42,14 +42,15 @@ function drawChartTarget(result, dataLength, member, time, startnum, finishnum) 
             if(judge == 0){
               ftime = new Date(logDate);
               datanum = 1;
+              judge = 1;
             }
-            judge = 1;
-
-            //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録させたい
-            while(date.getTime() >= ftime.getTime()){ //1分経過したのかを判断
-              ftime.setMinutes(ftime.getMinutes() + 1);
-              datanum ++;
-            }            
+            else{
+              while(date.getTime() > ftime.getTime()){ //1分経過したのかを判断
+                ftime.setMinutes(ftime.getMinutes() + 1);
+                datanum ++;
+              }  
+            }
+                    
             
             if(logTarget.includes('index')){ // indexの文字を含んでいるのかどうか
               indexCount[datanum-1] ++;
@@ -72,7 +73,7 @@ function drawChartTarget(result, dataLength, member, time, startnum, finishnum) 
 
     let ctx = document.getElementById('myChart1').getContext('2d');
     window.myChart1 = new Chart(ctx, {
-    　//線グラフ
+      //線グラフ
       type: 'bar', //'line',
       //データ
       data: {
@@ -116,6 +117,7 @@ function drawChartTarget(result, dataLength, member, time, startnum, finishnum) 
         ]
       },
       options: {
+        
         scales: {
           yAxes: [{
             ticks: {

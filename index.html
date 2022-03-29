@@ -1,134 +1,195 @@
 <!DOCTYPE html>
 <html lang='en'>
-<head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <!--Chart.jsの読み込み-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"></script>
 
-    <title>Chart.js</title>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+  <!--Vue.jsの読み込み-->
+  <script src="https://unpkg.com/vue@3.2.31"></script>
+  <!--Chart.jsの読み込み-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <!-- グラフ内に数字を入れる -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script> -->
+  
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+  <script>
+    // Chart.register(ChartDataLabels);
+  </script>
+
+  <title>Chart.js</title>
 </head>
 
 <body>
-    
-    <p>
-      <a href="EnglishSound.html">音声再生</a>
-    </p>
+  <!--.jsと連携-->
+  <script type="text/javascript" src="actor.js"></script>
+  <script type="text/javascript" src="lavel.js"></script>
+  <script type="text/javascript" src="count.js"></script>
+  <!--英語　ログ　(棒グラフ)　[機能合計]-->
+  <script type="text/javascript" src="totalChart1min.js"></script>
+  <!--英語　ログ　(棒グラフ)　[機能合計]-->
+  <script type="text/javascript" src="totalChart1min_2.js"></script>
+  <!--英語　ログ　(棒グラフ)　[機能ごと]-->
+  <script type="text/javascript" src="targetEnChart1min.js"></script>
+  <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
+  <script type="text/javascript" src="numChart1min.js"></script>
 
-    <!--CSVファイルの読み取り-->
-    <p>＝CSVファイルの読み取り＝</p>
+  <script src="heatmap.js"></script>
+
+  <p>
+    <a href="EnglishSound.html">音声再生</a>　
+    <a href="classseat.html">座席</a>
+  </p>
+
+  <!--CSVファイルの読み取り-->
+  <p>
+    ①CSVファイルを選択　▷　
     <input type="file" name="file" id="file" multiple>
-    <br><br>
-    
-    <!--"drawChart.js"と連携させる(デジタル教科書のログの際)-->
-    <!--英語　ログ　(棒グラフ)　[機能合計]-->
-    <script type="text/javascript" src="totalChart10sec.js"></script>
+  </p>
+  <p>
+    ②日付を選択　　　　　▷　
+    <input type="date" name="date">
+  </p>
+  <p id="output">Change the Date</p>
+  <br><br>
 
-    <!--"drawChart.js"と連携させる(お絵かきアプリのログの際)-->
-    <!--<script type="text/javascript" src="drawChart.js"></script>-->
+  <!-- <h1>個人表示</h1> -->
+  <div>
+    <p>＝児童ごとの操作回数の合計＝</p>
+    <!--<div style="width:50%;"></div>-->
+    <canvas id="myCharttt" width="300" height="100"></canvas>
+  </div>
+  <div>
+    <canvas id="heatMap"  width="300" height=" 150"></canvas>
+  </div>
+  <br><br>
+  <!-- <h1>全体表示</h1> -->
+  <div>
+    <!-- <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p> -->
+    <!--<div style="width:50%;"></div>-->
+    <!-- <canvas id="myChart" width="2500" height="350"></canvas> -->
+  </div>
+  <!-- <br><br> -->
 
-    <!--"drawChart.js"と連携させる(デジタル教科書のログの際)-->
-    <!--英語　ログ　(棒グラフ)　[機能合計]-->
-    <script type="text/javascript" src="totalChart10sec_2.js"></script>
-    <!--英語　ログ　(棒グラフ)　[機能ごと]-->
-    <script type="text/javascript" src="targetEnChart10sec.js"></script>
-    <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
-    <script type="text/javascript" src="numChart10sec.js"></script>
+  <div>
+    <p>＝機能ごとの操作回数の合計＝</p>
+    <canvas id="myChart1" width="300" height=" 100"></canvas>
+  </div>
+  <br><br>
+  <div>
+    <p>＝操作人数の合計＝</p>
+    <canvas id="myChart2" width="300" height=" 100"></canvas>
+  </div>
+  <br><br>
 
-    <h1>個人表示</h1>
-    <div>
-      <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p>
-      <!--<div style="width:50%;"></div>-->
-      <canvas id="myCharttt" width="300" height="150"></canvas>
-    </div>
+  <!-- <div style="height:400px; width:800px"> -->
+  <!-- <div>
+    <canvas id="heatMap"  width="300" height=" 150"></canvas>
+  </div> -->
 
-    <h1>全体表示</h1>
-    <div>
-      <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p>
-      <!--<div style="width:50%;"></div>-->
-      <canvas id="myChart" width="2500" height="350"></canvas>
-    </div>
-    <br><br>
 
-    <div>
-      <p>＝回数グラフの表示 [機能ごと]（折れ線グラフ）＝</p>
-      <canvas id="myChart1" width="300" height=" 150"></canvas>
-    </div>
-    <div>
-      <p>＝人数合計 [全体]（棒グラフ）＝</p>
-      <canvas id="myChart2" width="300" height=" 150"></canvas>
-    </div>
-    <br><br>
+  <!--以下でデータの読み込みを行う-->
+  <script>
+    // console.log("通過しました!!!");
+    let result = []; //csvの中身
+    let dataLength = 0; //データの長さ
+    let member = [];
+    let time = [];
+    let num = [];
 
-    
-    <!--<script type="text/javascript" src="main.js"></script>-->
+    let startnum = 0;
+    let finishnum = 0;
 
-    <!--以下でデータの読み込みを行う-->
-    <script>
-        console.log("通過しました!!!");
-        var result = []; //csvの中身
-        var dataLength = 0; //データの長さ
-        //drawChart(result[0]);
-        
-        drawCharttt(result, dataLength);
-        drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
-        drawChartTarget(result, dataLength);
-        drawChart2(result, dataLength);
+    drawCharttt(member, time, num);
+    // drawCharttt(result, dataLength, member, time); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
+    // drawChart(result, dataLength, member, time, startnum, finishnum);
+    drawChartTarget(result, dataLength, member, time, startnum, finishnum);
+    drawChart2(result, dataLength, member, time, startnum, finishnum);
+    heatmap(member, time, num);
 
-        let fileInput = document.getElementById('file');
-        let fileReader = new FileReader();
-        fileInput.onchange = () => {
-          let file = fileInput.files[0];
-          fileReader.readAsText(file, 'Shift_JIS');
-        };
+    let fileInput = document.getElementById('file');
+    let fileReader = new FileReader();
+    fileInput.onchange = () => {
+      let file = fileInput.files[0];
+      fileReader.readAsText(file, 'Shift_JIS');
+    };
 
-        //ファイルを読み取ったら実行
-        fileReader.onload = () => {
-          var txt = fileReader.result
-    
-          //読み取ったcsvデータを配列に格納
-          //var arr = txt.split("\r\n" || "\n" || "\r");
-          var arr = txt.split("\r\n");
-          arr = txt.split("\n");
-          //arr = txt.split("\r");
-          //var arr = txt.split("\r\n");
-          for (var i = 0; i < arr.length; ++i) {
-            result[i] = arr[i].split(',');
-          }
-          //console.log(arr);
-          console.log(result);
-          
-          //逆順
-          result.reverse();
-          //console.log(result);
+    //ファイルを読み取ったら実行
+    fileReader.onload = () => {
+      var txt = fileReader.result;
 
-          dataLength = arr.length;
-          //console.log(dataLength);
+      //読み取ったcsvデータを配列に格納
+      //var arr = txt.split("\r\n" || "\n" || "\r");
+      var arr = txt.split("\r\n");
+      arr = txt.split("\n");
+      //arr = txt.split("\r");
+      for (var i = 0; i < arr.length; i++) {
+        result[i] = arr[i].split(',');
+      }
 
-          if (myCharttt) {
-              myCharttt.destroy();
-          }
-          if (myChart) {
-              myChart.destroy();
-          }
-          if (myChart1) {
-              myChart1.destroy();
-          }
-          if (myChart2) {
-              myChart2.destroy();
-          }
-          
-          drawCharttt(result, dataLength);
-          drawChart(result, dataLength); //データと長さを持ってdrawChart関数に移動
-          drawChartTarget(result, dataLength);
-          drawChart2(result, dataLength);
-        }
-    </script>
-    <br><br>
-    <!--CSVファイルの内容を表示する-->
-    <!--<p>＝CSVファイルの詳細＝</p>-->
-    <!--<div id="result"></div>-->
-    <!--<script type="text/javascript" src="main.js"></script>-->
-    <!--<script type="text/javascript" src="file_read.js"></script>-->
+      //逆順
+      // result.reverse();
+      console.log(result);
+
+      dataLength = arr.length;
+
+      //操作している人を取り出す(※本当は児童を指定しておきたい)
+      member = actor(result, dataLength);
+    }
+
+    // 日付選択をしたら開始されるようにする
+    let choicedate = document.querySelector(`input[type='date'][name='date']`);
+    choicedate.addEventListener(`change`, function () {
+      document.querySelector(`#output`).innerHTML = choicedate.value;
+      //横軸を決定
+      [time, startnum, finishnum] = lavel(result, dataLength, choicedate, member);
+      // console.log(time);
+      num = count(result, dataLength, member, time, startnum, finishnum);
+
+      if (myCharttt) {
+        myCharttt.destroy();
+      }
+      // if (myChart) {
+      //   myChart.destroy();
+      // }
+      if (myChart1) {
+        myChart1.destroy();
+      }
+      if (myChart2) {
+        myChart2.destroy();
+      }
+      if (heatMap) {
+        heatMap.destroy();
+      }
+
+      // console.log(num);
+      drawCharttt(member, time, num);
+      // drawCharttt(result, dataLength, member, time);
+      //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
+      drawChartTarget(result, dataLength, member, time, startnum, finishnum);
+      drawChart2(result, dataLength, member, time, startnum, finishnum);
+      heatmap(member, time, num);
+    });
+
+
+    // //. クリックイベントハンドラー
+    // ctx.addEventListener( 'click', function( evt ){
+    // var item = myChart.getElementByEvent( evt );
+    // var item = myChart.getElementAtEvent( evt );
+    // if( item.length == 0 ){
+    //   return;
+    // }
+
+    // item = item[0];
+    // var index = item._index;  //. 配列の何番目のデータがクリックされたか
+    // var item_data = item._chart.config.data.datasets;  //. クリックされたオブジェクトのデータセット
+    // console.log( index );
+    // console.log( item_data );
+    // });
+ 
+ </script>
+  <br><br>
 </body>
+
 </html>

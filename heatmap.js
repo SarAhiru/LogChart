@@ -1,5 +1,8 @@
 
 function heatmap(member, time, num) {
+
+    // Chart.register(ChartDataLabels);
+
     const mapHeight = member.length; //人数
     const mapWidth = time.length;
     const maxVal = 741;
@@ -16,10 +19,11 @@ function heatmap(member, time, num) {
     
     // データセットの生成
     const generateDatasets = function () {
-        const datasets = []
+        const datasets = [];
         for (let i = mapHeight-1 ; i >= 0; i--) {
             datasets.push({
-                data: new Array(mapWidth).fill(1), //40人分の1をデータとして出す
+                label: '生徒' + (i+1),
+                data: new Array(mapWidth).fill(1), //時間
                 borderWidth: 0.2,
                 borderColor: "#FFFFFF",
                 // backgroundColor: 'skyblue'
@@ -71,7 +75,9 @@ function heatmap(member, time, num) {
     //     return labels
     // }
 
+    
 
+    console.log(num);
 
     let ctx = document.getElementById('heatMap').getContext('2d');
     window.heatMap = new Chart(ctx, {
@@ -81,6 +87,7 @@ function heatmap(member, time, num) {
             datasets: generateDatasets(),
         },
         options: {
+            responsive: true,
             plugins:{
                 title: {
                     display: true,
@@ -90,7 +97,41 @@ function heatmap(member, time, num) {
                 legend: {
                     display: false,
                 },
-                
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            // console.log(num);
+                            if (label) {
+                                label += ': ';
+                                // console.log(context);
+                                // console.log(context.datasetIndex);
+                                // console.log(context.dataIndex);
+                                // console.log(num);
+                                // console.log(num[38 - context.datasetIndex][context.dataIndex]);
+                                label += num[38 - context.datasetIndex][context.dataIndex];
+                                label += '回' ;
+                            }
+                            return label;
+                        },
+                    }
+                },
+                //グラフ内に数字を入れる
+                // datalabels: {
+                //     color: 'blue',
+                //     labels: {
+                //         title: null,
+                //         value: {
+                //             color: 'black',
+                //             font: {
+                //                 size: "10px",
+                //                 weigth: 'bold',
+                //             }
+                //         }
+                //     }
+                // },
+                // responsive: false,
+                // ChartDataLabels,
             },
             animation: false,
             scales: {
@@ -113,12 +154,41 @@ function heatmap(member, time, num) {
                     },
                     stacked: true,
                     ticks: {
-                        min: 0,
-                        stepSize: 1,
-                        display: false
+                    //     min: 0,
+                    //     stepSize: 1,
+                        display: false,
+                    //     // lavel: member,
+                    //     callback: function(tick, member){
+                    //         return tick.toString() + '人';
+                    //         // return tick.toString() + member;
+                    //     }
                     }
-                }
+                },
+                // responsive: false,
+                // ticks: {
+                //     lavel: [20,22,24,26],
+                // }
             },
-        }
+            
+        },
+        //グラフ内に数字を入れる
+        // plugins: [
+        //     ChartDataLabels,
+        // ]
     });
+
+    //. クリックイベントハンドラー
+    // ctx.addEventListener( 'click', function( evt ){
+    //     var item = myChart.getElementByEvent( evt );
+    //     var item = myChart.getElementAtEvent( evt );
+    //     if( item.length == 0 ){
+    //       return;
+    //     }
+    
+    //     item = item[0];
+    //     var index = item._index;  //. 配列の何番目のデータがクリックされたか
+    //     var item_data = item._chart.config.data.datasets;  //. クリックされたオブジェクトのデータセット
+    //     console.log( index );
+    //     console.log( item_data );
+    // });
 }

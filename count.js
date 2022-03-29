@@ -1,4 +1,4 @@
-//学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計]
+//学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計 １分]
 
 function count(result, dataLength, member, time, startnum, finishnum) {
     //console.log(member);
@@ -33,13 +33,6 @@ function count(result, dataLength, member, time, startnum, finishnum) {
             //console.log(x + "  " + result[x][2]);// actor表示
 
             //今回のデータは何人目の生徒なのか
-            // for(let i = 0 ; i < member.length ; i++){
-            //   if(member[i] == logActor){
-            //     membernum = i;
-            //     break;
-            //   }
-            // }
-            // console.log(member);
             membernum = member.indexOf(logActor);
             // console.log(membernum);
 
@@ -50,16 +43,17 @@ function count(result, dataLength, member, time, startnum, finishnum) {
             if (judge == 0) {
                 ftime = new Date(logDate);
                 datanum = 1;
+                judge = 1;
             }
-            judge = 1;
-
-            //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録させたい
-
-            while (date.getTime() >= ftime.getTime()) { //1分経過したのかを判断
-                ftime.setMinutes(ftime.getMinutes() + 1);
-                datanum++;
+            else{
+                while (date.getTime() > ftime.getTime()) { //1分経過したのかを判断
+                    ftime.setMinutes(ftime.getMinutes() + 1);
+                    datanum++;
+                }
             }
+             
             num[membernum][datanum - 1]++;
+            // console.log(datanum);
             // totalnum[datanum - 1]++;
         }
     }
