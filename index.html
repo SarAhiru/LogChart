@@ -9,16 +9,17 @@
   <script src="https://unpkg.com/vue@3.2.31"></script>
   <!--Chart.jsの読み込み-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+
   <!-- グラフ内に数字を入れる -->
   <!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script> -->
-  
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script> -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-  <script>
+  <!-- <script>
     // Chart.register(ChartDataLabels);
-  </script>
+  </script> -->
+  
+  <link rel="stylesheet" href="StyleSheet0.css" />
 
-  <title>Chart.js</title>
+  <title>学習履歴 可視化</title>
 </head>
 
 <body>
@@ -29,59 +30,104 @@
   <!--英語　ログ　(棒グラフ)　[機能合計]-->
   <script type="text/javascript" src="totalChart1min.js"></script>
   <!--英語　ログ　(棒グラフ)　[機能合計]-->
-  <script type="text/javascript" src="totalChart1min_2.js"></script>
+  <!-- <script type="text/javascript" src="totalChart1min_2.js"></script> -->
   <!--英語　ログ　(棒グラフ)　[機能ごと]-->
   <script type="text/javascript" src="targetEnChart1min.js"></script>
   <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
   <script type="text/javascript" src="numChart1min.js"></script>
-
+  <!-- ヒートマップ -->
   <script src="heatmap.js"></script>
 
+  <header>
+    <!--CSVファイルの読み取り-->
+    <p>
+      ①CSVファイルを選択　▷　
+      <input type="file" name="file" id="file" multiple>
+      <br>
+      <!-- </p>
+    <p> -->
+      ②日付を選択　　　　　▷　
+      <input type="date" name="date" id="output">
+    </p>
+    <!-- <p id="output">Change the Date</p> -->
+  </header>
+
+
   <p>
-    <a href="EnglishSound.html">音声再生</a>　
+    <input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
+    <input type="button" onclick="location.href='./classseat.html'" value="　座席　">
+
+    <a href="EnglishSound.html">音声再生</a> 
     <a href="classseat.html">座席</a>
   </p>
+  <br>
+  
+  <div class="area">
+    <input type="radio" name="tab_name" id="tab1" checked>
+    <label class="tab_class" for="tab1">グラフ</label>
+    <div class="content_class">
+      <p>タブ1のコンテンツを表示します</p>
+      <!-- <script>
+        drawCharttt(member, time, num);
+        // drawCharttt(result, dataLength, member, time);
+        //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
+        drawChartTarget(result, dataLength, member, time, startnum, finishnum);
+        drawChart2(result, dataLength, member, time, startnum, finishnum);
+        heatmap(member, time, num);
+      </script> -->
+    </div>
+    <input type="radio" name="tab_name" id="tab2" >
+    <label class="tab_class" for="tab2">音声再生</label>
+    <div class="content_class">
+      <p>タブ2のコンテンツを表示します</p>
+    </div>
+    <input type="radio" name="tab_name" id="tab3" >
+    <label class="tab_class" for="tab3">座席</label>
+    <div class="content_class">
+      <p>タブ3のコンテンツを表示します</p>
+    </div>
+    <input type="radio" name="tab_name" id="tab4" >
+    <label class="tab_class" for="tab4">タブ4</label>
+    <div class="content_class">
+      <p>タブ4のコンテンツを表示します</p>
+    </div>
+    <input type="radio" name="tab_name" id="tab5" >
+    <label class="tab_class" for="tab5">タブ5</label>
+    <div class="content_class">
+      <p>タブ5のコンテンツを表示します</p>
+    </div>
+  </div>
 
-  <!--CSVファイルの読み取り-->
-  <p>
-    ①CSVファイルを選択　▷　
-    <input type="file" name="file" id="file" multiple>
-  </p>
-  <p>
-    ②日付を選択　　　　　▷　
-    <input type="date" name="date">
-  </p>
-  <p id="output">Change the Date</p>
-  <br><br>
+  <article>
+    <!-- <h1>個人表示</h1> -->
+    <div>
+      <p>＝児童ごとの操作回数の合計＝</p>
+      <!--<div style="width:50%;"></div>-->
+      <canvas id="myCharttt" width="300" height="100"></canvas>
+    </div>
+    <div>
+      <canvas id="heatMap" width="300" height=" 150"></canvas>
+    </div>
+    <br><br>
+    <!-- <h1>全体表示</h1> -->
+    <div>
+      <!-- <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p> -->
+      <!--<div style="width:50%;"></div>-->
+      <!-- <canvas id="myChart" width="2500" height="350"></canvas> -->
+    </div>
+    <!-- <br><br> -->
 
-  <!-- <h1>個人表示</h1> -->
-  <div>
-    <p>＝児童ごとの操作回数の合計＝</p>
-    <!--<div style="width:50%;"></div>-->
-    <canvas id="myCharttt" width="300" height="100"></canvas>
-  </div>
-  <div>
-    <canvas id="heatMap"  width="300" height=" 150"></canvas>
-  </div>
-  <br><br>
-  <!-- <h1>全体表示</h1> -->
-  <div>
-    <!-- <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p> -->
-    <!--<div style="width:50%;"></div>-->
-    <!-- <canvas id="myChart" width="2500" height="350"></canvas> -->
-  </div>
-  <!-- <br><br> -->
-
-  <div>
-    <p>＝機能ごとの操作回数の合計＝</p>
-    <canvas id="myChart1" width="300" height=" 100"></canvas>
-  </div>
-  <br><br>
-  <div>
-    <p>＝操作人数の合計＝</p>
-    <canvas id="myChart2" width="300" height=" 100"></canvas>
-  </div>
-  <br><br>
+    <div>
+      <p>＝機能ごとの操作回数の合計＝</p>
+      <canvas id="myChart1" width="300" height=" 100"></canvas>
+    </div>
+    <br><br>
+    <div>
+      <p>＝操作人数の合計＝</p>
+      <canvas id="myChart2" width="300" height=" 100"></canvas>
+    </div>
+    <br><br>
+  </article>
 
   <!-- <div style="height:400px; width:800px"> -->
   <!-- <div>
@@ -187,8 +233,8 @@
     // console.log( index );
     // console.log( item_data );
     // });
- 
- </script>
+
+  </script>
   <br><br>
 </body>
 

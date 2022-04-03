@@ -4,17 +4,33 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
-    <title>EnglishSound.js</title>
-    <!--<link rel="stylesheet" href="style1.css">-->
+    <link rel="stylesheet" href="StyleSheet0.css" />
+
+    <title>学習履歴 可視化</title>
 </head>
 
 <body>
-    <p>
-        <a href="index.html">グラフへ</a>
-    </p>
-
     <script type="text/javascript" src="actor.js"></script>
     <script type="text/javascript" src="EnglishSound.js"></script>
+
+    <header>
+        <!--CSVファイルの読み取り-->
+        <p>
+          ①CSVファイルを選択　▷　
+          <input type="file" name="file" id="file" multiple>
+          <br>
+          <!-- </p>
+        <p> -->
+          ②日付を選択　　　　　▷　
+          <input type="date" name="date" id="output">
+        </p>
+        <!-- <p id="output">Change the Date</p> -->
+    </header>
+
+    <p>
+        <input type="button" onclick="location.href='./index.html'" value="グラフ">
+        <a href="index.html">グラフへ</a>
+    </p>
 
     <!--CSVファイルの読み取り-->
     <p>＝CSVファイルの読み取り＝</p>
