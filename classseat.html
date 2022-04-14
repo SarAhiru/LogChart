@@ -32,6 +32,7 @@
     </header>
 
     <p>
+        <input type="button" onclick="location.href='./index.html'" value="グラフ">
         <a href="index.html">グラフへ</a>
     </p>
 
@@ -42,35 +43,36 @@
     </div>
 
     <!-- <div id="buttons">
-    <div id="left">
-      
-      <button onclick="koukan()" id="koukan">交換する座席の選択</button>
-      <button onclick="modosu()" id="modosu">デフォルト</button>
-    </div>
-    <div id="center">
-      <button onclick="tuika()" id="tuika">座席の追加</button>
-      <button onclick="kesu()" id="kesu">消去する座席の選択</button>
-    </div>
+        <div id="left">
+            
+            <button onclick="koukan()" id="koukan">交換する座席の選択</button>
+            <button onclick="modosu()" id="modosu">デフォルト</button>
+        </div>
+        <div id="center">
+            <button onclick="tuika()" id="tuika">座席の追加</button>
+            <button onclick="kesu()" id="kesu">消去する座席の選択</button>
+        </div>
     </div> -->
     <!-- </br> -->
+
     <div class="frame0">
         <div id="frame"></div>
     </div>
 
     <script>
         let seatNum = 40;
-        if (sessionStorage.getItem("desk_num") == undefined || sessionStorage.getItem("modosu") == "on") {
+        if (sessionStorage.getItem("desk_num") == undefined /*|| sessionStorage.getItem("modosu") == "on"*/) {
             seatNum = 40; //これも本当は、storageに入れて管理出来たら…
             //sessionStorage.setItem("modosu","off")
         } else {
             seatNum = Number(sessionStorage.getItem("desk_num"))
         }
-        sessionStorage.setItem("sentaku", "off");
-        sessionStorage.setItem("seki1", 0);
-        sessionStorage.setItem("seki2", 0);
-        sessionStorage.setItem("sekikesu", 0)
+        // sessionStorage.setItem("sentaku", "off");
+        // sessionStorage.setItem("seki1", 0);
+        // sessionStorage.setItem("seki2", 0);
+        // sessionStorage.setItem("sekikesu", 0);
 
-        window.onload = function () { //0706の時点のtest_ver2.html
+        window.onload = function () {
             //sessionStorage.removeItem("idou");
             let parent = document.getElementById('frame');
             //let n = sessionStorage.setItem("desk_num",0);
@@ -81,8 +83,8 @@
                     //console.log(sessionStorage.getItem("zaseki"+i));
                     sessionStorage.setItem("desk_num", i); //なんか変だな～考え直そう
                 }
-                console.log("offを出た")
-                sessionStorage.setItem("saisyo", "on")
+                // console.log("offを出た")
+                // sessionStorage.setItem("saisyo", "on")
             }
 
             for (let k = 1; k <= seatNum; k++) {

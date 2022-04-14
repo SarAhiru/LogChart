@@ -6,7 +6,7 @@
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
   <!--Vue.jsの読み込み-->
-  <script src="https://unpkg.com/vue@3.2.31"></script>
+  <!-- <script src="https://unpkg.com/vue@3.2.31"></script> -->
   <!--Chart.jsの読み込み-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
@@ -16,17 +16,55 @@
   <!-- <script>
     // Chart.register(ChartDataLabels);
   </script> -->
-  
+
   <link rel="stylesheet" href="StyleSheet0.css" />
+
+  <!-- Firebase と Cloud Firestore のライブラリ -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> -->
+  <!-- <script>
+    const firebase = require("firebase");
+    // Required for side-effects
+    require("firebase/firestore");
+  </script> -->
 
   <title>学習履歴 可視化</title>
 </head>
 
 <body>
+  <!-- Firebaseの連携 -->
+  <script type="module">
+    // // Import the functions you need from the SDKs you need
+    // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    // import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics.js";
+    // // TODO: Add SDKs for Firebase products that you want to use
+    // // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // // Your web app's Firebase configuration
+    // // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    // const firebaseConfig = {
+    //   apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
+    //   authDomain: "digitaltextbook-log.firebaseapp.com",
+    //   projectId: "digitaltextbook-log",
+    //   storageBucket: "digitaltextbook-log.appspot.com",
+    //   messagingSenderId: "183191791064",
+    //   appId: "1:183191791064:web:76bab35c17af1ed2677ead",
+    //   measurementId: "G-8QVFYZZZX4"
+    // };
+  
+    // // Initialize Firebase
+    // const app = initializeApp(firebaseConfig);
+    // const analytics = getAnalytics(app);
+    // console.log("連携できた？");
+  </script>
+
+
   <!--.jsと連携-->
   <script type="text/javascript" src="actor.js"></script>
   <script type="text/javascript" src="lavel.js"></script>
   <script type="text/javascript" src="count.js"></script>
+  <script type="text/javascript" src="fileRead_noUse.js"></script>
+
   <!--英語　ログ　(棒グラフ)　[機能合計]-->
   <script type="text/javascript" src="totalChart1min.js"></script>
   <!--英語　ログ　(棒グラフ)　[機能合計]-->
@@ -39,17 +77,20 @@
   <script src="heatmap.js"></script>
 
   <header>
-    <!--CSVファイルの読み取り-->
-    <p>
-      ①CSVファイルを選択　▷　
-      <input type="file" name="file" id="file" multiple>
-      <br>
+    <form>
+      <!--CSVファイルの読み取り-->
+      <p>
+        ①CSVファイルを選択　▷　
+        <input type="file" name="file" id="file" multiple>
+        <br>
       <!-- </p>
-    <p> -->
-      ②日付を選択　　　　　▷　
-      <input type="date" name="date" id="output">
-    </p>
-    <!-- <p id="output">Change the Date</p> -->
+      <p> -->
+        ②日付を選択　　　　　▷　
+        <input type="date" name="date" id="output">
+      </p>
+      <!-- <p id="output">Change the Date</p> -->
+    </form>
+
   </header>
 
 
@@ -57,16 +98,16 @@
     <input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
     <input type="button" onclick="location.href='./classseat.html'" value="　座席　">
 
-    <a href="EnglishSound.html">音声再生</a> 
+    <a href="EnglishSound.html">音声再生</a>
     <a href="classseat.html">座席</a>
   </p>
   <br>
-  
-  <div class="area">
+
+  <!-- <div class="area">
     <input type="radio" name="tab_name" id="tab1" checked>
     <label class="tab_class" for="tab1">グラフ</label>
     <div class="content_class">
-      <p>タブ1のコンテンツを表示します</p>
+      <p>タブ1のコンテンツを表示します</p> -->
       <!-- <script>
         drawCharttt(member, time, num);
         // drawCharttt(result, dataLength, member, time);
@@ -75,28 +116,31 @@
         drawChart2(result, dataLength, member, time, startnum, finishnum);
         heatmap(member, time, num);
       </script> -->
-    </div>
-    <input type="radio" name="tab_name" id="tab2" >
+    <!-- </div>
+    <input type="radio" name="tab_name" id="tab2">
     <label class="tab_class" for="tab2">音声再生</label>
     <div class="content_class">
       <p>タブ2のコンテンツを表示します</p>
     </div>
-    <input type="radio" name="tab_name" id="tab3" >
+    <input type="radio" name="tab_name" id="tab3">
     <label class="tab_class" for="tab3">座席</label>
     <div class="content_class">
       <p>タブ3のコンテンツを表示します</p>
     </div>
-    <input type="radio" name="tab_name" id="tab4" >
+    <input type="radio" name="tab_name" id="tab4">
     <label class="tab_class" for="tab4">タブ4</label>
     <div class="content_class">
       <p>タブ4のコンテンツを表示します</p>
     </div>
-    <input type="radio" name="tab_name" id="tab5" >
+    <input type="radio" name="tab_name" id="tab5">
     <label class="tab_class" for="tab5">タブ5</label>
     <div class="content_class">
       <p>タブ5のコンテンツを表示します</p>
     </div>
-  </div>
+  </div> -->
+
+
+  
 
   <article>
     <!-- <h1>個人表示</h1> -->
