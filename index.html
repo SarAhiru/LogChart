@@ -20,50 +20,32 @@
   <link rel="stylesheet" href="StyleSheet0.css" />
 
   <!-- Firebase と Cloud Firestore のライブラリ -->
-  <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> -->
-  <!-- <script>
-    const firebase = require("firebase");
-    // Required for side-effects
-    require("firebase/firestore");
-  </script> -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
+      authDomain: "digitaltextbook-log.firebaseapp.com",
+      projectId: "digitaltextbook-log",
+      storageBucket: "digitaltextbook-log.appspot.com",
+      messagingSenderId: "183191791064",
+      appId: "1:183191791064:web:76bab35c17af1ed2677ead",
+      measurementId: "G-8QVFYZZZX4"
+    };
+    // init firebase
+    firebase.initializeApp(firebaseConfig) // バックエンドのfirebaseを初期化する
+  </script>
 
   <title>学習履歴 可視化</title>
 </head>
 
 <body>
-  <!-- Firebaseの連携 -->
-  <script type="module">
-    // // Import the functions you need from the SDKs you need
-    // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-    // import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics.js";
-    // // TODO: Add SDKs for Firebase products that you want to use
-    // // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // // Your web app's Firebase configuration
-    // // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    // const firebaseConfig = {
-    //   apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
-    //   authDomain: "digitaltextbook-log.firebaseapp.com",
-    //   projectId: "digitaltextbook-log",
-    //   storageBucket: "digitaltextbook-log.appspot.com",
-    //   messagingSenderId: "183191791064",
-    //   appId: "1:183191791064:web:76bab35c17af1ed2677ead",
-    //   measurementId: "G-8QVFYZZZX4"
-    // };
-  
-    // // Initialize Firebase
-    // const app = initializeApp(firebaseConfig);
-    // const analytics = getAnalytics(app);
-    // console.log("連携できた？");
-  </script>
-
 
   <!--.jsと連携-->
   <script type="text/javascript" src="actor.js"></script>
   <script type="text/javascript" src="lavel.js"></script>
   <script type="text/javascript" src="count.js"></script>
-  <script type="text/javascript" src="fileRead_noUse.js"></script>
+  <script type="text/javascript" src="database.js"></script>
 
   <!--英語　ログ　(棒グラフ)　[機能合計]-->
   <script type="text/javascript" src="totalChart1min.js"></script>
@@ -83,7 +65,7 @@
         ①CSVファイルを選択　▷　
         <input type="file" name="file" id="file" multiple>
         <br>
-      <!-- </p>
+        <!-- </p>
       <p> -->
         ②日付を選択　　　　　▷　
         <input type="date" name="date" id="output">
@@ -100,6 +82,7 @@
 
     <a href="EnglishSound.html">音声再生</a>
     <a href="classseat.html">座席</a>
+    <a href="dataSet.html">データ登録</a>
   </p>
   <br>
 
@@ -108,7 +91,7 @@
     <label class="tab_class" for="tab1">グラフ</label>
     <div class="content_class">
       <p>タブ1のコンテンツを表示します</p> -->
-      <!-- <script>
+  <!-- <script>
         drawCharttt(member, time, num);
         // drawCharttt(result, dataLength, member, time);
         //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
@@ -116,7 +99,7 @@
         drawChart2(result, dataLength, member, time, startnum, finishnum);
         heatmap(member, time, num);
       </script> -->
-    <!-- </div>
+  <!-- </div>
     <input type="radio" name="tab_name" id="tab2">
     <label class="tab_class" for="tab2">音声再生</label>
     <div class="content_class">
@@ -140,7 +123,7 @@
   </div> -->
 
 
-  
+
 
   <article>
     <!-- <h1>個人表示</h1> -->
@@ -173,11 +156,6 @@
     <br><br>
   </article>
 
-  <!-- <div style="height:400px; width:800px"> -->
-  <!-- <div>
-    <canvas id="heatMap"  width="300" height=" 150"></canvas>
-  </div> -->
-
 
   <!--以下でデータの読み込みを行う-->
   <script>
@@ -207,6 +185,8 @@
 
     //ファイルを読み取ったら実行
     fileReader.onload = () => {
+
+      // database();
       var txt = fileReader.result;
 
       //読み取ったcsvデータを配列に格納
@@ -226,7 +206,46 @@
 
       //操作している人を取り出す(※本当は児童を指定しておきたい)
       member = actor(result, dataLength);
+      test(result, dataLength);
+      fire();
     }
+
+    function test(result, dataLength) { //dbに書き込み
+      var db = firebase.firestore();
+
+      for (let i = 0; i < result.length; i++) {
+          db.collection("test小学校").doc("5年1組").collection("英語").doc(result[i][0]).set({
+            date: result[i][0],
+            index: result[i][1],
+            actor: result[i][2],
+            action: result[i][3],
+            bookId: result[i][4],
+            chapter: result[i][5],
+            type: result[i][6],
+            pageIdx: result[i][7],
+            appId: result[i][8],
+            target: result[i][9]
+          });
+        // let i = 0;
+        // db.collection("test小学校").doc("5年1組").collection("英語").doc().set({
+        //   name: "Los Angeles",
+        //   state: "CA",
+        //   country: "Japan"
+        // })
+          // .then(function () {
+          //   console.log("Document successfully written!");
+          // })
+          // .catch(function (error) {
+          //   console.error("Error writing document: ", error);
+          // });
+      }
+
+
+    }
+
+
+
+
 
     // 日付選択をしたら開始されるようにする
     let choicedate = document.querySelector(`input[type='date'][name='date']`);
@@ -253,7 +272,6 @@
         heatMap.destroy();
       }
 
-      // console.log(num);
       drawCharttt(member, time, num);
       // drawCharttt(result, dataLength, member, time);
       //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動

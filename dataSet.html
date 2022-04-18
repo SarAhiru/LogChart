@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+  <link rel="stylesheet" href="StyleSheet0.css" />
+
+  <!-- Firebase と Cloud Firestore のライブラリ -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
+      authDomain: "digitaltextbook-log.firebaseapp.com",
+      projectId: "digitaltextbook-log",
+      storageBucket: "digitaltextbook-log.appspot.com",
+      messagingSenderId: "183191791064",
+      appId: "1:183191791064:web:76bab35c17af1ed2677ead",
+      measurementId: "G-8QVFYZZZX4"
+    };
+    // init firebase
+    firebase.initializeApp(firebaseConfig); // バックエンドのfirebaseを初期化する
+  </script>
+
+  <title>学習履歴 可視化</title>
+</head>
+
+<body>
+
+  <!--.jsと連携-->
+  <!-- <script type="text/javascript" src="database.js"></script> -->
+
+  <header>
+    <br><br><br><br><br>
+  </header>
+
+
+  <p>
+    <input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
+    <input type="button" onclick="location.href='./classseat.html'" value="　座席　">
+
+    <a href="index.html">グラフ化画面へ戻る</a>
+  </p>
+  <br>
+
+  <form id="form_recipe" method="post" action="">
+    <!--CSVファイルの読み取り-->
+    学校名：
+    <input type="text" name="schoolName" placeholder="○○小学校" value="" required>*
+    <br>
+    クラス：
+    <input type="text" name="className" placeholder="5年1組" value="" required>*
+    <br>
+    生徒数：
+    <input type="text" name="classNum" placeholder="40" value="" required>*
+    <br>
+    教科　：
+    <input type="text" name="subject" placeholder="英語" value="" required>*
+    <br><br>
+    登録するCSVファイルを選択　▷　
+    <input type="file" name="file" id="file" multiple required>*
+    <br><br>
+    <input type="submit" value="送信する">
+  </form>
+
+
+  <!--以下でデータの読み込みを行う-->
+  <script>
+    let result = []; //csvの中身
+    // let dataLength = 0; //データの長さ
+
+
+    //ファイル読み取りの準備
+    let fileInput = document.getElementById('file');
+    let fileReader = new FileReader(); //インスタンス
+    fileInput.onchange = () => {
+      let file = fileInput.files[0];
+      fileReader.readAsText(file, 'Shift_JIS');
+    };
+
+    //ファイルを読み取ったら実行
+    fileReader.onload = () => {
+      var txt = fileReader.result;
+
+      //読み取ったcsvデータを配列に格納
+      //var arr = txt.split("\r\n" || "\n" || "\r");
+      var arr = txt.split("\r\n");
+      arr = txt.split("\n");
+      //arr = txt.split("\r");
+      for (var i = 0; i < arr.length; i++) {
+        result[i] = arr[i].split(',');
+      }
+
+      //逆順
+      // result.reverse();
+      console.log(result);
+
+      // dataLength = arr.length;
+
+      //操作している人を取り出す(※本当は児童を指定しておきたい)
+      // member = actor(result, dataLength);
+      
+      // fire();
+    }
+
+
+    //送信完了したらイベント発火
+    form_recipe.addEventListener("submit", function (e) {
+      e.preventDefault();
+      let schoolName = document.getElementById("form_recipe").schoolName.value;
+      let className = document.getElementById("form_recipe").className.value;
+      let classNum = document.getElementById("form_recipe").classNum.value;
+      let subject = document.getElementById("form_recipe").subject.value;
+
+      console.log("Submit: " + schoolName);
+      console.log("Submit: " + className);
+      console.log("Submit: " + classNum);
+      console.log("Submit: " + subject);
+
+      test(result, schoolName, className, classNum, subject);
+    });
+
+
+    function test(result, schoolName, className, classNum, subject) { //dbに書き込み
+      var db = firebase.firestore();
+      db.collection(schoolName).doc(className).set({
+        student_num: classNum
+      });
+
+      for (let i = 0; i < result.length; i++) {
+        db.collection(schoolName).doc(className).collection(subject).doc().set({//任意のIDで登録(そのうち日時順にしたほうがいい？)
+          date: result[i][0],
+          index: result[i][1],
+          actor: result[i][2],
+          action: result[i][3],
+          bookId: result[i][4],
+          chapter: result[i][5],
+          type: result[i][6],
+          pageIdx: result[i][7],
+          appId: result[i][8],
+          target: result[i][9]
+        });
+        // let i = 0;
+        // db.collection("test小学校").doc("5年1組").collection("英語").doc().set({
+        //   name: "Los Angeles",
+        //   state: "CA",
+        //   country: "Japan"
+        // })
+        // .then(function () {
+        //   console.log("Document successfully written!");
+        // })
+        // .catch(function (error) {
+        //   console.error("Error writing document: ", error);
+        // });
+      }
+    }
+  </script>
+  <br><br>
+</body>
+
+</html>
