@@ -1,118 +1,139 @@
 <!DOCTYPE html>
 <html lang='en'>
+
 <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
-    <link rel="stylesheet" href="StyleSheet0.css" />
+  <link rel="stylesheet" href="StyleSheet0.css" />
 
-    <title>学習履歴 可視化</title>
+  <title>学習履歴 可視化</title>
 </head>
 
 <body>
-    <script type="text/javascript" src="actor.js"></script>
-    <script type="text/javascript" src="EnglishSound.js"></script>
+  <script type="text/javascript" src="actor.js"></script>
+  <script type="text/javascript" src="EnglishSound.js"></script>
 
-    <header>
-        <!--CSVファイルの読み取り-->
-        <p>
-          ①CSVファイルを選択　▷　
-          <input type="file" name="file" id="file" multiple>
-          <br>
-          <!-- </p>
-        <p> -->
-          ②日付を選択　　　　　▷　
-          <input type="date" name="date" id="output">
-        </p>
-        <!-- <p id="output">Change the Date</p> -->
-    </header>
-
-    <p>
-        <input type="button" onclick="location.href='./index.html'" value="グラフ">
-        <a href="index.html">グラフへ</a>
-    </p>
-
+  <header>
     <!--CSVファイルの読み取り-->
-    <p>＝CSVファイルの読み取り＝</p>
-    <input type="file" name="file" id="file" multiple>
-    <br><br>
+    <p>
+      ①CSVファイルを選択　▷　
+      <input type="file" name="file" id="file" multiple>
+      <br>
+      ②日付を選択　　　　　▷　
+      <input type="date" name="date" id="output">
+    </p>
+  </header>
+
+  <p>
+    <input type="button" onclick="location.href='./index.html'" value="グラフ">
+    <a href="index.html">グラフへ</a>
+  </p>
+
+  <!--CSVファイルの読み取り-->
+  <!-- <p>＝CSVファイルの読み取り＝</p>
+    <input type="file" name="file" id="file" multiple> -->
+  <br><br>
 
 
-    <style type="text/css">
-        .Title { background-color: #cccccc; font-weight: bold; }
-        .Num { text-align: right; width: 10em;}
-        .Price { background-color: #ffcc80; text-align: right; width: 6em; }
-        .Other { text-align: right;}
-        .Check { color: red; }
-    </style>
+  <style type="text/css">
+    .Title {
+      background-color: #cccccc;
+      font-weight: bold;
+    }
+
+    .Num {
+      text-align: right;
+      width: 10em;
+    }
+
+    .Price {
+      background-color: #ffcc80;
+      text-align: right;
+      width: 6em;
+    }
+
+    .Other {
+      text-align: right;
+    }
+
+    .Check {
+      color: red;
+    }
+  </style>
 
 
-    <!-- <h1>オーディオ使用履歴</h1> -->
-    <table border="1" id="targetTable">
-        <!-- <caption>オーディオ使用履歴</caption> -->
-        <caption>音声・動画利用時間</caption>
-        <colgroup span="1" class="Title"></colgroup><!--１行を"Title"に-->
-        <colgroup span="1" class="Num"></colgroup>
-        <colgroup span="2" class="Other"></colgroup>
-        <thead>
-            <tr class="Title">
-                <td>名前</td>
-                <td>再生回数</td>
-                <td>再生時間</td>
-                <td>再生コンテンツ数</td>
-            </tr>
-        </thead>
-        <tbody>
-            
-        </tbody>
-    </table>
+  <!-- <h1>オーディオ使用履歴</h1> -->
+  <table border="1" id="targetTable">
+    <!-- <caption>オーディオ使用履歴</caption> -->
+    <caption>音声・動画利用時間</caption>
+    <colgroup span="1" class="Title"></colgroup>
+    <!--１行を"Title"に-->
+    <colgroup span="1" class="Num"></colgroup>
+    <colgroup span="2" class="Other"></colgroup>
+    <thead>
+      <tr class="Title">
+        <td>名前</td>
+        <td>再生回数</td>
+        <td>再生時間</td>
+        <td>再生コンテンツ数</td>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
 
 
-    <!--以下でデータの読み込みを行う-->
-    <script>
-        console.log("通過しました!!!");
-        var result = []; //csvの中身
-        var dataLength = 0; //データの長さ
-        let member = [];
+  <!--以下でデータの読み込みを行う-->
+  <script>
+    // console.log("通過しました!!!");
+    var result = []; //csvの中身
+    var dataLength = 0; //データの長さ
+    let member = [];
 
-        table(result, dataLength, member);
+    table(result, dataLength, member);
 
-        let fileInput = document.getElementById('file');
-        let fileReader = new FileReader();
-        fileInput.onchange = () => {
-          let file = fileInput.files[0];
-          fileReader.readAsText(file, 'Shift_JIS');
-        };
+    let fileInput = document.getElementById('file');
+    let fileReader = new FileReader();
+    fileInput.onchange = () => {
+      let file = fileInput.files[0];
+      fileReader.readAsText(file, 'Shift_JIS');
+    };
 
-        //ファイルを読み取ったら実行
-        fileReader.onload = () => {
-          var txt = fileReader.result
-    
-          //読み取ったcsvデータを配列に格納
-          //var arr = txt.split("\r\n" || "\n" || "\r");
-          var arr = txt.split("\r\n");
-          arr = txt.split("\n");
-          //arr = txt.split("\r");
-          //var arr = txt.split("\r\n");
-          for (var i = 0; i < arr.length; ++i) {
-            result[i] = arr[i].split(',');
-          }
-          //console.log(arr);
-          console.log(result);
-          
-          //逆順
-          result.reverse();
-          //console.log(result);
+    //ファイルを読み取ったら実行
+    fileReader.onload = () => {
+      var txt = fileReader.result
 
-          dataLength = arr.length;
+      //読み取ったcsvデータを配列に格納
+      //var arr = txt.split("\r\n" || "\n" || "\r");
+      var arr = txt.split("\r\n");
+      arr = txt.split("\n");
+      //arr = txt.split("\r");
+      for (var i = 0; i < arr.length; ++i) {
+        result[i] = arr[i].split(',');
+      }
 
-          //操作している人を取り出す
-          member = actor(result, dataLength);
-          
-          table(result, dataLength, member);
-          console.log("データは読み取り終わった");
-        }
-    </script>
-    <br><br>
+      //逆順
+      // result.reverse();
+      console.log(result);
+
+      dataLength = arr.length;
+
+      //操作している人を取り出す
+      member = actor(result);
+    }
+
+    // 日付選択をしたら開始されるようにする
+    let choicedate = document.querySelector(`input[type='date'][name='date']`);
+    choicedate.addEventListener(`change`, function () {
+      document.querySelector(`#output`).innerHTML = choicedate.value;
+
+      table(result, dataLength, member, choicedate);
+      // console.log("データは読み取り終わった");
+    });
+  </script>
+  <br><br>
 </body>
+
 </html>

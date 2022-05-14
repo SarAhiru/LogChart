@@ -1,5 +1,5 @@
 
-function table(result, dataLength, member) {
+function table(result, dataLength, member, choicedate) {
     let table = document.getElementById('targetTable');
     // let member = ['1_student', '2_student', '3_student', '4_student', '5_student'];
 
@@ -27,65 +27,89 @@ function table(result, dataLength, member) {
     //ここからデータの分析
     if (dataLength > 0) {
         for (let x = 1; x < dataLength; x++) {
+            let logDate = result[x][0]; // ログからdate取得
             let logActor = result[x][2]; // actor取得
             let logTarget = result[x][9]; // target取得
             let user = 0;
 
-            if (logTarget.includes('audio end')) {
-                console.log("音声再生");
-                for (let a = 0; a < member.length; a++) {
-                    if (logActor.includes(member[a])) {
-                        user = a; //ユーザーの識別
+            let date = new Date(logDate);
+
+            let judgeYear = date.getFullYear();
+            let judgeMonth = date.getMonth() + 1;
+            let judgeDay = date.getDate();
+
+            let choiceYear = choicedate.value.substr(0, 4);
+            let choiceMonth = choicedate.value.substr(5, 2);
+            choiceMonth = parseInt(choiceMonth); //数字に変更
+            let choiceDay = choicedate.value.substr(8, 2);
+            choiceDay = parseInt(choiceDay); // 数字に変更
+
+            if (choiceYear == judgeYear) {
+                if (choiceMonth == judgeMonth) {
+                    if (choiceDay == judgeDay) {
+
+                        if (logTarget.includes('audio end')) {
+                            console.log("音声再生");
+                            for (let a = 0; a < member.length; a++) {
+                                if (logActor.includes(member[a])) {
+                                    user = a; //ユーザーの識別
+                                }
+                            }
+                            audioData[user][1]++; //再生回数のカウントを+1
+                            //console.log(audioData);
+
+                            //再生時間
+                            // console.log(logTarget);
+                            let addminute = logTarget.substr(11, 2);
+                            // console.log(addminute);
+                            addminute = parseInt(addminute);
+                            let addsecond = logTarget.substr(13, 2);
+                            // console.log(addsecond);
+                            addsecond = parseInt(addsecond);
+
+
+                            minute[user] = minute[user] + addminute;
+                            second[user] = second[user] + addsecond;
+                            if (second[user] >= 60) { //60秒を越えていたときの処理
+                                minute[user] = minute[user] + 1;
+                                second[user] = second[user] - 60;
+                            }
+                        }
+
+                        if (logTarget.includes('video end')) {
+                            console.log("動画再生");
+                            //audioData[0][1] ++ ;
+                            for (let a = 0; a < member.length; a++) {
+                                if (logActor.includes(member[a])) {
+                                    user = a; //ユーザーの識別
+                                }
+                            }
+                            audioData[user][1]++; //再生回数のカウントを+1
+                            //console.log(audioData);
+
+                            //再生時間
+                            // console.log(logTarget);
+                            let addminute = logTarget.substr(11, 2);
+                            // console.log(addminute);
+                            addminute = parseInt(addminute);
+                            let addsecond = logTarget.substr(13, 2);
+                            // console.log(addsecond);
+                            addsecond = parseInt(addsecond);
+
+                            minute[user] = minute[user] + addminute;
+                            second[user] = second[user] + addsecond;
+                            if (second[user] >= 60) { //60秒を越えていたときの処理
+                                minute[user] = minute[user] + 1;
+                                second[user] = second[user] - 60;
+                            }
+                        }
+
                     }
-                }
-                audioData[user][1]++; //再生回数のカウントを+1
-                //console.log(audioData);
-
-                //再生時間
-                // console.log(logTarget);
-                let addminute = logTarget.substr(11, 2);
-                // console.log(addminute);
-                addminute = parseInt(addminute);
-                let addsecond = logTarget.substr(13, 2);
-                // console.log(addsecond);
-                addsecond = parseInt(addsecond);
-
-
-                minute[user] = minute[user] + addminute;
-                second[user] = second[user] + addsecond;
-                if (second[user] >= 60) { //60秒を越えていたときの処理
-                    minute[user] = minute[user] + 1;
-                    second[user] = second[user] - 60;
                 }
             }
 
-            if (logTarget.includes('video end')) {
-                console.log("動画再生");
-                //audioData[0][1] ++ ;
-                for (let a = 0; a < member.length; a++) {
-                    if (logActor.includes(member[a])) {
-                        user = a; //ユーザーの識別
-                    }
-                }
-                audioData[user][1]++; //再生回数のカウントを+1
-                //console.log(audioData);
 
-                //再生時間
-                // console.log(logTarget);
-                let addminute = logTarget.substr(11, 2);
-                // console.log(addminute);
-                addminute = parseInt(addminute);
-                let addsecond = logTarget.substr(13, 2);
-                // console.log(addsecond);
-                addsecond = parseInt(addsecond);
 
-                minute[user] = minute[user] + addminute;
-                second[user] = second[user] + addsecond;
-                if (second[user] >= 60) { //60秒を越えていたときの処理
-                    minute[user] = minute[user] + 1;
-                    second[user] = second[user] - 60;
-                }
-            }
 
         }
     }

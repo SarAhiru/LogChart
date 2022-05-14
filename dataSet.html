@@ -7,18 +7,29 @@
 
   <link rel="stylesheet" href="StyleSheet0.css" />
 
-  <!-- Firebase と Cloud Firestore のライブラリ -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <!--Firebase と Cloud Firestore のライブラリ -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase.js"></script>
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script> -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> -->
   <script>
+    // const firebaseConfig = {
+    //   apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
+    //   authDomain: "digitaltextbook-log.firebaseapp.com",
+    //   projectId: "digitaltextbook-log",
+    //   storageBucket: "digitaltextbook-log.appspot.com",
+    //   messagingSenderId: "183191791064",
+    //   appId: "1:183191791064:web:76bab35c17af1ed2677ead",
+    //   measurementId: "G-8QVFYZZZX4"
+    // };
     const firebaseConfig = {
-      apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
-      authDomain: "digitaltextbook-log.firebaseapp.com",
-      projectId: "digitaltextbook-log",
-      storageBucket: "digitaltextbook-log.appspot.com",
-      messagingSenderId: "183191791064",
-      appId: "1:183191791064:web:76bab35c17af1ed2677ead",
-      measurementId: "G-8QVFYZZZX4"
+      apiKey: "AIzaSyBLMcvO4956nbGA_1v8gzVYjlkZFiGcL_g",
+      authDomain: "test-f3377.firebaseapp.com",
+      databaseURL: "https://test-f3377-default-rtdb.firebaseio.com",
+      projectId: "test-f3377",
+      storageBucket: "test-f3377.appspot.com",
+      messagingSenderId: "175518244773",
+      appId: "1:175518244773:web:cadb4b78bc5270e84c924c",
+      measurementId: "G-1YFKTPPN7L"
     };
     // init firebase
     firebase.initializeApp(firebaseConfig); // バックエンドのfirebaseを初期化する
@@ -28,10 +39,6 @@
 </head>
 
 <body>
-
-  <!--.jsと連携-->
-  <!-- <script type="text/javascript" src="database.js"></script> -->
-
   <header>
     <br><br><br><br><br>
   </header>
@@ -41,7 +48,7 @@
     <input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
     <input type="button" onclick="location.href='./classseat.html'" value="　座席　">
 
-    <a href="index.html">グラフ化画面へ戻る</a>
+    <a href="index copy.html">グラフ化画面へ戻る</a>
   </p>
   <br>
 
@@ -69,8 +76,6 @@
   <!--以下でデータの読み込みを行う-->
   <script>
     let result = []; //csvの中身
-    // let dataLength = 0; //データの長さ
-
 
     //ファイル読み取りの準備
     let fileInput = document.getElementById('file');
@@ -88,20 +93,15 @@
       //var arr = txt.split("\r\n" || "\n" || "\r");
       var arr = txt.split("\r\n");
       arr = txt.split("\n");
-      //arr = txt.split("\r");
-      for (var i = 0; i < arr.length; i++) {
-        result[i] = arr[i].split(',');
+      // arr = txt.split("\r");
+      for (var i = 0; i < arr.length /*- 1*/; i++) {
+        result[i] = arr[i /*+ 1*/].split(',');
       }
 
       //逆順
       // result.reverse();
       console.log(result);
 
-      // dataLength = arr.length;
-
-      //操作している人を取り出す(※本当は児童を指定しておきたい)
-      // member = actor(result, dataLength);
-      
       // fire();
     }
 
@@ -119,41 +119,86 @@
       console.log("Submit: " + classNum);
       console.log("Submit: " + subject);
 
-      test(result, schoolName, className, classNum, subject);
+      let schooldata;
+      schooldata = schoolName + "_" + className;
+
+      // test(result, schoolName, className, classNum, subject);
+      test(result, schooldata, classNum, subject);
     });
 
 
-    function test(result, schoolName, className, classNum, subject) { //dbに書き込み
-      var db = firebase.firestore();
-      db.collection(schoolName).doc(className).set({
-        student_num: classNum
-      });
+    // function test(result, schoolName, className, classNum, subject) { //dbに書き込み
+    function test(result, schooldata, classNum, subject) {
+      let actorId = result[0][2];
+      actorID = actorId.substring(0, 10);
+      // console.log(actorID);
 
-      for (let i = 0; i < result.length; i++) {
-        db.collection(schoolName).doc(className).collection(subject).doc().set({//任意のIDで登録(そのうち日時順にしたほうがいい？)
-          date: result[i][0],
-          index: result[i][1],
-          actor: result[i][2],
-          action: result[i][3],
-          bookId: result[i][4],
-          chapter: result[i][5],
-          type: result[i][6],
-          pageIdx: result[i][7],
-          appId: result[i][8],
-          target: result[i][9]
-        });
-        // let i = 0;
-        // db.collection("test小学校").doc("5年1組").collection("英語").doc().set({
-        //   name: "Los Angeles",
-        //   state: "CA",
-        //   country: "Japan"
+      var db = firebase.database();
+
+      // var db = firebase.firestore();
+      // db.collection(schoolName).doc(className).set({
+      //   student_num: classNum
+      // });
+      // db.collection(schooldata).doc(subject).set({
+      //   student_num: classNum,
+      //   actorID: actorID
+      // });
+      db.ref(schooldata).update({
+          'student_num': classNum,
+          'actorID': actorID
+      });
+      // console.log("collect");
+
+      for (let i = 0; i < result.length /*- 1*/; i++) {
+        let dayTime = result[i][0];
+        let time = dayTime.substring(11, 19);
+
+        let year = dayTime.substring(0, 4);
+        let month = dayTime.substring(5, 7);
+        let day = dayTime.substring(8, 10);
+
+        let date;
+        date = year + "-" + month + "-" + day;
+
+        // console.log(time);
+        // db.collection(schoolName).doc(className).collection(subject).doc(String(i)).set({ //任意のIDで登録(そのうち日時順にしたほうがいい？)
+        // db.collection(schoolName).doc(className).collection(subject).doc(date).collection(time).doc().set({
+        // db.collection(schooldata).doc(subject).collection(date).doc().set({
+        //   day: date,
+        //   time: time,
+        //   index: result[i][1],
+        //   actor: result[i][2],
+        //   action: result[i][3],
+        //   bookId: result[i][4],
+        //   chapter: result[i][5],
+        //   type: result[i][6],
+        //   pageIdx: result[i][7],
+        //   appId: result[i][8],
+        //   target: result[i][9]
         // })
-        // .then(function () {
-        //   console.log("Document successfully written!");
-        // })
-        // .catch(function (error) {
-        //   console.error("Error writing document: ", error);
-        // });
+        var pushed = db.ref(schooldata + '/'+ date).push();
+        var id = pushed.key;
+        db.ref(pushed).set({
+          // pushed: {
+            'day': date,
+            'time': time,
+            'index': result[i][1],
+            'actor': result[i][2],
+            'action': result[i][3],
+            'bookId': result[i][4],
+            'chapter': result[i][5],
+            'type': result[i][6],
+            'pageIdx': result[i][7],
+            'appId': result[i][8],
+            'target': result[i][9]
+          // }
+        })
+          .then(function () {
+            console.log("Document successfully written!");
+          })
+          .catch(function (error) {
+            console.error("Error writing document: ", error);
+          });
       }
     }
   </script>

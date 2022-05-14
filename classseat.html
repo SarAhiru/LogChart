@@ -23,12 +23,9 @@
             ①CSVファイルを選択　▷　
             <input type="file" name="file" id="file" multiple>
             <br>
-            <!-- </p>
-        <p> -->
             ②日付を選択　　　　　▷　
             <input type="date" name="date" id="output">
         </p>
-        <!-- <p id="output">Change the Date</p> -->
     </header>
 
     <p>
@@ -131,12 +128,6 @@
         let startnum = 0;
         let finishnum = 0;
 
-        // drawCharttt(member, time, num);
-        // // drawCharttt(result, dataLength, member, time); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
-        // // drawChart(result, dataLength, member, time, startnum, finishnum);
-        // drawChartTarget(result, dataLength, member, time, startnum, finishnum);
-        // drawChart2(result, dataLength, member, time, startnum, finishnum);
-        // heatmap(member, time, num);
 
         let fileInput = document.getElementById('file');
         let fileReader = new FileReader();
@@ -165,7 +156,7 @@
             dataLength = arr.length;
 
             //操作している人を取り出す(※本当は児童を指定しておきたい)
-            member = actor(result, dataLength);
+            member = actor(result);
         }
 
         // 日付選択をしたら開始されるようにする
@@ -173,9 +164,9 @@
         choicedate.addEventListener(`change`, function () {
             document.querySelector(`#output`).innerHTML = choicedate.value;
             //横軸を決定
-            [time, startnum, finishnum] = lavel(result, dataLength, choicedate, member);
+            [time, startnum, finishnum] = lavel(result, choicedate);
             // console.log(time);
-            num = count(result, dataLength, member, time, startnum, finishnum);
+            num = count(result, member, time, startnum, finishnum);
 
 
             let total = [];

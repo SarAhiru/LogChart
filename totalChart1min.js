@@ -1,6 +1,6 @@
 //学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計 １分]
 
-function drawCharttt(member, time, num) {
+function drawBarChart(member, time, num) {
 /*
     //console.log(member);
   
@@ -70,11 +70,13 @@ function drawCharttt(member, time, num) {
 */
 console.log(num);
 
+    //ランダムな色の生成
     function generateRandomCode() {
       var myRandomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
       return myRandomColor;
     }
 
+    //生徒ごとのデータ作成
     const studentDatasets = function () {
       const datasets = []
 

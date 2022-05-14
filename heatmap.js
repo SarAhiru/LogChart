@@ -39,21 +39,23 @@ function heatmap(member, time, num) {
         for(let x=0; x<mapWidth; x++){
             // const opa = ((x * y / maxVal)*0.7 + 0.3).toFixed(2);
             let opa = 0;
+
+            //ここの閾値を今度考える
             if(num[y][x] == 0){
                 opa = 0;
             }
-            else if(num[y][x] <= 50){
+            else if(num[y][x] <= 70){
                 opa = (num[y][x] / 100 + 0.1).toFixed(1);
             }
             else if(num[y][x] <= 100){
-                opa = 0.7;
-            }
-            else if(num[y][x] <= 150){
                 opa = 0.8;
             }
-            else if(num[y][x] <= 200){
+            else if(num[y][x] <= 150){
                 opa = 0.9;
             }
+            // else if(num[y][x] <= 200){
+            //     opa = 0.9;
+            // }
             else{
                 opa = 1;
             }
@@ -101,7 +103,9 @@ function heatmap(member, time, num) {
                     callbacks: {
                         label: function(context) {
                             let label = context.dataset.label || '';
-                            // console.log(num);
+                            console.log(context);
+                            console.log(context.dataset.data.length);
+                            
                             if (label) {
                                 label += ': ';
                                 // console.log(context);

@@ -59,7 +59,10 @@ function drawChartTarget(result, dataLength, member, time, startnum, finishnum) 
               cpCount[datanum-1] ++;
             }
             else if(logTarget.includes('audio')){
-              audioCount[datanum-1] ++;
+              if(logTarget.includes('audio volume')){
+              }else{
+                audioCount[datanum-1] ++;
+              }
             }
             else if(logTarget.includes('color')){
               penColorCount[datanum-1] ++;
@@ -119,11 +122,11 @@ function drawChartTarget(result, dataLength, member, time, startnum, finishnum) 
       options: {
         
         scales: {
-          yAxes: [{
+          y: {
             ticks: {
               beginAtZero: true
             }
-          }]
+          }
         }
       }
     });
