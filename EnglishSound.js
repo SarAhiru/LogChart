@@ -74,6 +74,7 @@ function table(result, dataLength, member, choicedate) {
                                 minute[user] = minute[user] + 1;
                                 second[user] = second[user] - 60;
                             }
+                            // console.log(second);
                         }
 
                         if (logTarget.includes('video end')) {
@@ -103,14 +104,9 @@ function table(result, dataLength, member, choicedate) {
                                 second[user] = second[user] - 60;
                             }
                         }
-
                     }
                 }
             }
-
-
-
-
         }
     }
 
@@ -137,8 +133,8 @@ function table(result, dataLength, member, choicedate) {
     }
     //５分割【再生回数】
     let divecount = (maxcount - mincount) / 5
-    console.log(count);
-    console.log(divecount);
+    // console.log(count);
+    // console.log(divecount);
 
 
     //ここに計算式を入れてセルの色変更をする
@@ -163,9 +159,11 @@ function table(result, dataLength, member, choicedate) {
     }
     //５分割【再生時間】
     let divetime = (maxtime - mintime) / 5
-    console.log(time);
-    console.log(divetime);
+    // console.log(time);
+    // console.log(divetime);
 
+    // console.log(minute);
+    // console.log(second);
 
     //再生時間を表示用に修正
     for (let a = 0; a < member.length; a++) {
@@ -190,7 +188,7 @@ function table(result, dataLength, member, choicedate) {
     while (table.rows[1]) table.deleteRow(1);
 
     //テーブルのセルを追加する
-    for (let x = 0; x < member.length - 1; x++) {
+    for (let x = 0; x < member.length; x++) {
         let newRow = table.insertRow();
 
         for (let y = 0; y < 4; y++) {
