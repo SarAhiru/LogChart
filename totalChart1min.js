@@ -1,4 +1,4 @@
-//学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計 １分]
+//児童ごと　操作回数合計　[グラフ]　[全体合計 １分]
 
 function drawBarChart(member, time, num) {
 /*
@@ -68,7 +68,7 @@ function drawBarChart(member, time, num) {
       totalnum[x] = totalnum[x]/member.length;  //人数で割って平均を出したい
     }
 */
-console.log(num);
+// console.log(num);
 
     //ランダムな色の生成
     function generateRandomCode() {
@@ -91,8 +91,8 @@ console.log(num);
       return datasets
     }
 
-    let ctx = document.getElementById('myCharttt').getContext('2d');
-    window.myCharttt = new Chart(ctx, {
+    let ctx = document.getElementById('studentChart').getContext('2d');
+    window.studentChart = new Chart(ctx, {
       //線グラフ
       type: 'bar',
       //データ
@@ -385,5 +385,5 @@ console.log(num);
         }
       }
     });
-    console.log("表示完了！");
+    // console.log("表示完了！");
 }

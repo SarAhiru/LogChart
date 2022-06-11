@@ -1,4 +1,4 @@
-//学習者用デジタル教科書　英語　ログ　横軸ラベル作成
+//グラフ　横軸ラベル作成
 //自分で読み取りVer
 function lavel(result, choicedate) {
 
@@ -17,7 +17,7 @@ function lavel(result, choicedate) {
 
 
   if (result.length > 0) {
-    for (let x = 1; x < result.length - 1; x++) {
+    for (let x = 1; x < result.length; x++) {
       let logDate = result[x][0]; // ログからdate取得
 
       //横軸時間管理
@@ -73,7 +73,9 @@ function lavel(result, choicedate) {
 
             //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録
             //！！本当は進んだ分数を引き算で求めて、重複させるだけでいいのかも
-            while (date.getTime() >= ftime.getTime()) { //取得した時間がftimeと同じ時間になるまで1分ずつ足し続ける
+            // console.log("getTime  "+date.toLocaleString());
+            while (date.getTime() > ftime.getTime()) { //取得した時間がftimeより大きければ1分ずつ足し続ける
+              // console.log("ftime   "+ftime.toLocaleString())
               ftime.setMinutes(ftime.getMinutes() + 1);
               lognum++;
 
@@ -108,27 +110,17 @@ function lavel(result, choicedate) {
                 label[lognum] = fhour + ":" + fminute;
               }
             }
-
-            // //ここから分析する
-            // let logActor = result[x][2]; // actor取得
-
-            // //操作回数
-            // membernum = member.indexOf(logActor);
-            // num[0][lognum] ++; // num[0]は全体合計
-            // num[membernum][lognum] ++;
-
           }
         }
       }
     }
   }
-  console.log(label);
+  // console.log(label);
   return [label, startnum, finishnum];
-  // return label;
 }
 
+// 時間選択した際の横軸ラベル作成
 function lavelChenge(result, choicedate, startTime, finishTime) {
-  //finishの時間が＋１分になっているけどとりあえず放置
   //横軸ラベル作成
   let label = []; // グラフ横軸　配列
   let lognum = 0; //配列番号カウント用
@@ -160,12 +152,11 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
       choiceDay = parseInt(choiceDay); // 数字に変更
 
       let judgeTime = logDate.substring(9, 14);
-      // console.log(judgeTime);
 
       if (choiceYear == judgeYear) {
         if (choiceMonth == judgeMonth) {
           if (choiceDay == judgeDay) {
-            // finishnum = x;
+            finishnum = x;
             //始めだけfirst time(ftime)を設定
             if (judge == 0) {
               startnum = x;
@@ -206,7 +197,7 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
 
                 //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録
                 //！！本当は進んだ分数を引き算で求めて、重複させるだけでいいのかも
-                while (date.getTime() >= ftime.getTime()) { //取得した時間がftimeと同じ時間になるまで1分ずつ足し続ける
+                while (date.getTime() > ftime.getTime()) { //取得した時間がftimeより大きければ1分ずつ足し続ける
                   ftime.setMinutes(ftime.getMinutes() + 1);
                   lognum++;
 
@@ -232,8 +223,7 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
                   else {
                     label[lognum] = fhour + ":" + fminute;
                   }
-
-                  finishnum = x;
+                  // finishnum = x;
                   break;
                 }
               }
@@ -252,8 +242,9 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
     }
   }
   console.log(label);
+  console.log(startnum);
+  console.log(finishnum);
   return [label, startnum, finishnum];
-  // return label;
 }
 
 

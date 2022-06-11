@@ -1,7 +1,8 @@
 
-function table(result, dataLength, member, choicedate) {
+function table(result, member, choicedate) {
     let table = document.getElementById('targetTable');
-    // let member = ['1_student', '2_student', '3_student', '4_student', '5_student'];
+    let audiocheck = document.getElementById('audiocheck');
+    let videocheck = document.getElementById('videocheck');
 
     let audioData = new Array(member.length);
     let initial_value = 0;  // 初期化する固定値
@@ -25,8 +26,8 @@ function table(result, dataLength, member, choicedate) {
     // console.log(second);
 
     //ここからデータの分析
-    if (dataLength > 0) {
-        for (let x = 1; x < dataLength; x++) {
+    if (result.length > 0) {
+        for (let x = 1; x < result.length; x++) {
             let logDate = result[x][0]; // ログからdate取得
             let logActor = result[x][2]; // actor取得
             let logTarget = result[x][9]; // target取得
@@ -48,62 +49,66 @@ function table(result, dataLength, member, choicedate) {
                 if (choiceMonth == judgeMonth) {
                     if (choiceDay == judgeDay) {
 
-                        if (logTarget.includes('audio end')) {
-                            console.log("音声再生");
-                            for (let a = 0; a < member.length; a++) {
-                                if (logActor.includes(member[a])) {
-                                    user = a; //ユーザーの識別
+                        if(audiocheck.checked == true){
+                            if (logTarget.includes('audio end')) {
+                                // console.log("音声再生");
+                                for (let a = 0; a < member.length; a++) {
+                                    if (logActor.includes(member[a])) {
+                                        user = a; //ユーザーの識別
+                                    }
                                 }
-                            }
-                            audioData[user][1]++; //再生回数のカウントを+1
-                            //console.log(audioData);
-
-                            //再生時間
-                            // console.log(logTarget);
-                            let addminute = logTarget.substr(11, 2);
-                            // console.log(addminute);
-                            addminute = parseInt(addminute);
-                            let addsecond = logTarget.substr(13, 2);
-                            // console.log(addsecond);
-                            addsecond = parseInt(addsecond);
-
-
-                            minute[user] = minute[user] + addminute;
-                            second[user] = second[user] + addsecond;
-                            if (second[user] >= 60) { //60秒を越えていたときの処理
-                                minute[user] = minute[user] + 1;
-                                second[user] = second[user] - 60;
-                            }
-                            // console.log(second);
-                        }
-
-                        if (logTarget.includes('video end')) {
-                            console.log("動画再生");
-                            //audioData[0][1] ++ ;
-                            for (let a = 0; a < member.length; a++) {
-                                if (logActor.includes(member[a])) {
-                                    user = a; //ユーザーの識別
+                                audioData[user][1]++; //再生回数のカウントを+1
+                                //console.log(audioData);
+    
+                                //再生時間
+                                // console.log(logTarget);
+                                let addminute = logTarget.substr(11, 2);
+                                // console.log(addminute);
+                                addminute = parseInt(addminute);
+                                let addsecond = logTarget.substr(13, 2);
+                                // console.log(addsecond);
+                                addsecond = parseInt(addsecond);
+    
+    
+                                minute[user] = minute[user] + addminute;
+                                second[user] = second[user] + addsecond;
+                                if (second[user] >= 60) { //60秒を越えていたときの処理
+                                    minute[user] = minute[user] + 1;
+                                    second[user] = second[user] - 60;
                                 }
-                            }
-                            audioData[user][1]++; //再生回数のカウントを+1
-                            //console.log(audioData);
-
-                            //再生時間
-                            // console.log(logTarget);
-                            let addminute = logTarget.substr(11, 2);
-                            // console.log(addminute);
-                            addminute = parseInt(addminute);
-                            let addsecond = logTarget.substr(13, 2);
-                            // console.log(addsecond);
-                            addsecond = parseInt(addsecond);
-
-                            minute[user] = minute[user] + addminute;
-                            second[user] = second[user] + addsecond;
-                            if (second[user] >= 60) { //60秒を越えていたときの処理
-                                minute[user] = minute[user] + 1;
-                                second[user] = second[user] - 60;
+                                // console.log(second);
                             }
                         }
+                        
+                        if(videocheck.checked == true){
+                            if (logTarget.includes('video end')) {
+                                console.log("動画再生");
+                                //audioData[0][1] ++ ;
+                                for (let a = 0; a < member.length; a++) {
+                                    if (logActor.includes(member[a])) {
+                                        user = a; //ユーザーの識別
+                                    }
+                                }
+                                audioData[user][1]++; //再生回数のカウントを+1
+                                //console.log(audioData);
+    
+                                //再生時間
+                                // console.log(logTarget);
+                                let addminute = logTarget.substr(11, 2);
+                                // console.log(addminute);
+                                addminute = parseInt(addminute);
+                                let addsecond = logTarget.substr(13, 2);
+                                // console.log(addsecond);
+                                addsecond = parseInt(addsecond);
+    
+                                minute[user] = minute[user] + addminute;
+                                second[user] = second[user] + addsecond;
+                                if (second[user] >= 60) { //60秒を越えていたときの処理
+                                    minute[user] = minute[user] + 1;
+                                    second[user] = second[user] - 60;
+                                }
+                            }
+                        } 
                     }
                 }
             }
@@ -158,13 +163,9 @@ function table(result, dataLength, member, choicedate) {
         }
     }
     //５分割【再生時間】
-    let divetime = (maxtime - mintime) / 5
-    // console.log(time);
-    // console.log(divetime);
+    let divetime = (maxtime - mintime) / 5;
 
-    // console.log(minute);
-    // console.log(second);
-
+    
     //再生時間を表示用に修正
     for (let a = 0; a < member.length; a++) {
         if (second[a] == 0) {
@@ -200,23 +201,23 @@ function table(result, dataLength, member, choicedate) {
             if (y == 1) {
                 if (count[x] <= (mincount + divecount)) {
                     newCell.style.backgroundColor = "#ffffff";
-                    console.log(1);
+                    // console.log(1);
                 }
                 else if (count[x] <= (mincount + divecount * 2)) {
                     newCell.style.backgroundColor = "#ccffd4";//S20
-                    console.log(2);
+                    // console.log(2);
                 }
                 else if (count[x] <= (mincount + divecount * 3)) {
                     newCell.style.backgroundColor = "#99ffab";//S40
-                    console.log(3);
+                    // console.log(3);
                 }
                 else if (count[x] <= (mincount + divecount * 4)) {
                     newCell.style.backgroundColor = "#66ff84";//S60
-                    console.log(4);
+                    // console.log(4);
                 }
                 else if (count[x] <= maxcount) {
                     newCell.style.backgroundColor = "#00ff37";//S100
-                    console.log(5);
+                    // console.log(5);
                 }
             }
 

@@ -32,16 +32,17 @@
   <script type="text/javascript" src="count.js"></script>
   <script type="text/javascript" src="database.js"></script>
 
-  <!--英語　ログ　(棒グラフ)　[機能合計]-->
+  <!-- 時間選択用　[グラフ] -->
+  <script type="text/javascript" src="timesetChart1min.js"></script>
+  <!--児童ごと　操作回数合計　[グラフ]-->
   <script type="text/javascript" src="totalChart1min.js"></script>
-  <!--英語　ログ　(棒グラフ)　[機能合計]-->
-  <!-- <script type="text/javascript" src="totalChart1min_2.js"></script> -->
-  <!--英語　ログ　(棒グラフ)　[機能ごと]-->
+  <!--児童ごと　操作回数合計　[ヒートマップ] -->
+  <script type="text/javascript" src="heatmap.js"></script>
+  <!--英語　機能　[グラフ]-->
   <script type="text/javascript" src="targetEnChart1min.js"></script>
-  <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
+  <!--人数合計　[グラフ]-->
   <script type="text/javascript" src="numChart1min.js"></script>
-  <!-- ヒートマップ -->
-  <script src="heatmap.js"></script>
+
 
   <header>
     <form>
@@ -59,16 +60,21 @@
       </p>
     </form>
 
+    <div class="timesetChart" style="position:absolute; top:10px; left:500px; width:350px; height:300px;">
+      <!-- style="width:500px;"  -->
+      <canvas id="timeset" width="300" height="80"></canvas>
+      <!-- <canvas id="timeset" width="300" height="100"></canvas> -->
+    </div>
   </header>
 
 
   <p>
-    <input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
-    <input type="button" onclick="location.href='./classseat.html'" value="　座席　">
+    　<input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
+    　<input type="button" onclick="location.href='./classseat.html'" value="　座席　">
 
     <!-- <a href="EnglishSound.html">音声再生</a> -->
     <!-- <a href="classseat.html">座席</a>　　 -->
-    <a href="index copy.html">登録しているデータを使う</a>
+    　<a href="index copy.html">登録しているデータを使う</a>
     <!-- <a href="dataSet.html">データ登録</a> -->
   </p>
   <br>
@@ -80,11 +86,9 @@
       <p>タブ1のコンテンツを表示します</p> -->
   <!-- <script>
         drawBarChart(member, time, num);
-        // drawBarChart(result, dataLength, member, time);
-        //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
-        drawChartTarget(result, dataLength, member, time, startnum, finishnum);
-        drawStuNumChart(result, dataLength, member, time, startnum, finishnum);
         heatmap(member, time, num);
+        drawChartTarget(result, time, startnum, finishnum);
+        drawStuNumChart(member, time, num);
       </script> -->
   <!-- </div>
     <input type="radio" name="tab_name" id="tab2">
@@ -117,28 +121,28 @@
     <div>
       <p>＝児童ごとの操作回数の合計＝</p>
       <!--<div style="width:50%;"></div>-->
-      <canvas id="myCharttt" width="300" height="100"></canvas>
+      <canvas id="studentChart" width="300" height="100"></canvas>
     </div>
     <div>
       <canvas id="heatMap" width="300" height=" 150"></canvas>
     </div>
     <br><br>
     <!-- <h1>全体表示</h1> -->
-    <div>
+    <!-- <div> -->
       <!-- <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p> -->
       <!--<div style="width:50%;"></div>-->
       <!-- <canvas id="myChart" width="2500" height="350"></canvas> -->
-    </div>
+    <!-- </div> -->
     <!-- <br><br> -->
 
     <div>
       <p>＝機能ごとの操作回数の合計＝</p>
-      <canvas id="myChart1" width="300" height=" 100"></canvas>
+      <canvas id="targetChart" width="300" height=" 100"></canvas>
     </div>
     <br><br>
     <div>
       <p>＝操作人数の合計＝</p>
-      <canvas id="myChart2" width="300" height=" 100"></canvas>
+      <canvas id="numChart" width="300" height=" 100"></canvas>
     </div>
     <br><br>
   </article>
@@ -147,21 +151,21 @@
   <!--以下でデータの読み込みを行う-->
   <script>
     let result = []; //csv(ログ)の中身
-    let dataLength = 0; //データの長さ
     let member = [];
     let time = [];
     let num = [];
+    let totalnum = [];
 
     let startnum = 0;
     let finishnum = 0;
 
+    // 各グラフの型を表示させておく
+    drawChart(time, totalnum);
     drawBarChart(member, time, num);
-    // drawBarChart(result, dataLength, member, time); //データと長さを持ってdrawChart関数に移動(これは最初の軸を作成するのみ)
-    // drawChart(result, dataLength, member, time, startnum, finishnum);
     heatmap(member, time, num);
-    drawChartTarget(result, dataLength, member, time, startnum, finishnum);
-    drawStuNumChart(result, dataLength, member, time, startnum, finishnum);
-    
+    drawChartTarget(result, time, startnum, finishnum);
+    drawStuNumChart(member, time, num);
+
 
     let fileInput = document.getElementById('file');
     let fileReader = new FileReader();
@@ -170,10 +174,44 @@
       fileReader.readAsText(file, 'Shift_JIS');
     };
 
+
+    // function getCSV() {
+    //   var req = new XMLHttpRequest(); // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
+    //   req.open("get", "./english_data.csv", true); // アクセスするファイルを指定
+    //   console.log(req.responseText);
+    //   req.send(null); // HTTPリクエストの発行
+
+    //   // レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ	
+    //   req.onload = function () {
+    //     convertCSVtoArray(req.responseText); // 渡されるのは読み込んだCSVデータ
+    //   }
+    // }
+    
+    // function convertCSVtoArray(txt) { // 読み込んだCSVデータが文字列として渡される
+    //   //読み取ったcsvデータを配列に格納
+    //   //var arr = txt.split("\r\n" || "\n" || "\r");
+    //   var arr = txt.split("\r\n");
+    //   arr = txt.split("\n");
+    //   //arr = txt.split("\r");
+    //   for (var i = 0; i < arr.length; i++) {
+    //     result[i] = arr[i].split(',');
+    //   }
+
+    //   //逆順
+    //   // result.reverse();
+
+    //   //操作している人を取り出す(※本当は児童を指定しておきたい)
+    //   member = actor(result); //actor.js
+    // }
+
+    // getCSV(); //最初に実行される
+
+
+
+
+
     //ファイルを読み取ったら実行
     fileReader.onload = () => {
-
-      // database();
       var txt = fileReader.result;
 
       //読み取ったcsvデータを配列に格納
@@ -188,12 +226,9 @@
       //逆順
       // result.reverse();
 
-      dataLength = arr.length;
-
       //操作している人を取り出す(※本当は児童を指定しておきたい)
-      member = actor(result);
+      member = actor(result); //actor.js
     }
-
 
 
     // 日付選択をしたら開始されるようにする
@@ -204,62 +239,66 @@
       document.querySelector(`#output`).innerHTML = choicedate.value;
       //横軸を決定
       [time, startnum, finishnum] = lavel(result, choicedate);
-      // console.log(time);
+
+      // 回数カウント
+      totalnum = totalcount(result, time, startnum, finishnum);
       num = count(result, member, time, startnum, finishnum);
       startTime.value = time[0];
       finishTime.value = time[time.length-1];
 
-      if (myCharttt) {
-        myCharttt.destroy();
-      }
-      // if (myChart) {
-      //   myChart.destroy();
-      // }
-      if (myChart1) {
-        myChart1.destroy();
-      }
-      if (myChart2) {
-        myChart2.destroy();
+      if (timeset) {
+        timeset.destroy();
       }
       if (heatMap) {
         heatMap.destroy();
       }
+      if (studentChart) {
+        studentChart.destroy();
+      }
+      // if (myChart) {
+      //   myChart.destroy();
+      // }
+      if (targetChart) {
+        targetChart.destroy();
+      }
+      if (numChart) {
+        numChart.destroy();
+      }
 
-      drawBarChart(member, time, num);
-      // drawBarChart(result, dataLength, member, time);
-      //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
-      drawChartTarget(result, dataLength, member, time, startnum, finishnum);
-      drawStuNumChart(result, dataLength, member, time, startnum, finishnum);
-      heatmap(member, time, num);
+      // グラフ表示
+      drawChart(time, totalnum);
+      drawBarChart(member, time, num); //totalChart1min.js
+      heatmap(member, time, num); //heatmap.js
+      drawChartTarget(result, time, startnum, finishnum); // targetEnChart1min.js
+      drawStuNumChart(member, time, num); // numChart1min.js
     });
 
-    let selectTime = [];
+    // let selectTime = [];
 
     // 時間選択したら開始されるようにしたい
     startTime.addEventListener(`change`, function () {
       document.querySelector(`#startTime`).innerHTML = startTime.value;
       //横軸を決定
       [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
-      // console.log(time);
       num = count(result, member, time, startnum, finishnum);
 
-      if (myCharttt) {
-        myCharttt.destroy();
-      }
-      if (myChart1) {
-        myChart1.destroy();
-      }
-      if (myChart2) {
-        myChart2.destroy();
+      if (studentChart) {
+        studentChart.destroy();
       }
       if (heatMap) {
         heatMap.destroy();
       }
+      if (targetChart) {
+        targetChart.destroy();
+      }
+      if (numChart) {
+        numChart.destroy();
+      }
 
       drawBarChart(member, time, num);
-      drawChartTarget(result, dataLength, member, time, startnum, finishnum);
-      drawStuNumChart(result, dataLength, member, time, startnum, finishnum);
       heatmap(member, time, num);
+      drawChartTarget(result, time, startnum, finishnum);
+      drawStuNumChart(member, time, num);
     });
 
     finishTime.addEventListener(`change`, function () {
@@ -269,23 +308,24 @@
       // console.log(time);
       num = count(result, member, time, startnum, finishnum);
 
-      if (myCharttt) {
-        myCharttt.destroy();
-      }
-      if (myChart1) {
-        myChart1.destroy();
-      }
-      if (myChart2) {
-        myChart2.destroy();
+      if (studentChart) {
+        studentChart.destroy();
       }
       if (heatMap) {
         heatMap.destroy();
       }
+      if (targetChart) {
+        targetChart.destroy();
+      }
+      if (numChart) {
+        numChart.destroy();
+      }
+      
 
       drawBarChart(member, time, num);
-      drawChartTarget(result, dataLength, member, time, startnum, finishnum);
-      drawStuNumChart(result, dataLength, member, time, startnum, finishnum);
       heatmap(member, time, num);
+      drawChartTarget(result, time, startnum, finishnum);
+      drawStuNumChart(member, time, num);
     });
 
 

@@ -1,7 +1,52 @@
 //学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計 １分]
+function totalcount(result, time, startnum, finishnum){
+    let totalnum = []; // 全体平均用
+    let datanum = 0; //配列番号カウント用
+    let ftime = 0; //first time
+    let judge = 0; //初回かどうかを判断
+
+    // 初期化
+    for (let x = 0; x < time.length; x++) {
+        totalnum[x] = 0;
+    }
+
+    if (result.length > 0) {
+        for (let x = startnum; x <= finishnum; x++) {
+            let logDate = result[x][0]; // date取得
+            let logTarget = result[x][9]; // target取得
+
+            //横軸時間管理
+            let date = new Date(logDate);
+
+            //始めだけfirst timeを設定
+            if (judge == 0) {
+                ftime = new Date(logDate);
+                datanum = 0;
+                judge = 1;
+            }
+            else {
+                while (date.getTime() > ftime.getTime()) { //1分経過したのかを判断
+                    ftime.setMinutes(ftime.getMinutes() + 1);
+                    datanum++;
+                }
+            }
+
+            if (logTarget.includes('audio volume')) {
+            } else {
+                // console.log(datanum);
+                totalnum[datanum]++;
+            }
+        }
+    }
+    console.log(totalnum);
+    return totalnum;
+}
+
 
 function count(result, member, time, startnum, finishnum) {
-    console.log(result);
+    // console.log(result);
+    // console.log(startnum);
+    // console.log(finishnum);
 
     let totalnum = []; //全体平均用
     let num = []; // 操作回数
@@ -21,7 +66,6 @@ function count(result, member, time, startnum, finishnum) {
             num[i][x] = 0;
         }
     }
-    console.log(num);
 
     if (result.length > 0) {
         for (let x = startnum; x <= finishnum; x++) {
@@ -34,7 +78,6 @@ function count(result, member, time, startnum, finishnum) {
 
             //今回のデータは何人目の生徒なのか
             membernum = member.indexOf(logActor);
-            // console.log(membernum);
 
             //横軸時間管理
             let date = new Date(logDate);
@@ -55,21 +98,21 @@ function count(result, member, time, startnum, finishnum) {
             if (logTarget.includes('audio volume')) {
 
             } else {
-                num[membernum][datanum - 1]++;
+                totalnum[datanum]++;
+                num[membernum][datanum]++;
             }
-
-
-            // console.log(datanum);
-            // totalnum[datanum - 1]++;
         }
     }
 
     // for (let x = 0; x < time.length; x++) {
     //     totalnum[x] = totalnum[x] / member.length;  //人数で割って平均を出したい
     // }
-    console.log(num);
+    // console.log(num);
     return num;
 }
+
+
+
 
 //学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計 １分]
 
@@ -127,9 +170,9 @@ function countttt(result, member, time, startnum, finishnum) {
                 //     datanum++;
                 // }
 
-                console.log(logTime + " " + ftime + " " + (logTime > ftime));
+                // console.log(logTime + " " + ftime + " " + (logTime > ftime));
                 while (logTime > ftime) { //1分経過したのかを判断
-                    console.log("1分経過");
+                    // console.log("1分経過");
                     let hour = parseInt(ftime.substring(0, 2));
                     let minute = parseInt(ftime.substring(3, 5));
 
@@ -154,7 +197,7 @@ function countttt(result, member, time, startnum, finishnum) {
                     else {
                         ftime = hour + ":" + minute;
                     }
-                    console.log(ftime);
+                    // console.log(ftime);
                     // ftime.setMinutes(ftime.getMinutes() + 1);
 
                     datanum++;

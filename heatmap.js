@@ -5,18 +5,7 @@ function heatmap(member, time, num) {
 
     const mapHeight = member.length; //人数
     const mapWidth = time.length;
-    const maxVal = 741;
 
-    // データのランダム生成（追加）
-    // const datalist = (function(){
-    //     const dlist = []
-    //     for(let i=0; i < mapHeight * mapWidth; i++){
-    //         dlist.push(Math.random())
-    //     }
-    //     return dlist
-    // })()
-
-    
     // データセットの生成
     const generateDatasets = function () {
         const datasets = [];
@@ -66,20 +55,6 @@ function heatmap(member, time, num) {
         }
         return datasetColors
     }
-
-
-    // データラベルの生成
-    // const generateLabels = function () {
-    //     let labels = []
-    //     for (var i = 1; i < mapWidth + 1; i++) {
-    //         labels.push(i)
-    //     }
-    //     return labels
-    // }
-
-    
-
-    console.log(num);
 
     let ctx = document.getElementById('heatMap').getContext('2d');
     window.heatMap = new Chart(ctx, {

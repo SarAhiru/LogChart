@@ -26,14 +26,11 @@
   </header>
 
   <p>
-    <input type="button" onclick="location.href='./index.html'" value="グラフ">
-    <a href="index.html">グラフへ</a>
+    　<input type="button" onclick="location.href='./index.html'" value="グラフ">
+    　<a href="index.html">グラフへ</a>
   </p>
-
-  <!--CSVファイルの読み取り-->
-  <!-- <p>＝CSVファイルの読み取り＝</p>
-    <input type="file" name="file" id="file" multiple> -->
-  <br><br>
+  <br>
+  <!-- <br><br> -->
 
 
   <style type="text/css">
@@ -63,10 +60,19 @@
   </style>
 
 
+  <div>
+    <input type="checkbox" id="audiocheck" name="audiocheck">
+    <label for="audiocheck">音声</label>
+  </div>
+  <div>
+    <input type="checkbox" id="videocheck" name="videocheck">
+    <label for="videocheck">動画</label>
+  </div>
+
   <!-- <h1>オーディオ使用履歴</h1> -->
   <table border="1" id="targetTable">
     <!-- <caption>オーディオ使用履歴</caption> -->
-    <caption>音声・動画利用時間</caption>
+    <caption>利用時間</caption>
     <colgroup span="1" class="Title"></colgroup>
     <!--１行を"Title"に-->
     <colgroup span="1" class="Num"></colgroup>
@@ -88,11 +94,10 @@
   <!--以下でデータの読み込みを行う-->
   <script>
     // console.log("通過しました!!!");
-    var result = []; //csvの中身
-    var dataLength = 0; //データの長さ
+    let result = []; //csvの中身
     let member = [];
 
-    table(result, dataLength, member);
+    // table(result, member);
 
     let fileInput = document.getElementById('file');
     let fileReader = new FileReader();
@@ -116,9 +121,6 @@
 
       //逆順
       // result.reverse();
-      console.log(result);
-
-      dataLength = arr.length;
 
       //操作している人を取り出す
       member = actor(result);
@@ -128,10 +130,26 @@
     let choicedate = document.querySelector(`input[type='date'][name='date']`);
     choicedate.addEventListener(`change`, function () {
       document.querySelector(`#output`).innerHTML = choicedate.value;
-
-      table(result, dataLength, member, choicedate);
-      // console.log("データは読み取り終わった");
+      let audioc = document.getElementById('audiocheck');
+      audioc.checked = true;
+      let videoc = document.getElementById('videocheck');
+      videoc.checked = true;
+      table(result, member, choicedate);
     });
+
+    function audiovalueChange(event) {
+        table(result, member, choicedate);
+    }
+
+    function videovalueChange(event) {
+        table(result, member, choicedate);
+    }
+
+    let audiocheck = document.getElementById('audiocheck');
+    audiocheck.addEventListener('change', audiovalueChange);
+    let videocheck = document.getElementById('videocheck');
+    videocheck.addEventListener('change', videovalueChange);
+
   </script>
   <br><br>
 </body>

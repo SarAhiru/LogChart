@@ -1,67 +1,71 @@
+/* 全体のcss */
+
 body {
-    margin: 0;
+  margin: 0;
 }
 
 /* ヘッダー */
 header {
-    background-color: rgb(215, 223, 223);
-    border-bottom: solid 1px #aaaaaa;
-    margin-bottom: 30px;
-    -webkit-box-shadow: 0 1px 7px #aaaaaa;
-    box-shadow: 0 1px 7px #aaaaaa;
-    padding: 5px;
+  background-color: rgb(215, 223, 223);
+  border-bottom: solid 1px #aaaaaa;
+  margin-bottom: 30px;
+  -webkit-box-shadow: 0 1px 7px #aaaaaa;
+  box-shadow: 0 1px 7px #aaaaaa;
+  padding: 5px;
 }
 
 article {
-    /* background-color: bisque; */
-    /* width: 900px; */
-    margin-left: 50px;
-    margin-right: 50px;
+  /* background-color: bisque; */
+  /* width: 900px; */
+  margin-left: 50px;
+  margin-right: 50px;
 }
 
 /* タブ切り替え */
 /* レイアウトを整える */
 .area {
-    width: 500px;
-    /* margin: auto; */
-    margin-left: 50px;
-    flex-wrap: wrap; /*タブを上段に表示する*/
-    display: flex; /*タブを上段に表示する*/
-  }
-   
-  .tab_class {
-    width: calc(100%/5);
-    height: 30px;
-    background-color: rgb(196, 194, 194);
-    line-height: 30px;
-    font-size: 15px;
-    text-align: center;
-    display: block;
-    float: left;
-    order: -1; /*タブを上段に表示する*/
-    /* border-color: #ffffff; */
-    /* margin: auto; */
-  }
-   
-  /* ラジオボタンを非表示にする */
-  input[name="tab_name"] {
-    display: none;
-  }
-   
-  /* 選択されたタブの背景色と文字色を変更する */
-  input:checked + .tab_class {
-    background-color: cadetblue;
-    color: aliceblue;
-  }
-   
-  /* コンテンツを一旦すべて非表示にする */
-  .content_class {
-    display: none;
-    width: 100%;
-  }
-   
-  /* 選択されたタブのコンテンツを表示する */
-  input:checked + .tab_class + .content_class {
-    display: block;
-  }
-   
+  width: 500px;
+  /* margin: auto; */
+  margin-left: 50px;
+  flex-wrap: wrap;
+  /*タブを上段に表示する*/
+  display: flex;
+  /*タブを上段に表示する*/
+}
+
+.tab_class {
+  width: calc(100%/5);
+  height: 30px;
+  background-color: rgb(196, 194, 194);
+  line-height: 30px;
+  font-size: 15px;
+  text-align: center;
+  display: block;
+  float: left;
+  order: -1;
+  /*タブを上段に表示する*/
+  /* border-color: #ffffff; */
+  /* margin: auto; */
+}
+
+/* ラジオボタンを非表示にする */
+input[name="tab_name"] {
+  display: none;
+}
+
+/* 選択されたタブの背景色と文字色を変更する */
+input:checked+.tab_class {
+  background-color: cadetblue;
+  color: aliceblue;
+}
+
+/* コンテンツを一旦すべて非表示にする */
+.content_class {
+  display: none;
+  width: 100%;
+}
+
+/* 選択されたタブのコンテンツを表示する */
+input:checked+.tab_class+.content_class {
+  display: block;
+}
