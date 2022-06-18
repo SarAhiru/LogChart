@@ -249,17 +249,17 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
 
 
 //cloud firestore　Ver
-function choiceDay(choicedate) {
+// function choiceDay(choicedate) {
 
-  let choiceYear = choicedate.value.substring(0, 4);
-  let choiceMonth = choicedate.value.substring(5, 7);
-  let choiceDay = choicedate.value.substring(8, 10);
+//   let choiceYear = choicedate.value.substring(0, 4);
+//   let choiceMonth = choicedate.value.substring(5, 7);
+//   let choiceDay = choicedate.value.substring(8, 10);
 
-  let choice;
-  choice = choiceYear + "/" + choiceMonth + "/" + choiceDay;
+//   let choice;
+//   choice = choiceYear + "/" + choiceMonth + "/" + choiceDay;
 
-  return choice;
-}
+//   return choice;
+// }
 
 function lavel2(result) {
 

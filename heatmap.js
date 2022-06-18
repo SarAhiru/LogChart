@@ -19,7 +19,7 @@ function heatmap(member, time, num) {
                 backgroundColor: generateColor(i)
             })
         }
-        return datasets
+        return datasets;
     }
 
     // 色配列の生成 (追加）
@@ -53,7 +53,7 @@ function heatmap(member, time, num) {
             // datasetColors.push("rgba(135,206,235," + opa + ")"
             datasetColors.push("rgba(255,0,0," + opa + ")")
         }
-        return datasetColors
+        return datasetColors;
     }
 
     let ctx = document.getElementById('heatMap').getContext('2d');
@@ -78,8 +78,8 @@ function heatmap(member, time, num) {
                     callbacks: {
                         label: function(context) {
                             let label = context.dataset.label || '';
-                            console.log(context);
-                            console.log(context.dataset.data.length);
+                            // console.log(context);
+                            // console.log(context.dataset.data.length);
                             
                             if (label) {
                                 label += ': ';

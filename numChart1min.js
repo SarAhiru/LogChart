@@ -15,7 +15,7 @@ function drawStuNumChart(member, time, num) {
     stuNum[x] = 0;
   }
 
-  console.log(num);
+  // console.log(num);
   for(let x = 0; x < time.length; x++){
     for(let i = 0; i < member.length; i++){
       if(num[i][x] != 0){

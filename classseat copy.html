@@ -16,7 +16,7 @@
     <script type="text/javascript" src="actor.js"></script>
     <script type="text/javascript" src="lavel.js"></script>
     <script type="text/javascript" src="count.js"></script>
-    <!-- <script src="classseat.js"></script> -->
+    <script src="classseat.js"></script>
     <!-- <script src="clas.js"></script> -->
     
 
@@ -38,8 +38,8 @@
 
 
 
-    <!-- <div class="t_desk" cmanOMat="move">教卓</div> -->
-    <div class="t_desk">教卓</div>
+    <div class="t_desk" cmanOMat="move">教卓</div>
+    <!-- <div class="s_desk">教卓</div> -->
 
 
     <!-- <div id="buttons">
@@ -56,8 +56,8 @@
     <!-- </br> -->
 
     <div class="frame0">
-        <!-- <div id="frame" cmanOMat="move"></div> -->
-        <div id="frame"></div>
+        <div id="frame" cmanOMat="move"></div>
+        <!-- <div id="frame"></div> -->
     </div>
 
     <script>
@@ -98,10 +98,8 @@
                     //console.log(y);
                 }
                 // d1.insertAdjacentHTML('beforeend', "<div class='s_desk' draggable='true' onclick='sentaku2(this)' id='" + sessionStorage.getItem("zaseki" + k) + "' cmanOMat='move' cmanomno='0'>生徒" + y + "</div>");
-                // d1.insertAdjacentHTML('beforeend', "<div class='s_desk' id='" + sessionStorage.getItem("zaseki" + k) + "'>生徒" + y + "</div>");
                 d1.insertAdjacentHTML('beforeend', "<div class='s_desk' id='" + sessionStorage.getItem("zaseki" + k) + "' cmanOMat='move'>生徒" + y + "</div>");
                 
-
                 //d1.insertAdjacentHTML('beforeend', "<div class='s_desk' draggable='true' onclick='sentaku2(this)' id='"+sessionStorage.getItem("zaseki"+k)+"'>座席"+k+"</div>");
                 //}
             }
@@ -259,14 +257,6 @@
     </script>
 
     <script>
-        for (let x = 0; x < member.length; x++) {
-            let desk = document.getElementById("s_desk" + (x + 1));  
-        }
-        desk.onmousedown = function(event){
-            console.log("タップされたよ！")
-        }
-        
-        
 //         (function(){
 
 // //要素の取得
