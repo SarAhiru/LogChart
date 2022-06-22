@@ -201,7 +201,7 @@ function drawChartTarget2(result, time, startnum, finishnum) {
           datanum++;
         }
       }
-      console.log(datanum);
+      // console.log(datanum);
 
 
       if (logTarget.includes('index')) { // indexの文字を含んでいるのかどうか

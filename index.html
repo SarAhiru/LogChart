@@ -279,8 +279,8 @@
 
     // 時間選択したら開始されるようにしたい
     startTime.addEventListener(`change`, function () {
-      document.querySelector(`#startTime`).innerHTML = startTime.value;
-      //横軸を決定
+      document.querySelector(`#startTime`).innerHTML 
+      
       [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
       num = count(result, member, time, startnum, finishnum);
 

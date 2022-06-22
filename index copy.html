@@ -22,8 +22,9 @@
   <link rel="stylesheet" href="StyleSheet0.css" />
 
   <!-- Firebase と Cloud Firestore のライブラリ -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase.js"></script>
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script> -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
@@ -198,18 +199,31 @@
 
       document.querySelector(`#selectDate`).innerHTML = choicedate.value;
       // choiceday = choiceDay(choicedate);
-      console.log(choicedate.value);
+      let d = new Date(choicedate.value);
+      let year = d.getFullYear();
+      let month = d.getMonth() + 1;
+      let day = d.getDate();
+      let date;
+      date = year + "-" + month + "-" + day;
+      console.log(date);
 
       //生徒の特定
-      var db = firebase.firestore();
-      db.collection("test小学校_5年1組").doc("英語")
-        // db.collection("本町小学校_5年2組").doc("英語")
+      // var db = firebase.firestore();
+      var db = firebase.database();
+
+      // db.collection("test小学校_5年1組").doc("英語")
+      // db.collection("本町小学校_5年2組").doc("英語")
+      // db.ref("test小学校_5年2組")
+      db.ref("本町小学校_5年2組")
         .get().then((doc) => {
           if (doc.exists) {
-            memberID = doc.data().actorID;
-            memberNum = doc.data().student_num;
-            // console.log(memberID);
-            // console.log(memberNum);
+            // memberID = doc.data().actorID;
+            // memberNum = doc.data().student_num;
+            memberID = doc.val().actorID;
+            memberNum = doc.val().student_num;
+            console.log(memberID);
+            console.log(memberNum);
+            // console.log("ssss");
             for (let i = 1; i <= memberNum; i++) {
               let id;
               if (i < 10) {
@@ -230,16 +244,17 @@
 
       //選択した日時のデータをデータベースから持ってくる
       // db.collection("test学校").doc("5年1組").collection("英語").where("day", "==", choicedate.value)//.orderBy("time", "desc") //日付順に並べる
-      db.collection("test小学校_5年1組").doc("英語").collection(choicedate.value).orderBy("time")//.limit(1)
-        // db.collection("本町小学校_5年2組").doc("英語").collection(choicedate.value).orderBy("time")//.limit(1)
+      // db.collection("test小学校_5年1組").doc("英語").collection(choicedate.value).orderBy("time")//.limit(1)
+      // db.collection("本町小学校_5年2組").doc("英語").collection(choicedate.value).orderBy("time")//.limit(1)
+      // db.ref("test小学校_5年2組/" + choicedate.value)//.orderBy("time")//.limit(1)
+      db.ref("本町小学校_5年2組/" + date)//.orderBy("time")//.limit(1)
         .get()
         .then((query) => {
           result = [];
           query.forEach((doc) => {
-            var data = doc.data();
-            // console.log(doc.id, " => ", doc.data());
-            // startTime = data.time;
-            // console.log(startTime);
+            // var data = doc.data();
+            var data = doc.val();
+
             result.push([data.time, data.index, data.actor, data.action, data.bookId, data.chapter, data.type, data.pageIdx, data.appId, data.target]);
           });
           console.log(result);
@@ -256,7 +271,7 @@
           // console.log(num);
           // console.log("num");
 
-          
+
           if (studentChart) {
             studentChart.destroy();
           }

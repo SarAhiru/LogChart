@@ -12,25 +12,25 @@
   <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script> -->
   <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> -->
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
-      authDomain: "digitaltextbook-log.firebaseapp.com",
-      projectId: "digitaltextbook-log",
-      storageBucket: "digitaltextbook-log.appspot.com",
-      messagingSenderId: "183191791064",
-      appId: "1:183191791064:web:76bab35c17af1ed2677ead",
-      measurementId: "G-8QVFYZZZX4"
-    };
     // const firebaseConfig = {
-    //   apiKey: "AIzaSyBLMcvO4956nbGA_1v8gzVYjlkZFiGcL_g",
-    //   authDomain: "test-f3377.firebaseapp.com",
-    //   databaseURL: "https://test-f3377-default-rtdb.firebaseio.com",
-    //   projectId: "test-f3377",
-    //   storageBucket: "test-f3377.appspot.com",
-    //   messagingSenderId: "175518244773",
-    //   appId: "1:175518244773:web:cadb4b78bc5270e84c924c",
-    //   measurementId: "G-1YFKTPPN7L"
+    //   apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
+    //   authDomain: "digitaltextbook-log.firebaseapp.com",
+    //   projectId: "digitaltextbook-log",
+    //   storageBucket: "digitaltextbook-log.appspot.com",
+    //   messagingSenderId: "183191791064",
+    //   appId: "1:183191791064:web:76bab35c17af1ed2677ead",
+    //   measurementId: "G-8QVFYZZZX4"
     // };
+    const firebaseConfig = {
+      apiKey: "AIzaSyBLMcvO4956nbGA_1v8gzVYjlkZFiGcL_g",
+      authDomain: "test-f3377.firebaseapp.com",
+      databaseURL: "https://test-f3377-default-rtdb.firebaseio.com",
+      projectId: "test-f3377",
+      storageBucket: "test-f3377.appspot.com",
+      messagingSenderId: "175518244773",
+      appId: "1:175518244773:web:cadb4b78bc5270e84c924c",
+      measurementId: "G-1YFKTPPN7L"
+    };
     // init firebase
     firebase.initializeApp(firebaseConfig); // バックエンドのfirebaseを初期化する
   </script>
@@ -122,19 +122,26 @@
       let schooldata;
       schooldata = schoolName + "_" + className;
 
-      // test(result, schoolName, className, classNum, subject);
-      test(result, schooldata, classNum, subject);
+      remove(schooldata);
+      // test(result, schooldata, classNum, subject);
     });
 
 
+    function remove(schooldata) {
+      var db = firebase.database();
+      db.ref(schooldata).remove();
+      console.log("削除完了");
+    }
+
     // function test(result, schoolName, className, classNum, subject) { //dbに書き込み
     function test(result, schooldata, classNum, subject) {
-      let actorId = result[0][2];
-      actorID = actorId.substring(0, 10);
-      // console.log(actorID);
+      let actorId = result[1][2];
+      actorID = actorId.substr(0, 10);
+      console.log(actorID);
 
       var db = firebase.database();
 
+      // cloud firestoreの方
       // var db = firebase.firestore();
       // db.collection(schoolName).doc(className).set({
       //   student_num: classNum
@@ -143,22 +150,44 @@
       //   student_num: classNum,
       //   actorID: actorID
       // });
+
+
       db.ref(schooldata).update({
-          'student_num': classNum,
-          'actorID': actorID
+        'student_num': classNum,
+        'actorID': actorID
       });
       // console.log("collect");
 
       for (let i = 0; i < result.length /*- 1*/; i++) {
         let dayTime = result[i][0];
-        let time = dayTime.substring(11, 19);
+        let d = new Date(dayTime);
+        // console.log(date);
+        // console.log(d.toLocaleString());
 
-        let year = dayTime.substring(0, 4);
-        let month = dayTime.substring(5, 7);
-        let day = dayTime.substring(8, 10);
+        let hour = d.getHours();
+        let minute = d.getMinutes();
+        let time;
+        if (hour < 10 || minute < 10) {
+          let minute2 = minute;
+          let hour2 = hour;
+          if (hour < 10) {
+            hour2 = "0" + String(hour);
+          }
+          if (minute < 10) {
+            minute2 = "0" + String(minute);
+          }
+          time = hour2 + ":" + minute2;
+        }
+        else {
+          time = hour + ":" + minute;
+        }
 
+        let year = d.getFullYear();
+        let month = d.getMonth() + 1;
+        let day = d.getDate();
         let date;
         date = year + "-" + month + "-" + day;
+        // console.log(time);
 
         // console.log(time);
         // db.collection(schoolName).doc(className).collection(subject).doc(String(i)).set({ //任意のIDで登録(そのうち日時順にしたほうがいい？)
@@ -176,30 +205,31 @@
         //   appId: result[i][8],
         //   target: result[i][9]
         // })
-        var pushed = db.ref(schooldata + '/'+ date).push();
+        var pushed = db.ref(schooldata + '/' + date).push();
         var id = pushed.key;
         db.ref(pushed).set({
           // pushed: {
-            'day': date,
-            'time': time,
-            'index': result[i][1],
-            'actor': result[i][2],
-            'action': result[i][3],
-            'bookId': result[i][4],
-            'chapter': result[i][5],
-            'type': result[i][6],
-            'pageIdx': result[i][7],
-            'appId': result[i][8],
-            'target': result[i][9]
+          'day': date,
+          'time': time,
+          'index': result[i][1],
+          'actor': result[i][2],
+          'action': result[i][3],
+          'bookId': result[i][4],
+          'chapter': result[i][5],
+          'type': result[i][6],
+          'pageIdx': result[i][7],
+          'appId': result[i][8],
+          'target': result[i][9]
           // }
         })
-          .then(function () {
-            console.log("Document successfully written!");
-          })
+          // .then(function () {
+          //   console.log("Document successfully written!");
+          // })
           .catch(function (error) {
             console.error("Error writing document: ", error);
           });
       }
+      console.log("登録完了");
     }
   </script>
   <br><br>

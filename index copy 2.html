@@ -1,0 +1,505 @@
+<!-- database連携で、ログを可視化するページ リアルタイム -->
+
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+  <!--Vue.jsの読み込み-->
+  <!-- <script src="https://unpkg.com/vue@3.2.31"></script> -->
+  <!--Chart.jsの読み込み-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+
+  <!-- グラフ内に数字を入れる -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script> -->
+  <!-- <script>
+    // Chart.register(ChartDataLabels);
+  </script> -->
+
+  <link rel="stylesheet" href="StyleSheet0.css" />
+
+  <!-- Firebase と Cloud Firestore のライブラリ -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase.js"></script>
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script> -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
+      authDomain: "digitaltextbook-log.firebaseapp.com",
+      projectId: "digitaltextbook-log",
+      storageBucket: "digitaltextbook-log.appspot.com",
+      messagingSenderId: "183191791064",
+      appId: "1:183191791064:web:76bab35c17af1ed2677ead",
+      measurementId: "G-8QVFYZZZX4"
+    };
+    // const firebaseConfig = {
+    //   apiKey: "AIzaSyBLMcvO4956nbGA_1v8gzVYjlkZFiGcL_g",
+    //   authDomain: "test-f3377.firebaseapp.com",
+    //   databaseURL: "https://test-f3377-default-rtdb.firebaseio.com",
+    //   projectId: "test-f3377",
+    //   storageBucket: "test-f3377.appspot.com",
+    //   messagingSenderId: "175518244773",
+    //   appId: "1:175518244773:web:cadb4b78bc5270e84c924c",
+    //   measurementId: "G-1YFKTPPN7L"
+    // };
+    // init firebase
+    firebase.initializeApp(firebaseConfig) // バックエンドのfirebaseを初期化する
+  </script>
+
+  <title>学習履歴 可視化</title>
+</head>
+
+<body>
+
+  <!--.jsと連携-->
+  <script type="text/javascript" src="actor.js"></script>
+  <script type="text/javascript" src="lavel.js"></script>
+  <script type="text/javascript" src="count.js"></script>
+
+  <!--英語　ログ　(棒グラフ)　[機能合計]-->
+  <script type="text/javascript" src="totalChart1min.js"></script>
+  <!-- ヒートマップ -->
+  <script src="heatmap.js"></script>
+  <!--英語　ログ　(棒グラフ)　[機能合計]-->
+  <!-- <script type="text/javascript" src="totalChart1min_2.js"></script> -->
+  <!--英語　ログ　(棒グラフ)　[機能ごと]-->
+  <script type="text/javascript" src="targetEnChart1min.js"></script>
+  <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
+  <script type="text/javascript" src="numChart1min.js"></script>
+
+
+  <header>
+    <form>
+      <p>
+        <br>
+        ①日付を選択　　　　　▷　
+        <input type="date" name="date" id="selectDate">
+        <br>
+        ②時間を選択　　　　　▷　
+        <input type="time" name="startTime" id="startTime">　～　
+        <input type="time" name="finishTime" id="finishTime">
+      </p>
+      <!-- <p id="selectDate">Change the Date</p> -->
+    </form>
+  </header>
+
+
+  <p>
+    <input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
+    <input type="button" onclick="location.href='./classseat.html'" value="　座席　">
+    <a href="index.html">持っているデータを使う</a>　　
+    <a href="dataSet.html">データ登録</a>
+  </p>
+  <br>
+
+  <!-- <div class="area">
+    <input type="radio" name="tab_name" id="tab1" checked>
+    <label class="tab_class" for="tab1">グラフ</label>
+    <div class="content_class">
+      <p>タブ1のコンテンツを表示します</p> -->
+  <!-- <script>
+        drawBarChart(member, time, num);
+        // drawBarChart(result, dataLength, member, time);
+        //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
+        drawChartTarget(result, dataLength, member, time, startnum, finishnum);
+        drawStuNumChart(result, dataLength, member, time, startnum, finishnum);
+        heatmap(member, time, num);
+      </script> -->
+  <!-- </div>
+    <input type="radio" name="tab_name" id="tab2">
+    <label class="tab_class" for="tab2">音声再生</label>
+    <div class="content_class">
+      <p>タブ2のコンテンツを表示します</p>
+    </div>
+    <input type="radio" name="tab_name" id="tab3">
+    <label class="tab_class" for="tab3">座席</label>
+    <div class="content_class">
+      <p>タブ3のコンテンツを表示します</p>
+    </div>
+    <input type="radio" name="tab_name" id="tab4">
+    <label class="tab_class" for="tab4">タブ4</label>
+    <div class="content_class">
+      <p>タブ4のコンテンツを表示します</p>
+    </div>
+    <input type="radio" name="tab_name" id="tab5">
+    <label class="tab_class" for="tab5">タブ5</label>
+    <div class="content_class">
+      <p>タブ5のコンテンツを表示します</p>
+    </div>
+  </div> -->
+
+
+
+
+  <article>
+    <!-- <h1>個人表示</h1> -->
+    <div>
+      <p>＝児童ごとの操作回数の合計＝</p>
+      <!--<div style="width:50%;"></div>-->
+      <canvas id="studentChart" width="300" height="100"></canvas>
+    </div>
+    <div>
+      <canvas id="heatMap" width="300" height=" 150"></canvas>
+    </div>
+    <br><br>
+    <!-- <h1>全体表示</h1>
+    <div>
+    <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p>
+    <div style="width:50%;"></div>
+    <canvas id="myChart" width="2500" height="350"></canvas>
+    </div>
+    <br><br> -->
+
+    <div>
+      <p>＝機能ごとの操作回数の合計＝</p>
+      <canvas id="targetChart" width="300" height=" 100"></canvas>
+    </div>
+    <br><br>
+    <div>
+      <p>＝操作人数の合計＝</p>
+      <canvas id="numChart" width="300" height=" 100"></canvas>
+    </div>
+    <br><br>
+  </article>
+
+
+  <!--以下でデータの読み込みを行う-->
+  <script>
+    // console.log("通過しました!!!");
+    let result = []; //csvの中身
+    let dataLength = 0; //データの長さ
+    let member = []; //生徒
+    let memberID;
+    let memberNum;
+
+    let time = []; //時間
+    let num = []; //回数
+
+    let startnum = 0;
+    let finishnum = 0;
+    let choiceday = "2022/4/22";
+
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth() + 1;
+    let day = today.getDate();
+    // let date = year + "-" + month + "-" + day;
+    let date = "2022-3-3";
+    console.log(date);
+
+
+    // var db = firebase.database().ref("本町小学校_5年2組/" + date);
+    var db = firebase.database();
+
+    db.ref("本町小学校_5年2組")
+      .get().then((doc) => {
+        if (doc.exists) {
+          // memberID = doc.data().actorID;
+          // memberNum = doc.data().student_num;
+          memberID = doc.val().actorID;
+          memberNum = doc.val().student_num;
+          console.log(memberID);
+          console.log(memberNum);
+          // console.log("ssss");
+          for (let i = 1; i <= memberNum; i++) {
+            let id;
+            if (i < 10) {
+              id = "0" + i;
+            } else {
+              id = i;
+            }
+            member[i - 1] = memberID + id;
+          }
+          console.log(member);
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      }).catch((error) => {
+        console.log(`データの取得に失敗しました (${error})`);
+      });
+
+    db.ref("本町小学校_5年2組/" + date)//.orderBy("time")//.limit(1)
+      .get()
+      .then((query) => {
+        result = [];
+        query.forEach((doc) => {
+          // var data = doc.data();
+          var data = doc.val();
+
+          result.push([data.time, data.index, data.actor, data.action, data.bookId, data.chapter, data.type, data.pageIdx, data.appId, data.target]);
+        });
+        console.log(result);
+        //横軸を決定
+        [time, startTime, finishTime] = lavel2(result);
+
+        startnum = 0;
+        finishnum = result.length - 1;
+        // console.log(finishnum)
+        num = countttt(result, member, time, startnum, finishnum);
+        // num = count2(result, member, time, startnum, finishnum);
+
+        if (studentChart) {
+          studentChart.destroy();
+        }
+        if (heatMap) {
+          heatMap.destroy();
+        }
+        if (targetChart) {
+          targetChart.destroy();
+        }
+        if (numChart) {
+          numChart.destroy();
+        }
+
+        drawBarChart(member, time, num);
+        heatmap(member, time, num);
+        drawChartTarget2(result, time, startnum, finishnum);
+        drawStuNumChart(member, time, num);
+      })
+      .catch((error) => {
+        console.log(`データの取得に失敗しました (${error})`);
+      });
+    
+    // 各グラフの型を表示させておく
+    drawBarChart(member, time, num);
+    heatmap(member, time, num);
+    drawChartTarget2(result, time, startnum, finishnum);
+    drawStuNumChart(member, time, num);
+
+
+    // 日付選択をしたら開始されるようにする
+    // let choicedate = document.querySelector(`input[type='date'][name='date']`);
+    // let startTime = document.querySelector(`input[type='time'][name='startTime']`);
+    // let finishTime = document.querySelector(`input[type='time'][name='finishTime']`);
+
+    //日付が選択されたらイベントリスナー発火
+    // choicedate.addEventListener(`change`, function () {
+
+    //   document.querySelector(`#selectDate`).innerHTML = choicedate.value;
+    //   // choiceday = choiceDay(choicedate);
+    //   // let d = new Date(choicedate.value);
+    //   // let year = d.getFullYear();
+    //   // let month = d.getMonth() + 1;
+    //   // let day = d.getDate();
+    //   // let date;
+    //   // date = year + "-" + month + "-" + day;
+    //   // console.log(date);
+
+    //   //生徒の特定
+    //   // var db = firebase.firestore();
+    //   var db = firebase.database();
+
+    //   // db.collection("test小学校_5年1組").doc("英語")
+    //   // db.collection("本町小学校_5年2組").doc("英語")
+    //   // db.ref("test小学校_5年2組")
+    //   db.ref("本町小学校_5年2組")
+    //     .get().then((doc) => {
+    //       if (doc.exists) {
+    //         // memberID = doc.data().actorID;
+    //         // memberNum = doc.data().student_num;
+    //         memberID = doc.val().actorID;
+    //         memberNum = doc.val().student_num;
+    //         console.log(memberID);
+    //         console.log(memberNum);
+    //         // console.log("ssss");
+    //         for (let i = 1; i <= memberNum; i++) {
+    //           let id;
+    //           if (i < 10) {
+    //             id = "0" + i;
+    //           } else {
+    //             id = i;
+    //           }
+    //           member[i - 1] = memberID + id;
+    //         }
+    //         console.log(member);
+    //       } else {
+    //         // doc.data() will be undefined in this case
+    //         console.log("No such document!");
+    //       }
+    //     }).catch((error) => {
+    //       console.log(`データの取得に失敗しました (${error})`);
+    //     });
+
+    //   //選択した日時のデータをデータベースから持ってくる
+    //   // db.collection("test学校").doc("5年1組").collection("英語").where("day", "==", choicedate.value)//.orderBy("time", "desc") //日付順に並べる
+    //   // db.collection("test小学校_5年1組").doc("英語").collection(choicedate.value).orderBy("time")//.limit(1)
+    //   // db.collection("本町小学校_5年2組").doc("英語").collection(choicedate.value).orderBy("time")//.limit(1)
+    //   // db.ref("test小学校_5年2組/" + choicedate.value)//.orderBy("time")//.limit(1)
+    //   db.ref("本町小学校_5年2組/" + date)//.orderBy("time")//.limit(1)
+    //     .get()
+    //     .then((query) => {
+    //       result = [];
+    //       query.forEach((doc) => {
+    //         // var data = doc.data();
+    //         var data = doc.val();
+
+    //         result.push([data.time, data.index, data.actor, data.action, data.bookId, data.chapter, data.type, data.pageIdx, data.appId, data.target]);
+    //       });
+    //       console.log(result);
+    //       //横軸を決定
+    //       [time, startTime, finishTime] = lavel2(result);
+
+    //       // let dataLength = result.length;
+    //       let startnum = 0;
+    //       let finishnum = result.length - 1;
+    //       // console.log(finishnum)
+    //       num = countttt(result, member, time, startnum, finishnum);
+    //       // num = count2(result, member, time, startnum, finishnum);
+
+    //       // console.log(num);
+    //       // console.log("num");
+
+
+    //       if (studentChart) {
+    //         studentChart.destroy();
+    //       }
+    //       if (heatMap) {
+    //         heatMap.destroy();
+    //       }
+    //       if (targetChart) {
+    //         targetChart.destroy();
+    //       }
+    //       if (numChart) {
+    //         numChart.destroy();
+    //       }
+
+    //       drawBarChart(member, time, num);
+    //       heatmap(member, time, num);
+    //       drawChartTarget2(result, time, startnum, finishnum);
+    //       drawStuNumChart(member, time, num);
+    //     })
+    //     .catch((error) => {
+    //       console.log(`データの取得に失敗しました (${error})`);
+    //     });
+    //   // db.collection("test学校_5年1組").doc("英語").collection(choicedate.value).orderBy("time", "desc").limit(1)
+    //   //   .get()
+    //   //   .then((query) => {
+    //   //     result = [];
+    //   //     query.forEach((doc) => {
+    //   //       var data = doc.data();
+    //   //       finishTime = data.time;
+    //   //       console.log(finishTime);
+    //   //     });
+    //   //   });
+
+
+    //   // console.log(startTime + "  " + finishTime);
+
+    //   // for (let i = 0; i < time.length; i++) {
+    //   //   db.collection("本町小学校_5年2組").doc("英語").collection(choicedate.value).where("time", "==", time[i])
+    //   //     .get()
+    //   //     .then((query) => {
+    //   //       result = [];
+    //   //       query.forEach((doc) => {
+    //   //         var data = doc.data();
+    //   //         // console.log(doc.id, " => ", doc.data());
+    //   //         result.push([data.time, data.actor, data.target]);
+    //   //       });
+    //   //       console.log(result);
+    //   //       console.log(result.length);
+
+    //   //       //横軸を決定
+    //   //       [time, startTime, finishTime] = lavel2(result);
+    //   //     })
+    //   //     .catch((error) => {
+    //   //       console.log(`データの取得に失敗しました (${error})`);
+    //   //     });
+    //   // }
+
+
+    //   //横軸を決定
+    //   // [time, startnum, finishnum] = lavel2(result);
+    //   // console.log(time);
+    //   // num = count2(result, member, time, startTime, finishTime);
+    //   // num = count(result, member, time, startnum, finishnum);
+
+    //   // if (studentChart) {
+    //   //   studentChart.destroy();
+    //   // }
+    //   // if (heatMap) {
+    //   //   heatMap.destroy();
+    //   // }
+    //   // if (targetChart) {
+    //   //   targetChart.destroy();
+    //   // }
+    //   // if (numChart) {
+    //   //   numChart.destroy();
+    //   // }
+
+    //   // drawBarChart(member, time, num);
+    //   // // drawBarChart(result, dataLength, member, time);
+    //   // //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
+    //   // drawChartTarget(result, dataLength, member, time, startnum, finishnum);
+    //   // drawStuNumChart(result, dataLength, member, time, startnum, finishnum);
+    //   // heatmap(member, time, num);
+    // });
+
+
+    // //時間が選択されたらイベントリスナー発火
+    // startTime.addEventListener(`change`, function () {
+    //   document.querySelector(`#startTime`).innerHTML = startTime.value;
+
+    //   //選択した日時のデータをデータベースから持ってくる
+    //   var db = firebase.firestore();
+    //   db.collection("test学校").doc("5年1組").collection("英語").where("date", ">", 27).orderBy("time") //日付順に並べる
+    //     .get()
+    //     .then((query) => {
+    //       result = [];
+    //       query.forEach((doc) => {
+    //         var data = doc.data();
+    //         // console.log(doc.id, " => ", doc.data());
+    //         result.push([doc.id, data.date, data.target]);
+    //       });
+    //       console.log(result);
+    //     })
+    //     .catch((error) => {
+    //       console.log(`データの取得に失敗しました (${error})`);
+    //     });
+
+
+    //   console.log("result[2]");
+    //   console.log(result);
+
+    //   //横軸を決定
+    //   [time, startnum, finishnum] = lavel(result, choicedate);
+    //   // console.log(time);
+    //   num = count(result, member, time, startnum, finishnum);
+
+    //   if (studentChart) {
+    //     studentChart.destroy();
+    //   }
+    //   if (heatMap) {
+    //     heatMap.destroy();
+    //   }
+    //   if (targetChart) {
+    //     targetChart.destroy();
+    //   }
+    //   if (numChart) {
+    //     numChart.destroy();
+    //   }
+
+    //   drawBarChart(member, time, num);
+    //   // drawBarChart(result, dataLength, member, time);
+    //   //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
+    //   drawChartTarget(result, dataLength, member, time, startnum, finishnum);
+    //   drawStuNumChart(result, dataLength, member, time, startnum, finishnum);
+    //   heatmap(member, time, num);
+    // });
+
+
+    // var dbChange = firebase.database().ref("本町小学校_5年2組/" + date);
+    // // comments以下に追加があった時に発動
+    // dbChange.on('child_added', function (data) {
+    //   addCommentElement(data.val());
+    // });
+
+
+  </script>
+  <br><br>
+</body>
+
+</html>
