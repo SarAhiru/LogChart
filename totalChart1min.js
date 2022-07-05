@@ -372,6 +372,7 @@ function drawBarChart(member, time, num) {
       ]*/
       },
       options: {
+        animation: false,
         scales: {
           x: {
             categoryPercentage: 1.1,

@@ -90,6 +90,7 @@ function drawStuNumChart(member, time, num) {
       }]
     },
     options: {
+      animation: false,
       plugins: {
         tooltip: {
           callbacks: {

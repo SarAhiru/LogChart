@@ -121,6 +121,7 @@ function lavel(result, choicedate) {
 
 // 時間選択した際の横軸ラベル作成
 function lavelChenge(result, choicedate, startTime, finishTime) {
+  // console.log(startTime)
   //横軸ラベル作成
   let label = []; // グラフ横軸　配列
   let lognum = 0; //配列番号カウント用
@@ -227,23 +228,15 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
                   break;
                 }
               }
-
-              // //ここから分析する
-              // let logActor = result[x][2]; // actor取得
-
-              // //操作回数
-              // membernum = member.indexOf(logActor);
-              // num[0][lognum] ++; // num[0]は全体合計
-              // num[membernum][lognum] ++;
             }
           }
         }
       }
     }
   }
-  console.log(label);
-  console.log(startnum);
-  console.log(finishnum);
+  // console.log(label);
+  // console.log(startnum);
+  // console.log(finishnum);
   return [label, startnum, finishnum];
 }
 

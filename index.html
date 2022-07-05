@@ -63,7 +63,10 @@
     <div class="timesetChart" style="position:absolute; top:10px; left:500px; width:350px; height:300px;">
       <!-- style="width:500px;"  -->
       <canvas id="timeset" width="300" height="80"></canvas>
-      <!-- <canvas id="timeset" width="300" height="100"></canvas> -->
+    </div>
+    <div class="slidebar-multithumb" style="position:absolute; top:95px; left:520px; width:340px;">
+      <input class="thumb-1" type="range" name="range1" id="range1" value="0" min="0" max="100" step="1">
+      <input class="thumb-2" type="range" name="range2" id="range2" value="100" min="0" max="100" step="1">
     </div>
   </header>
 
@@ -75,6 +78,7 @@
     <!-- <a href="EnglishSound.html">音声再生</a> -->
     <!-- <a href="classseat.html">座席</a>　　 -->
     　<a href="index copy.html">登録しているデータを使う</a>
+    　<a href="index copy 2.html">リアルタイムに使う</a>
     <!-- <a href="dataSet.html">データ登録</a> -->
   </p>
   <br>
@@ -127,14 +131,6 @@
       <canvas id="heatMap" width="300" height=" 150"></canvas>
     </div>
     <br><br>
-    <!-- <h1>全体表示</h1> -->
-    <!-- <div> -->
-      <!-- <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p> -->
-      <!--<div style="width:50%;"></div>-->
-      <!-- <canvas id="myChart" width="2500" height="350"></canvas> -->
-    <!-- </div> -->
-    <!-- <br><br> -->
-
     <div>
       <p>＝機能ごとの操作回数の合計＝</p>
       <canvas id="targetChart" width="300" height=" 100"></canvas>
@@ -186,7 +182,7 @@
     //     convertCSVtoArray(req.responseText); // 渡されるのは読み込んだCSVデータ
     //   }
     // }
-    
+
     // function convertCSVtoArray(txt) { // 読み込んだCSVデータが文字列として渡される
     //   //読み取ったcsvデータを配列に格納
     //   //var arr = txt.split("\r\n" || "\n" || "\r");
@@ -211,6 +207,7 @@
 
 
     //ファイルを読み取ったら実行
+
     fileReader.onload = () => {
       var txt = fileReader.result;
 
@@ -226,7 +223,7 @@
       //逆順
       // result.reverse();
 
-      //操作している人を取り出す(※本当は児童を指定しておきたい)
+      //操作している人を取り出す
       member = actor(result); //actor.js
     }
 
@@ -234,7 +231,15 @@
     // 日付選択をしたら開始されるようにする
     let choicedate = document.querySelector(`input[type='date'][name='date']`);
     let startTime = document.querySelector(`input[type='time'][name='startTime']`);
+    // startTime = startTime.value;
     let finishTime = document.querySelector(`input[type='time'][name='finishTime']`);
+    // finishTime = finishTime.value;
+    let range1 = document.querySelector(`input[type='range'][name='range1']`);
+    let range2 = document.querySelector(`input[type='range'][name='range2']`);
+    let selectTime;//全体の時間の長さ
+    let permin;//１分がどのくらいの長さになるのか
+    let mintime;
+    let maxtime;
 
     //日付が選択されたらイベントリスナー発火
     choicedate.addEventListener(`change`, function () {
@@ -246,7 +251,13 @@
       totalnum = totalcount(result, time, startnum, finishnum);
       num = count(result, member, time, startnum, finishnum);
       startTime.value = time[0];
-      finishTime.value = time[time.length-1];
+      finishTime.value = time[time.length - 1];
+
+      //時間選択グラフ用
+      selectTime = time.length;
+      permin = 100 / selectTime;
+      mintime = time[0];
+      maxtime = time[time.length - 1];
 
       if (timeset) {
         timeset.destroy();
@@ -257,9 +268,6 @@
       if (studentChart) {
         studentChart.destroy();
       }
-      // if (myChart) {
-      //   myChart.destroy();
-      // }
       if (targetChart) {
         targetChart.destroy();
       }
@@ -275,14 +283,19 @@
       drawStuNumChart(member, time, num); // numChart1min.js
     });
 
-    // let selectTime = [];
 
     // 時間選択したら開始されるようにしたい
     startTime.addEventListener(`change`, function () {
-      document.querySelector(`#startTime`).innerHTML 
-      
-      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
+      document.querySelector(`#startTime`).innerHTML = startTime.value;
+      let snum;
+      [time, snum, finishnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
+      // console.log(startnum);
+      startnum = snum;
       num = count(result, member, time, startnum, finishnum);
+
+      let changetime = (startTime.value.substring(0, 2) - mintime.substring(0, 2)) * 60 + (startTime.value.substring(3, 5) - mintime.substring(3, 5))
+      console.log(changetime);
+      range1.value = changetime * permin;
 
       if (studentChart) {
         studentChart.destroy();
@@ -305,10 +318,15 @@
 
     finishTime.addEventListener(`change`, function () {
       document.querySelector(`#finishTime`).innerHTML = finishTime.value;
+      let fnum
       //横軸を決定
-      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
-      // console.log(time);
+      [time, startnum, fnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
+      finishnum = fnum;
       num = count(result, member, time, startnum, finishnum);
+
+      let changetime = (maxtime.substring(0, 2) - finishTime.value.substring(0, 2)) * 60 + (maxtime.substring(3, 5) - finishTime.value.substring(3, 5))
+      console.log(changetime);
+      range2.value = 100 - changetime * permin;
 
       if (studentChart) {
         studentChart.destroy();
@@ -322,7 +340,6 @@
       if (numChart) {
         numChart.destroy();
       }
-      
 
       drawBarChart(member, time, num);
       heatmap(member, time, num);
@@ -330,6 +347,93 @@
       drawStuNumChart(member, time, num);
     });
 
+    range1.addEventListener(`change`, function () {
+      document.querySelector(`#range1`).innerHTML
+      // console.log(range1.value)
+      let changetime = Math.floor(range1.value / permin);
+      // console.log(changetime);
+      let hour = parseInt(mintime.substring(0, 2)) + Math.floor(changetime / 60);
+      // console.log(hour);
+      let minute = parseInt(mintime.substring(3, 5)) + changetime % 60;
+      startTime = hour + ":" + minute;
+      if (minute > 60) {
+        hour2 = hour + 1;
+        minute2 = minute - 60;
+        startTime = hour2 + ":" + minute2;
+      }
+      console.log(startTime)
+      var ctime = document.querySelector(`input[type='time'][name='startTime']`);
+      ctime.value = startTime;
+
+      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime, finishTime.value);
+      num = count(result, member, time, startnum, finishnum);
+
+
+      if (studentChart) {
+        studentChart.destroy();
+      }
+      if (heatMap) {
+        heatMap.destroy();
+      }
+      if (targetChart) {
+        targetChart.destroy();
+      }
+      if (numChart) {
+        numChart.destroy();
+      }
+
+      drawBarChart(member, time, num);
+      heatmap(member, time, num);
+      drawChartTarget(result, time, startnum, finishnum);
+      drawStuNumChart(member, time, num);
+    });
+
+    range2.addEventListener(`change`, function () {
+      document.querySelector(`#range2`).innerHTML
+      // console.log(range2.value);
+      let changetime = Math.floor(range2.value / permin);
+      // console.log(changetime);
+      let hour = parseInt(mintime.substring(0, 2)) + Math.floor(changetime / 60);
+      // console.log(hour);
+      let minute = parseInt(mintime.substring(3, 5)) + changetime % 60;
+      // console.log(minute);
+      finishTime = hour + ":" + minute;
+      if (parseInt(minute) >= 60) {
+        hour2 = hour + 1;
+        minute2 = minute - 60;
+        console.log(minute2);
+        finishTime = hour2 + ":" + minute2;
+        if (minute2 < 10) {
+          finishTime = hour2 + ":0" + minute2;
+        }
+        console.log(finishTime);
+      }
+      console.log(finishTime);
+      var ctime = document.querySelector(`input[type='time'][name='finishTime']`);
+      ctime.value = finishTime;
+
+      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime, finishTime);
+      num = count(result, member, time, startnum, finishnum);
+
+
+      if (studentChart) {
+        studentChart.destroy();
+      }
+      if (heatMap) {
+        heatMap.destroy();
+      }
+      if (targetChart) {
+        targetChart.destroy();
+      }
+      if (numChart) {
+        numChart.destroy();
+      }
+
+      drawBarChart(member, time, num);
+      heatmap(member, time, num);
+      drawChartTarget(result, time, startnum, finishnum);
+      drawStuNumChart(member, time, num);
+    });
 
     // //. クリックイベントハンドラー
     // ctx.addEventListener( 'click', function( evt ){

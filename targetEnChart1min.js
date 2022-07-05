@@ -43,7 +43,7 @@ function drawChartTarget(result, time, startnum, finishnum) {
           datanum++;
         }
       }
-      console.log(datanum);
+      // console.log(datanum);
 
 
       if (logTarget.includes('index')) { // indexの文字を含んでいるのかどうか
@@ -114,7 +114,7 @@ function drawChartTarget(result, time, startnum, finishnum) {
       ]
     },
     options: {
-
+      animation: false,
       scales: {
         y: {
           ticks: {
@@ -205,22 +205,22 @@ function drawChartTarget2(result, time, startnum, finishnum) {
 
 
       if (logTarget.includes('index')) { // indexの文字を含んでいるのかどうか
-        indexCount[datanum-1]++;
+        indexCount[datanum]++;
       }
       else if (logTarget.includes('cp')) {
-        cpCount[datanum-1]++;
+        cpCount[datanum]++;
       }
       else if (logTarget.includes('audio')) {
         if (logTarget.includes('audio volume')) {
         } else {
-          audioCount[datanum-1]++;
+          audioCount[datanum]++;
         }
       }
       else if (logTarget.includes('color')) {
-        penColorCount[datanum-1]++;
+        penColorCount[datanum]++;
       }
       else if (logTarget.includes('true') || logTarget.includes('penType')) {
-        penCount[datanum-1]++;
+        penCount[datanum]++;
       }
     }
   }
@@ -272,7 +272,7 @@ function drawChartTarget2(result, time, startnum, finishnum) {
       ]
     },
     options: {
-
+      animation: false,
       scales: {
         y: {
           ticks: {

@@ -122,8 +122,8 @@
       let schooldata;
       schooldata = schoolName + "_" + className;
 
-      remove(schooldata);
-      // test(result, schooldata, classNum, subject);
+      // remove(schooldata);
+      test(result, schooldata, classNum, subject);
     });
 
 
@@ -205,9 +205,9 @@
         //   appId: result[i][8],
         //   target: result[i][9]
         // })
-        var pushed = db.ref(schooldata + '/' + date).push();
-        var id = pushed.key;
-        db.ref(pushed).set({
+        var pushed = db.ref(schooldata + '/' + date);//.push();
+        // var id = pushed.key;
+        db.ref(pushed).push({
           // pushed: {
           'day': date,
           'time': time,

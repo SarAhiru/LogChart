@@ -205,7 +205,7 @@ function countttt(result, member, time, startnum, finishnum) {
             if (logTarget.includes('audio volume')) {
 
             } else {
-                num[membernum][datanum - 1]++;
+                num[membernum][datanum]++;
             }
 
 
@@ -283,7 +283,9 @@ function countttt(result, member, time, startnum, finishnum) {
 //     return num;
 // }
 
-function count2(result, member, time, startnum, finishnum) {
+// リアルタイム用
+
+function count2(result, member, time) {
     // console.log(startnum);
     // console.log(finishnum);
 
@@ -307,7 +309,7 @@ function count2(result, member, time, startnum, finishnum) {
     }
 
     if (result.length > 0) {
-        for (let x = startnum; x <= finishnum; x++) {
+        for (let x = 0; x <= result.length-1; x++) {
             let logDate = result[x][0]; // date取得
             let logActor = result[x][2]; // actor取得
             let logTarget = result[x][9]; // target取得
@@ -318,23 +320,40 @@ function count2(result, member, time, startnum, finishnum) {
             //今回のデータは何人目の生徒なのか
             membernum = member.indexOf(logActor);
 
-            //横軸時間管理
-            let date = new Date(logDate);
-            console.log(logDate);
-
             //始めだけfirst timeを設定
             if (judge == 0) {
-                ftime = new Date(logDate);
+                ftime = logDate;
                 datanum = 0;
                 judge = 1;
             }
             else {
-                console.log(date.getTime());
-                console.log(ftime.getTime());
-                while (date.getTime() > ftime.getTime()) { //1分経過したのかを判断
-                    ftime.setMinutes(ftime.getMinutes() + 1);
+                while (logDate > ftime) { //1分経過したのかを判断
+                    // console.log("1分経過");
+                    let hour = parseInt(ftime.substring(0, 2));
+                    let minute = parseInt(ftime.substring(3, 5));
+
+                    minute = minute + 1;
+                    if (minute >= 60) { //60分より大きい場合の調整
+                        minute = 00;
+                        hour = hour + 1;
+                    }
+
+                    if (minute < 10 || hour < 10) {
+                        let minute2 = minute;
+                        let hour2 = hour;
+
+                        if (minute < 10) {
+                            minute2 = "0" + String(minute);
+                        }
+                        if (hour < 10) {
+                            hour2 = "0" + String(hour);
+                        }
+                        ftime = hour2 + ":" + minute2;
+                    }
+                    else {
+                        ftime = hour + ":" + minute;
+                    }
                     datanum++;
-                    console.log("aaa");
                 }
             }
 

@@ -63,8 +63,6 @@
   <script type="text/javascript" src="totalChart1min.js"></script>
   <!-- ヒートマップ -->
   <script src="heatmap.js"></script>
-  <!--英語　ログ　(棒グラフ)　[機能合計]-->
-  <!-- <script type="text/javascript" src="totalChart1min_2.js"></script> -->
   <!--英語　ログ　(棒グラフ)　[機能ごと]-->
   <script type="text/javascript" src="targetEnChart1min.js"></script>
   <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
@@ -88,11 +86,11 @@
 
 
   <p>
-    <input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
-    <input type="button" onclick="location.href='./classseat.html'" value="　座席　">
-    <a href="index.html">持っているデータを使う</a>　　
-    <a href="index copy 2.html">リアルタイムに使う</a>　　
-    <a href="dataSet.html">データ登録</a>
+    　<input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
+    　<input type="button" onclick="location.href='./classseat.html'" value="　座席　">
+    　<a href="index.html">持っているデータを使う</a>
+    　<a href="index copy 2.html">リアルタイムに使う</a>
+    　<a href="dataSet.html">データ登録</a>
   </p>
   <br>
 
@@ -146,14 +144,6 @@
       <canvas id="heatMap" width="300" height=" 150"></canvas>
     </div>
     <br><br>
-    <!-- <h1>全体表示</h1>
-    <div>
-    <p>＝回数グラフの表示 [全体合計](棒グラフ)＝</p>
-    <div style="width:50%;"></div>
-    <canvas id="myChart" width="2500" height="350"></canvas>
-    </div>
-    <br><br> -->
-
     <div>
       <p>＝機能ごとの操作回数の合計＝</p>
       <canvas id="targetChart" width="300" height=" 100"></canvas>
@@ -224,7 +214,7 @@
             memberNum = doc.val().student_num;
             console.log(memberID);
             console.log(memberNum);
-            // console.log("ssss");
+
             for (let i = 1; i <= memberNum; i++) {
               let id;
               if (i < 10) {
@@ -262,16 +252,11 @@
           //横軸を決定
           [time, startTime, finishTime] = lavel2(result);
 
-          // let dataLength = result.length;
           let startnum = 0;
           let finishnum = result.length - 1;
-          // console.log(finishnum)
+
           num = countttt(result, member, time, startnum, finishnum);
           // num = count2(result, member, time, startnum, finishnum);
-
-          // console.log(num);
-          // console.log("num");
-
 
           if (studentChart) {
             studentChart.destroy();
@@ -294,67 +279,6 @@
         .catch((error) => {
           console.log(`データの取得に失敗しました (${error})`);
         });
-      // db.collection("test学校_5年1組").doc("英語").collection(choicedate.value).orderBy("time", "desc").limit(1)
-      //   .get()
-      //   .then((query) => {
-      //     result = [];
-      //     query.forEach((doc) => {
-      //       var data = doc.data();
-      //       finishTime = data.time;
-      //       console.log(finishTime);
-      //     });
-      //   });
-
-
-      // console.log(startTime + "  " + finishTime);
-
-      // for (let i = 0; i < time.length; i++) {
-      //   db.collection("本町小学校_5年2組").doc("英語").collection(choicedate.value).where("time", "==", time[i])
-      //     .get()
-      //     .then((query) => {
-      //       result = [];
-      //       query.forEach((doc) => {
-      //         var data = doc.data();
-      //         // console.log(doc.id, " => ", doc.data());
-      //         result.push([data.time, data.actor, data.target]);
-      //       });
-      //       console.log(result);
-      //       console.log(result.length);
-
-      //       //横軸を決定
-      //       [time, startTime, finishTime] = lavel2(result);
-      //     })
-      //     .catch((error) => {
-      //       console.log(`データの取得に失敗しました (${error})`);
-      //     });
-      // }
-
-
-      //横軸を決定
-      // [time, startnum, finishnum] = lavel2(result);
-      // console.log(time);
-      // num = count2(result, member, time, startTime, finishTime);
-      // num = count(result, member, time, startnum, finishnum);
-
-      // if (studentChart) {
-      //   studentChart.destroy();
-      // }
-      // if (heatMap) {
-      //   heatMap.destroy();
-      // }
-      // if (targetChart) {
-      //   targetChart.destroy();
-      // }
-      // if (numChart) {
-      //   numChart.destroy();
-      // }
-
-      // drawBarChart(member, time, num);
-      // // drawBarChart(result, dataLength, member, time);
-      // //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
-      // drawChartTarget(result, dataLength, member, time, startnum, finishnum);
-      // drawStuNumChart(result, dataLength, member, time, startnum, finishnum);
-      // heatmap(member, time, num);
     });
 
 
