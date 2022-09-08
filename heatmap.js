@@ -88,7 +88,7 @@ function heatmap(member, time, num) {
                                 // console.log(context.dataIndex);
                                 // console.log(num);
                                 // console.log(num[38 - context.datasetIndex][context.dataIndex]);
-                                label += num[38 - context.datasetIndex][context.dataIndex];
+                                label += num[39 - context.datasetIndex][context.dataIndex];
                                 label += '回' ;
                             }
                             return label;

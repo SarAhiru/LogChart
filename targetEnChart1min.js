@@ -3,8 +3,8 @@
 function drawChartTarget(result, time, startnum, finishnum) {
   let indexCount = []; //目次を見た回数
   let cpCount = []; //ページ移動の回数
-  let audioCount = []; //音声・動画の回数
-  let penColorCount = []; //ペン色変更回数
+  let audioCount = []; //音声の回数
+  let videoCount = []; //動画回数
   let penCount = []; //ペン選択回数
 
   let datanum = 0; //配列番号カウント用
@@ -16,7 +16,7 @@ function drawChartTarget(result, time, startnum, finishnum) {
     indexCount[x] = 0;
     cpCount[x] = 0;
     audioCount[x] = 0;
-    penColorCount[x] = 0;
+    videoCount[x] = 0;
     penCount[x] = 0;
   }
 
@@ -58,8 +58,11 @@ function drawChartTarget(result, time, startnum, finishnum) {
           audioCount[datanum]++;
         }
       }
-      else if (logTarget.includes('color')) {
-        penColorCount[datanum]++;
+      else if (logTarget.includes('video')) {
+        if (logTarget.includes('video volume')) {
+        } else {
+          videoCount[datanum]++;
+        }
       }
       else if (logTarget.includes('true') || logTarget.includes('penType')) {
         penCount[datanum]++;
@@ -91,15 +94,15 @@ function drawChartTarget(result, time, startnum, finishnum) {
         borderWidth: 1
       },
       {
-        label: '音声・動画',
+        label: '音声',
         data: audioCount,
         backgroundColor: 'rgba(0, 255, 0, 0.5)',
         borderColor: 'rgba(0, 255, 0, 1)',
         borderWidth: 1
       },
       {
-        label: 'ペン色変更',
-        data: penColorCount,
+        label: '動画',
+        data: videoCount,
         backgroundColor: 'rgba(255, 255, 0, 0.5)',
         borderColor: 'rgba(255, 128, 0, 1)',
         borderWidth: 1
@@ -129,8 +132,8 @@ function drawChartTarget(result, time, startnum, finishnum) {
 function drawChartTarget2(result, time, startnum, finishnum) {
   let indexCount = []; //目次を見た回数
   let cpCount = []; //ページ移動の回数
-  let audioCount = []; //音声・動画の回数
-  let penColorCount = []; //ペン色変更回数
+  let audioCount = []; //音声の回数
+  let videoCount = []; //動画回数
   let penCount = []; //ペン選択回数
 
   let datanum = 0; //配列番号カウント用
@@ -142,7 +145,7 @@ function drawChartTarget2(result, time, startnum, finishnum) {
     indexCount[x] = 0;
     cpCount[x] = 0;
     audioCount[x] = 0;
-    penColorCount[x] = 0;
+    videoCount[x] = 0;
     penCount[x] = 0;
   }
 
@@ -216,8 +219,11 @@ function drawChartTarget2(result, time, startnum, finishnum) {
           audioCount[datanum]++;
         }
       }
-      else if (logTarget.includes('color')) {
-        penColorCount[datanum]++;
+      else if (logTarget.includes('video')) {
+        if (logTarget.includes('video volume')) {
+        } else {
+          videoCount[datanum]++;
+        }
       }
       else if (logTarget.includes('true') || logTarget.includes('penType')) {
         penCount[datanum]++;
@@ -249,15 +255,15 @@ function drawChartTarget2(result, time, startnum, finishnum) {
         borderWidth: 1
       },
       {
-        label: '音声・動画',
+        label: '音声',
         data: audioCount,
         backgroundColor: 'rgba(0, 255, 0, 0.5)',
         borderColor: 'rgba(0, 255, 0, 1)',
         borderWidth: 1
       },
       {
-        label: 'ペン色変更',
-        data: penColorCount,
+        label: '動画',
+        data: videoCount,
         backgroundColor: 'rgba(255, 255, 0, 0.5)',
         borderColor: 'rgba(255, 128, 0, 1)',
         borderWidth: 1

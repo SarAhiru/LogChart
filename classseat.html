@@ -18,7 +18,7 @@
     <script type="text/javascript" src="count.js"></script>
     <!-- <script src="classseat.js"></script> -->
     <!-- <script src="clas.js"></script> -->
-    
+
 
     <header>
         <!--CSVファイルの読み取り-->
@@ -75,48 +75,48 @@
 
         window.onload = function () {
             //sessionStorage.removeItem("idou");
-            let parent = document.getElementById('frame');
+            // let parent = document.getElementById('frame');
             //let n = sessionStorage.setItem("desk_num",0);
-            if (sessionStorage.getItem("saisyo") == undefined) {
-                //console.log("offですよ")
+            if (sessionStorage.getItem("first") == undefined) {
                 for (let i = 1; i <= seatNum; i++) {
                     sessionStorage.setItem("zaseki" + i, "s_desk" + i);
-                    //console.log(sessionStorage.getItem("zaseki"+i));
-                    sessionStorage.setItem("desk_num", i); //なんか変だな～考え直そう
+                    sessionStorage.setItem("desk_num", i);
                 }
-                // console.log("offを出た")
-                // sessionStorage.setItem("saisyo", "on")
+                sessionStorage.setItem("first", "on");
             }
 
+            //HTMLを作成する
             for (let k = 1; k <= seatNum; k++) {
                 //if(k!=3){
                 //console.log("席の表示")
-                var d1 = document.getElementById('frame');
+                var element1 = document.getElementById('frame');
                 let y = 1;
                 while (sessionStorage.getItem("zaseki" + k) != "s_desk" + y) {
                     y++;
                     //console.log(y);
                 }
-                // d1.insertAdjacentHTML('beforeend', "<div class='s_desk' draggable='true' onclick='sentaku2(this)' id='" + sessionStorage.getItem("zaseki" + k) + "' cmanOMat='move' cmanomno='0'>生徒" + y + "</div>");
-                // d1.insertAdjacentHTML('beforeend', "<div class='s_desk' id='" + sessionStorage.getItem("zaseki" + k) + "'>生徒" + y + "</div>");
-                d1.insertAdjacentHTML('beforeend', "<div class='s_desk' id='" + sessionStorage.getItem("zaseki" + k) + "' cmanOMat='move'>生徒" + y + "</div>");
-                
+                // element1.insertAdjacentHTML('beforeend', "<div class='s_desk' draggable='true' onclick='sentaku2(this)' id='" + sessionStorage.getItem("zaseki" + k) + "' cmanOMat='move' cmanomno='0'>生徒" + y + "</div>");
+                element1.insertAdjacentHTML('beforeend', "<div class='s_desk' id='" + sessionStorage.getItem("zaseki" + k) + "'>生徒" + y + "</div>");
+                // element1.insertAdjacentHTML('beforeend', "<div class='s_desk' id='" + sessionStorage.getItem("zaseki" + k) + "' cmanOMat='move'>生徒" + y + "</div>");
 
-                //d1.insertAdjacentHTML('beforeend', "<div class='s_desk' draggable='true' onclick='sentaku2(this)' id='"+sessionStorage.getItem("zaseki"+k)+"'>座席"+k+"</div>");
+                // element1.insertAdjacentHTML('beforeend', "<div class='s_desk' draggable='true' onclick='sentaku2(this)' id='"+sessionStorage.getItem("zaseki"+k)+"'>座席"+k+"</div>");
                 //}
             }
 
-            for (var i = 1; i <= seatNum/*Number(sessionStorage.getItem("desk_num"))*/; i++) {
-                //let data = sessionStorage.getItem("folder"+i);
-                let li_text = document.createElement('div');
-                //var br = document.createElement('br');
-                li_text.type = "button";
-                li_text.draggable = "true";
-                li_text.className = "s_desk";
-                // li_text.cmanOMat="move";
-                //li_text.id = "folder"+i;  //idもう一度設定する
-                //li_text.value = sessionStorage.getItem("folder"+i); //input_value;   
-            }
+            // documents.getElementById("s_desk").style.display = "none";
+
+            //ここ何してるんだ？？
+            // for (var i = 1; i <= seatNum/*Number(sessionStorage.getItem("desk_num"))*/; i++) {
+            //     //let data = sessionStorage.getItem("folder"+i);
+            //     let li_text = document.createElement('div');
+            //     //var br = document.createElement('br');
+            //     li_text.type = "button";
+            //     li_text.draggable = "true";
+            //     li_text.className = "s_desk";
+            //     // li_text.cmanOMat="move";
+            //     //li_text.id = "folder"+i;  //idもう一度設定する
+            //     //li_text.value = sessionStorage.getItem("folder"+i); //input_value;   
+            // }
 
         }
 
@@ -128,10 +128,11 @@
     <script>
         // console.log("通過しました!!!");
         let result = []; //csvの中身
-        let dataLength = 0; //データの長さ
         let member = [];
         let time = [];
         let num = [];
+        let deteilnum = [];
+        let target = [];
 
         let startnum = 0;
         let finishnum = 0;
@@ -157,11 +158,14 @@
                 result[i] = arr[i].split(',');
             }
 
-            //逆順
-            // result.reverse();
-            console.log(result);
-
-            dataLength = arr.length;
+            //日時でソート
+            result.sort(function (a, b) {
+                if (a > b) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
 
             //操作している人を取り出す(※本当は児童を指定しておきたい)
             member = actor(result);
@@ -175,6 +179,51 @@
             [time, startnum, finishnum] = lavel(result, choicedate);
             // console.log(time);
             num = count(result, member, time, startnum, finishnum);
+            detailnum = detailcount(result, member, time, startnum, finishnum);
+            console.log(num);
+
+            let detailtotal = [];
+            for (let i = 0; i < (member.length * 6); i++) {
+                detailtotal[i] = detailnum[i].reduce(function (sum, element) {
+                    return sum + element;
+                }, 0);
+                // console.log(i + 1 + 'の値は、' + total[i]);
+            }
+            console.log(detailtotal);
+
+            for (let i = 0; i < member.length; i++) {
+                let max = detailtotal[6 * i];
+                let flag = 0;
+                for (let x = 1; x < 5; x++) {
+                    if (max < detailtotal[x + 6 * i]) {
+                        max = detailtotal[x + 6 * i];
+                        flag = x;
+                    }
+                    if(max == 0){
+                        flag = 6;
+                    }
+                }
+                target[i] = flag;
+                let maxCountTarget;
+                if(target[i] == 0){
+                    maxCountTarget = '目次閲覧';
+                }else if(target[i] ==1){
+                    maxCountTarget = 'ページ移動';
+                }else if(target[i] ==2){
+                    maxCountTarget = '音声';
+                }else if(target[i] ==3){
+                    maxCountTarget = '動画';
+                }else if(target[i] ==4){
+                    maxCountTarget = 'ペン選択';
+                }else if(target[i] ==6){
+                    maxCountTarget = '-';
+                }
+
+                var elementadd = document.getElementById("s_desk"+(i+1));
+                elementadd.innerHTML = '生徒'+(i+1)+'</br>'+maxCountTarget;
+
+            }
+            console.log(target);
 
 
             let total = [];
@@ -182,9 +231,9 @@
                 total[i] = num[i].reduce(function (sum, element) {
                     return sum + element;
                 }, 0);
-                console.log(i + 1 + 'の値は、' + total[i]);
+                // console.log(i + 1 + 'の値は、' + total[i]);
             }
-            console.log(total);
+            // console.log(total);
 
 
             //ここに計算式を入れてセルの色変更をする
@@ -230,123 +279,99 @@
                     // console.log(5);
                 }
             }
-
-            //   if (myCharttt) {
-            //     myCharttt.destroy();
-            //   }
-            //   // if (myChart) {
-            //   //   myChart.destroy();
-            //   // }
-            //   if (myChart1) {
-            //     myChart1.destroy();
-            //   }
-            //   if (myChart2) {
-            //     myChart2.destroy();
-            //   }
-            //   if (heatMap) {
-            //     heatMap.destroy();
-            //   }
-
-            //   // console.log(num);
-            //   drawCharttt(member, time, num);
-            //   // drawCharttt(result, dataLength, member, time);
-            //   //  drawChart(result, dataLength, member, time, startnum, finishnum); //データと長さを持ってdrawChart関数に移動
-            //   drawChartTarget(result, dataLength, member, time, startnum, finishnum);
-            //   drawChart2(result, dataLength, member, time, startnum, finishnum);
-            //   heatmap(member, time, num);
         });
 
     </script>
 
     <script>
-        for (let x = 0; x < member.length; x++) {
-            let desk = document.getElementById("s_desk" + (x + 1));  
-        }
-        desk.onmousedown = function(event){
-            console.log("タップされたよ！")
-        }
-        
-        
-//         (function(){
+        // for (let x = 0; x < member.length; x++) {
+        //     let desk = document.getElementById("s_desk" + (x + 1));
+        // }
+        // desk.onmousedown = function (event) {
+        //     console.log("タップされたよ！")
+        // }
 
-// //要素の取得
-// var elements = document.getElementsByClassName("s_desk");
 
-// //要素内のクリックされた位置を取得するグローバル（のような）変数
-// var x;
-// var y;
+        (function () {
 
-// //マウスが要素内で押されたとき、又はタッチされたとき発火
-// for(var i = 0; i < elements.length; i++) {
-//     elements[i].addEventListener("mousedown", mdown, false);
-//     elements[i].addEventListener("touchstart", mdown, false);
-// }
+            //要素の取得
+            var elements = document.getElementsByClassName("s_desk");
 
-// //マウスが押された際の関数
-// function mdown(e) {
+            //要素内のクリックされた位置を取得するグローバル（のような）変数
+            var x;
+            var y;
 
-//     //クラス名に .drag を追加
-//     this.classList.add("drag");
+            //マウスが要素内で押されたとき、又はタッチされたとき発火
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].addEventListener("mousedown", mdown, false);
+                elements[i].addEventListener("touchstart", mdown, false);
+            }
 
-//     //タッチデイベントとマウスのイベントの差異を吸収
-//     if(e.type === "mousedown") {
-//         var event = e;
-//     } else {
-//         var event = e.changedTouches[0];
-//     }
+            //マウスが押された際の関数
+            function mdown(e) {
 
-//     //要素内の相対座標を取得
-//     x = event.pageX - this.offsetLeft;
-//     y = event.pageY - this.offsetTop;
+                //クラス名に .drag を追加
+                this.classList.add("drag");
 
-//     //ムーブイベントにコールバック
-//     document.body.addEventListener("mousemove", mmove, false);
-//     document.body.addEventListener("touchmove", mmove, false);
-// }
+                //タッチデイベントとマウスのイベントの差異を吸収
+                if (e.type === "mousedown") {
+                    var event = e;
+                } else {
+                    var event = e.changedTouches[0];
+                }
 
-// //マウスカーソルが動いたときに発火
-// function mmove(e) {
+                //要素内の相対座標を取得
+                x = event.pageX - this.offsetLeft;
+                y = event.pageY - this.offsetTop;
 
-//     //ドラッグしている要素を取得
-//     var drag = document.getElementsByClassName("drag")[0];
+                //ムーブイベントにコールバック
+                document.body.addEventListener("mousemove", mmove, false);
+                document.body.addEventListener("touchmove", mmove, false);
+            }
 
-//     //同様にマウスとタッチの差異を吸収
-//     if(e.type === "mousemove") {
-//         var event = e;
-//     } else {
-//         var event = e.changedTouches[0];
-//     }
+            //マウスカーソルが動いたときに発火
+            function mmove(e) {
 
-//     //フリックしたときに画面を動かさないようにデフォルト動作を抑制
-//     e.preventDefault();
+                //ドラッグしている要素を取得
+                var drag = document.getElementsByClassName("drag")[0];
 
-//     //マウスが動いた場所に要素を動かす
-//     drag.style.top = event.pageY - y + "px";
-//     drag.style.left = event.pageX - x + "px";
+                //同様にマウスとタッチの差異を吸収
+                if (e.type === "mousemove") {
+                    var event = e;
+                } else {
+                    var event = e.changedTouches[0];
+                }
 
-//     //マウスボタンが離されたとき、またはカーソルが外れたとき発火
-//     drag.addEventListener("mouseup", mup, false);
-//     document.body.addEventListener("mouseleave", mup, false);
-//     drag.addEventListener("touchend", mup, false);
-//     document.body.addEventListener("touchleave", mup, false);
+                //フリックしたときに画面を動かさないようにデフォルト動作を抑制
+                e.preventDefault();
 
-// }
+                //マウスが動いた場所に要素を動かす
+                drag.style.top = event.pageY - y + "px";
+                drag.style.left = event.pageX - x + "px";
 
-// //マウスボタンが上がったら発火
-// function mup(e) {
-//     var drag = document.getElementsByClassName("drag")[0];
+                //マウスボタンが離されたとき、またはカーソルが外れたとき発火
+                drag.addEventListener("mouseup", mup, false);
+                document.body.addEventListener("mouseleave", mup, false);
+                drag.addEventListener("touchend", mup, false);
+                document.body.addEventListener("touchleave", mup, false);
 
-//     //ムーブベントハンドラの消去
-//     document.body.removeEventListener("mousemove", mmove, false);
-//     drag.removeEventListener("mouseup", mup, false);
-//     document.body.removeEventListener("touchmove", mmove, false);
-//     drag.removeEventListener("touchend", mup, false);
+            }
 
-//     //クラス名 .drag も消す
-//     drag.classList.remove("drag");
-// }
+            //マウスボタンが上がったら発火
+            function mup(e) {
+                var drag = document.getElementsByClassName("drag")[0];
 
-// })()
+                //ムーブベントハンドラの消去
+                document.body.removeEventListener("mousemove", mmove, false);
+                drag.removeEventListener("mouseup", mup, false);
+                document.body.removeEventListener("touchmove", mmove, false);
+                drag.removeEventListener("touchend", mup, false);
+
+                //クラス名 .drag も消す
+                drag.classList.remove("drag");
+            }
+
+        })()
 
     </script>
 

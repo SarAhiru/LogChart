@@ -46,6 +46,11 @@
     /*500px;*/
 }
 
+#frame {
+    position: relative;
+    height: 100px;
+}
+
 .s_desk {
     margin: 4px;
     padding: 5px;
@@ -57,14 +62,14 @@
     border-radius: 5px;
     /*角の丸み*/
     /*border:2px solid green;*/
-    /* cursor: move;
-    position: absolute;
-    z-index: 1000; */
+    cursor: move;
     /* position: absolute; */
+    z-index: 1000;
 }
-/* .drag {
+
+.drag {
     z-index: 1001;
-} */
+}
 
 /* .s_sentakudesk1{
     margin:0.5em ;

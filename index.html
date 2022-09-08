@@ -146,14 +146,18 @@
 
   <!--以下でデータの読み込みを行う-->
   <script>
-    let result = []; //csv(ログ)の中身
-    let member = [];
-    let time = [];
-    let num = [];
-    let totalnum = [];
+    let result = []; //ログ ストック用
+    let member = []; //生徒
+    let time = []; //横軸 時間
+    let num = []; //操作回数(生徒ごと)
+    let totalnum = []; //操作回数(全体合計)
 
-    let startnum = 0;
-    let finishnum = 0;
+    let datasta = 0; //データの最初の番号(変更なし)
+    let datafin = 0; //データの最後の番号
+
+    let startnum = 0; //可視化の最初の番号
+    let finishnum = 0; //可視化の最後の番号
+
 
     // 各グラフの型を表示させておく
     drawChart(time, totalnum);
@@ -162,7 +166,7 @@
     drawChartTarget(result, time, startnum, finishnum);
     drawStuNumChart(member, time, num);
 
-
+    //ファイルを読み取ったら実行１
     let fileInput = document.getElementById('file');
     let fileReader = new FileReader();
     fileInput.onchange = () => {
@@ -206,24 +210,29 @@
 
 
 
-    //ファイルを読み取ったら実行
-
+    //ファイルを読み取ったら実行２
     fileReader.onload = () => {
       var txt = fileReader.result;
 
       //読み取ったcsvデータを配列に格納
       //var arr = txt.split("\r\n" || "\n" || "\r");
-      var arr = txt.split("\r\n");
+      var arr = txt.split("\r\n"); //意味ないけど一応
       arr = txt.split("\n");
       //arr = txt.split("\r");
       for (var i = 0; i < arr.length; i++) {
         result[i] = arr[i].split(',');
       }
 
-      //逆順
-      // result.reverse();
+      //日時でソート
+      result.sort(function (a, b) {
+        if (a > b) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
 
-      //操作している人を取り出す
+      //生徒一覧の配列作成
       member = actor(result); //actor.js
     }
 
@@ -244,14 +253,21 @@
     //日付が選択されたらイベントリスナー発火
     choicedate.addEventListener(`change`, function () {
       document.querySelector(`#output`).innerHTML = choicedate.value;
+      range1.value = 0;
+      range2.value = 100;
+
       //横軸を決定
       [time, startnum, finishnum] = lavel(result, choicedate);
 
       // 回数カウント
       totalnum = totalcount(result, time, startnum, finishnum);
       num = count(result, member, time, startnum, finishnum);
+      console.log(time[0]);
       startTime.value = time[0];
+      // startTime = time[0];
       finishTime.value = time[time.length - 1];
+      console.log(startTime.value);
+      console.log(finishTime.value);
 
       //時間選択グラフ用
       selectTime = time.length;
@@ -287,13 +303,14 @@
     // 時間選択したら開始されるようにしたい
     startTime.addEventListener(`change`, function () {
       document.querySelector(`#startTime`).innerHTML = startTime.value;
-      let snum;
-      [time, snum, finishnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
-      // console.log(startnum);
-      startnum = snum;
+      // let snum;
+      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
+      // console.log(snum);
+      // startnum = snum;
       num = count(result, member, time, startnum, finishnum);
 
-      let changetime = (startTime.value.substring(0, 2) - mintime.substring(0, 2)) * 60 + (startTime.value.substring(3, 5) - mintime.substring(3, 5))
+      let changetime = (startTime.value.substring(0, 2) - mintime.substring(0, 2)) * 60 + (startTime.value.substring(3, 5) - mintime.substring(3, 5));
+      // let changetime = (startTime.value.substr(0, 2) - mintime.substr(0, 2)) * 60 + (startTime.value.substr(3, 2) - mintime.substr(3, 2))
       console.log(changetime);
       range1.value = changetime * permin;
 
@@ -324,7 +341,7 @@
       finishnum = fnum;
       num = count(result, member, time, startnum, finishnum);
 
-      let changetime = (maxtime.substring(0, 2) - finishTime.value.substring(0, 2)) * 60 + (maxtime.substring(3, 5) - finishTime.value.substring(3, 5))
+      let changetime = (maxtime.substring(0, 2) - finishTime.value.substring(0, 2)) * 60 + (maxtime.substring(3, 5) - finishTime.value.substring(3, 5));
       console.log(changetime);
       range2.value = 100 - changetime * permin;
 
@@ -349,19 +366,19 @@
 
     range1.addEventListener(`change`, function () {
       document.querySelector(`#range1`).innerHTML
-      // console.log(range1.value)
       let changetime = Math.floor(range1.value / permin);
-      // console.log(changetime);
-      let hour = parseInt(mintime.substring(0, 2)) + Math.floor(changetime / 60);
-      // console.log(hour);
-      let minute = parseInt(mintime.substring(3, 5)) + changetime % 60;
+      let hour = parseInt(mintime.substr(0, 2)) + Math.floor(changetime / 60);
+      let minute = parseInt(mintime.substr(3, 2)) + changetime % 60;
       startTime = hour + ":" + minute;
-      if (minute > 60) {
+      if (minute >= 60) {
         hour2 = hour + 1;
         minute2 = minute - 60;
         startTime = hour2 + ":" + minute2;
+        if (minute2 < 10) {
+          startTime = hour2 + ":0" + minute2;
+        }
       }
-      console.log(startTime)
+      // console.log(startTime);
       var ctime = document.querySelector(`input[type='time'][name='startTime']`);
       ctime.value = startTime;
 
@@ -401,12 +418,11 @@
       if (parseInt(minute) >= 60) {
         hour2 = hour + 1;
         minute2 = minute - 60;
-        console.log(minute2);
         finishTime = hour2 + ":" + minute2;
         if (minute2 < 10) {
           finishTime = hour2 + ":0" + minute2;
         }
-        console.log(finishTime);
+        // console.log(finishTime);
       }
       console.log(finishTime);
       var ctime = document.querySelector(`input[type='time'][name='finishTime']`);

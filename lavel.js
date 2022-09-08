@@ -135,7 +135,6 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
   let startnum = 0;
   let finishnum = 0;
 
-
   if (result.length > 0) {
     for (let x = 1; x < result.length - 1; x++) {
       let logDate = result[x][0]; // ログからdate取得
@@ -152,7 +151,7 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
       let choiceDay = choicedate.value.substr(8, 2);
       choiceDay = parseInt(choiceDay); // 数字に変更
 
-      let judgeTime = logDate.substring(9, 14);
+      let judgeTime = logDate.substr(11, 5);
 
       if (choiceYear == judgeYear) {
         if (choiceMonth == judgeMonth) {
@@ -188,9 +187,8 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
               else {
                 label[0] = fhour + ":" + fminute;
               }
-              if (startTime == judgeTime) {
+              if (startTime <= judgeTime) {
                 // console.log("aaaaa");
-                // console.log(label);
                 judge = 1;
               }
             } else {
