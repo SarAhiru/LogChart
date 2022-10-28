@@ -36,6 +36,7 @@ function drawChartTarget(result, time, startnum, finishnum) {
         ftime = new Date(logDate);
         datanum = 0;
         judge = 1;
+        ftime.setMinutes(ftime.getMinutes() + 1);
       }
       else {
         while (date.getTime() > ftime.getTime()) { //1分経過したのかを判断
@@ -103,7 +104,7 @@ function drawChartTarget(result, time, startnum, finishnum) {
       {
         label: '動画',
         data: videoCount,
-        backgroundColor: 'rgba(255, 255, 0, 0.5)',
+        backgroundColor: 'rgba(255, 210, 0, 0.5)',
         borderColor: 'rgba(255, 128, 0, 1)',
         borderWidth: 1
       },

@@ -121,7 +121,7 @@ function lavel(result, choicedate) {
 
 // 時間選択した際の横軸ラベル作成
 function lavelChenge(result, choicedate, startTime, finishTime) {
-  // console.log(startTime)
+  console.log(finishTime)
   //横軸ラベル作成
   let label = []; // グラフ横軸　配列
   let lognum = 0; //配列番号カウント用
@@ -159,6 +159,7 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
             finishnum = x;
             //始めだけfirst time(ftime)を設定
             if (judge == 0) {
+              // console.log("aaa");
               startnum = x;
 
               ftime = new Date(logDate);
@@ -191,9 +192,10 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
                 // console.log("aaaaa");
                 judge = 1;
               }
+              // console.log(label);
             } else {
               if (finishTime >= judgeTime) {
-
+                // finishnum = x;
                 //ここで条件分岐して、一定時間にどのくらい機能を使用したのかを記録
                 //！！本当は進んだ分数を引き算で求めて、重複させるだけでいいのかも
                 while (date.getTime() > ftime.getTime()) { //取得した時間がftimeより大きければ1分ずつ足し続ける
@@ -232,9 +234,12 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
       }
     }
   }
-  // console.log(label);
-  // console.log(startnum);
-  // console.log(finishnum);
+  console.log(label);
+  // if(startnum == finishnum){
+  //   startnum = 0;
+  // }
+  console.log("startnum"+startnum);
+  console.log("finishnum"+finishnum);
   return [label, startnum, finishnum];
 }
 

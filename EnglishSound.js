@@ -1,5 +1,6 @@
 
-function table(result, member, choicedate) {
+function table(result, member, choicedate, startnum, finishnum) {
+    console.log(startnum+"   "+finishnum)
     let table = document.getElementById('targetTable');
     let audiocheck = document.getElementById('audiocheck');
     let videocheck = document.getElementById('videocheck');
@@ -27,7 +28,7 @@ function table(result, member, choicedate) {
 
     //ここからデータの分析
     if (result.length > 0) {
-        for (let x = 1; x < result.length; x++) {
+        for (let x = startnum; x <= finishnum; x++) {
             let logDate = result[x][0]; // ログからdate取得
             let logActor = result[x][2]; // actor取得
             let logTarget = result[x][9]; // target取得
@@ -50,8 +51,9 @@ function table(result, member, choicedate) {
                     if (choiceDay == judgeDay) {
 
                         if(audiocheck.checked == true){
-                            if (logTarget.includes('audio end')) {
-                                // console.log("音声再生");
+                            // console.log("一旦ここまで");
+                            if (logTarget.includes('audio end') || logTarget.includes('audio stop') || logTarget.includes('audio seek')) {
+                                console.log("音声再生");
                                 for (let a = 0; a < member.length; a++) {
                                     if (logActor.includes(member[a])) {
                                         user = a; //ユーザーの識別
@@ -59,14 +61,24 @@ function table(result, member, choicedate) {
                                 }
                                 audioData[user][1]++; //再生回数のカウントを+1
                                 //console.log(audioData);
-    
+
                                 //再生時間
-                                // console.log(logTarget);
-                                let addminute = logTarget.substr(11, 2);
-                                // console.log(addminute);
+                                if(logTarget.includes('audio end')){
+                                    // console.log(logTarget);
+                                    var addminute = logTarget.substring(11, 13);
+                                    // console.log("minute"+addminute);
+                                    var addsecond = logTarget.substring(14, 16);
+                                    // console.log("second"+addsecond);
+                                }
+                                if(logTarget.includes('audio stop') || logTarget.includes('audio seek')){
+                                    // console.log(logTarget);
+                                    var addminute = logTarget.substring(12, 14);
+                                    // console.log("minute"+addminute);
+                                    var addsecond = logTarget.substring(15, 17);
+                                    // console.log("second"+addsecond);
+                                }
+
                                 addminute = parseInt(addminute);
-                                let addsecond = logTarget.substr(13, 2);
-                                // console.log(addsecond);
                                 addsecond = parseInt(addsecond);
     
     

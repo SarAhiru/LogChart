@@ -4,6 +4,8 @@
 <head>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <!--Chart.jsの読み込み-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
 
   <link rel="stylesheet" href="StyleSheet0.css" />
 
@@ -12,7 +14,12 @@
 
 <body>
   <script type="text/javascript" src="actor.js"></script>
+  <script type="text/javascript" src="lavel.js"></script>
+  <script type="text/javascript" src="count.js"></script>
   <script type="text/javascript" src="EnglishSound.js"></script>
+  <!-- 時間選択用　[グラフ] -->
+  <script type="text/javascript" src="timesetChart1min.js"></script>
+
 
   <header>
     <!--CSVファイルの読み取り-->
@@ -22,7 +29,20 @@
       <br>
       ②日付を選択　　　　　▷　
       <input type="date" name="date" id="output">
+      <br>
+      ②時間を選択　　　　　▷　
+      <input type="time" name="startTime" id="startTime">　～　
+      <input type="time" name="finishTime" id="finishTime">
     </p>
+
+    <div class="timesetChart" style="position:absolute; top:10px; left:500px; width:350px; height:300px;">
+      <!-- style="width:500px;"  -->
+      <canvas id="timeset" width="300" height="80"></canvas>
+    </div>
+    <div class="slidebar-multithumb" style="position:absolute; top:95px; left:520px; width:340px;">
+      <input class="thumb-1" type="range" name="range1" id="range1" value="0" min="0" max="100" step="1">
+      <input class="thumb-2" type="range" name="range2" id="range2" value="100" min="0" max="100" step="1">
+    </div>
   </header>
 
   <p>
@@ -96,8 +116,11 @@
     // console.log("通過しました!!!");
     let result = []; //csvの中身
     let member = [];
+    let time = [];
+    let totalnum = []; //操作回数(全体合計)
 
-    // table(result, member);
+    // グラフの型を表示させておく
+    drawChart(time, totalnum);
 
     let fileInput = document.getElementById('file');
     let fileReader = new FileReader();
@@ -119,30 +142,138 @@
         result[i] = arr[i].split(',');
       }
 
-      //逆順
-      // result.reverse();
+      //日時でソート
+      result.sort(function (a, b) {
+        if (a > b) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
 
-      //操作している人を取り出す
+      //生徒一覧の配列作成
       member = actor(result);
     }
 
     // 日付選択をしたら開始されるようにする
     let choicedate = document.querySelector(`input[type='date'][name='date']`);
+    let startTime = document.querySelector(`input[type='time'][name='startTime']`);
+    let finishTime = document.querySelector(`input[type='time'][name='finishTime']`);
+    let range1 = document.querySelector(`input[type='range'][name='range1']`);
+    let range2 = document.querySelector(`input[type='range'][name='range2']`);
+    let selectTime;//全体の時間の長さ
+    let permin;//１分がどのくらいの長さになるのか
+    let mintime;
+    let maxtime;
+
+    // let startnum = 0;
+
+    //日付が選択されたらイベントリスナー発火
     choicedate.addEventListener(`change`, function () {
       document.querySelector(`#output`).innerHTML = choicedate.value;
       let audioc = document.getElementById('audiocheck');
       audioc.checked = true;
       let videoc = document.getElementById('videocheck');
       videoc.checked = true;
-      table(result, member, choicedate);
+
+      range1.value = 0;
+      range2.value = 100;
+
+      //時間を決定
+      [time, startnum, finishnum] = lavel(result, choicedate);
+      // 回数カウント
+      totalnum = totalcount(result, time, startnum, finishnum);
+      startTime.value = time[0];
+      finishTime.value = time[time.length - 1];
+
+      //時間選択グラフ用
+      selectTime = time.length;
+      permin = 100 / selectTime;
+      mintime = time[0];
+      maxtime = time[time.length - 1];
+      if (timeset) {
+        timeset.destroy();
+      }
+      // グラフ表示
+      drawChart(time, totalnum);
+
+      table(result, member, choicedate, startnum, finishnum);
     });
 
+    // 時間選択したら開始されるようにしたい
+    startTime.addEventListener(`change`, function () {
+      document.querySelector(`#startTime`).innerHTML = startTime.value;
+      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
+      let changetime = (startTime.value.substring(0, 2) - mintime.substring(0, 2)) * 60 + (startTime.value.substring(3, 5) - mintime.substring(3, 5));
+      range1.value = changetime * permin;
+      table(result, member, choicedate, startnum, finishnum);
+    });
+
+    finishTime.addEventListener(`change`, function () {
+      document.querySelector(`#finishTime`).innerHTML = finishTime.value;
+      console.log(finishnum);
+      let fnum;
+      [time, startnum, fnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
+      finishnum = fnum;
+      let changetime = (maxtime.substring(0, 2) - finishTime.value.substring(0, 2)) * 60 + (maxtime.substring(3, 5) - finishTime.value.substring(3, 5));
+      range2.value = 100 - changetime * permin;
+      console.log(finishnum);
+      table(result, member, choicedate, startnum, finishnum);
+    });
+
+    range1.addEventListener(`change`, function () {
+      document.querySelector(`#range1`).innerHTML
+      let changetime = Math.floor(range1.value / permin);
+      let hour = parseInt(mintime.substr(0, 2)) + Math.floor(changetime / 60);
+      let minute = parseInt(mintime.substr(3, 2)) + changetime % 60;
+      startTime = hour + ":" + minute;
+      if (minute >= 60) {
+        hour2 = hour + 1;
+        minute2 = minute - 60;
+        startTime = hour2 + ":" + minute2;
+        if (minute2 < 10) {
+          startTime = hour2 + ":0" + minute2;
+        }
+      }
+      var ctime = document.querySelector(`input[type='time'][name='startTime']`);
+      ctime.value = startTime;
+      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime, finishTime.value);
+
+      table(result, member, choicedate, startnum, finishnum);
+    });
+
+    range2.addEventListener(`change`, function () {
+      document.querySelector(`#range2`).innerHTML
+      let changetime = Math.floor(range2.value / permin);
+      let hour = parseInt(mintime.substring(0, 2)) + Math.floor(changetime / 60);
+      let minute = parseInt(mintime.substring(3, 5)) + changetime % 60;
+      finishTime = hour + ":" + minute;
+      if (parseInt(minute) >= 60) {
+        hour2 = hour + 1;
+        minute2 = minute - 60;
+        finishTime = hour2 + ":" + minute2;
+        if (minute2 < 10) {
+          finishTime = hour2 + ":0" + minute2;
+        }
+      }
+      // console.log(finishTime);
+      var ctime = document.querySelector(`input[type='time'][name='finishTime']`);
+      ctime.value = finishTime;
+
+      // 時間を決定
+      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime, finishTime);
+      table(result, member, choicedate, startnum, finishnum);
+    });
+
+
+
+
     function audiovalueChange(event) {
-        table(result, member, choicedate);
+      table(result, member, choicedate, startnum, finishnum);
     }
 
     function videovalueChange(event) {
-        table(result, member, choicedate);
+      table(result, member, choicedate, startnum, finishnum);
     }
 
     let audiocheck = document.getElementById('audiocheck');

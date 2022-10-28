@@ -48,8 +48,11 @@
     <form>
       <!--CSVファイルの読み取り-->
       <p>
+        〇生徒ファイル登録　　▷　
+        <input type="file" name="st" id="st" accept=".csv">
+        <br>
         ①CSVファイルを選択　▷　
-        <input type="file" name="file" id="file" multiple>
+        <input type="file" name="file" id="file" accept=".csv" multiple>
         <br>
         ②日付を選択　　　　　▷　
         <input type="date" name="date" id="output">
@@ -77,8 +80,8 @@
 
     <!-- <a href="EnglishSound.html">音声再生</a> -->
     <!-- <a href="classseat.html">座席</a>　　 -->
-    　<a href="index copy.html">登録しているデータを使う</a>
-    　<a href="index copy 2.html">リアルタイムに使う</a>
+    　<a href="indexDB.html">登録しているデータを使う</a>
+    　<a href="indexDBreal.html">リアルタイムに使う</a>
     <!-- <a href="dataSet.html">データ登録</a> -->
   </p>
   <br>
@@ -166,6 +169,28 @@
     drawChartTarget(result, time, startnum, finishnum);
     drawStuNumChart(member, time, num);
 
+    //生徒一覧ファイルを読み取ったら実行
+    let stfileInput = document.getElementById('st');
+    let stfileReader = new FileReader();
+    stfileInput.onchange = () => {
+      let stfile = stfileInput.files[0];
+      stfileReader.readAsText(stfile, 'Shift_JIS');
+    };
+
+    stfileReader.onload = () => {
+      member = stfileReader.result.split(',');
+      // var txt = stfileReader.result;
+      //読み取ったcsvデータを配列に格納
+      //var arr = txt.split("\r\n" || "\n" || "\r");
+      // var arr = txt.split("\r\n"); //意味ないけど一応
+      // arr = txt.split("\n");
+      // //arr = txt.split("\r");
+      // for (var i = 0; i < arr.length; i++) {
+      //   member[i] = arr[i].split(',');
+      // }
+      console.log(member);
+    }
+    
     //ファイルを読み取ったら実行１
     let fileInput = document.getElementById('file');
     let fileReader = new FileReader();
@@ -233,7 +258,7 @@
       });
 
       //生徒一覧の配列作成
-      member = actor(result); //actor.js
+      // member = actor(result); //actor.js
     }
 
 
@@ -262,12 +287,12 @@
       // 回数カウント
       totalnum = totalcount(result, time, startnum, finishnum);
       num = count(result, member, time, startnum, finishnum);
-      console.log(time[0]);
+      // console.log(time[0]);
       startTime.value = time[0];
       // startTime = time[0];
       finishTime.value = time[time.length - 1];
-      console.log(startTime.value);
-      console.log(finishTime.value);
+      // console.log(startTime.value);
+      // console.log(finishTime.value);
 
       //時間選択グラフ用
       selectTime = time.length;

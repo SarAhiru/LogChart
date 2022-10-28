@@ -32,7 +32,7 @@ function actor(result) {
   actornum = actc.length;
   console.log(actornum);
 
-  for (let x = 1; x < actornum + 1; x++) {
+  for (let x = 1; x < actornum; x++) {
     let stuID;
     if (x < 10) {
       stuID = "12741_05020" + x;

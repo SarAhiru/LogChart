@@ -88,6 +88,13 @@ function drawBarChart(member, time, num) {
           backgroundColor: generateRandomCode() ,
         })
       }
+
+      datasets.push({
+        label: '児童平均',
+        data: num[member.length],
+        // backgroundColor: 'rgba(255, 0, 0, 1)',
+        backgroundColor: generateRandomCode() ,
+      })
       return datasets
     }
 

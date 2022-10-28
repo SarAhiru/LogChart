@@ -24,6 +24,7 @@ function totalcount(result, time, startnum, finishnum) {
                 ftime = new Date(logDate);
                 datanum = 0;
                 judge = 1;
+                ftime.setMinutes(ftime.getMinutes() + 1);
             }
             else {
                 while (date.getTime() > ftime.getTime()) { //1分経過したのかを判断
@@ -61,7 +62,7 @@ function count(result, member, time, startnum, finishnum) {
     for (let x = 0; x < time.length; x++) {
         totalnum[x] = 0;
     }
-    for (let i = 0; i < member.length; i++) {
+    for (let i = 0; i <= member.length; i++) {
         num.push(Array(time.length));
         for (let x = 0; x < time.length; x++) {
             num[i][x] = 0;
@@ -74,11 +75,12 @@ function count(result, member, time, startnum, finishnum) {
             let logActor = result[x][2]; // actor取得
             let logTarget = result[x][9]; // target取得
 
-            //console.log(x + "  " + result[x][0]);
+            // console.log(x + "  " + result[x][0]);
             //console.log(x + "  " + result[x][2]);// actor表示
 
             //今回のデータは何人目の生徒なのか
             membernum = member.indexOf(logActor);
+            // console.log(membernum);
 
             //横軸時間管理
             let date = new Date(logDate);
@@ -88,6 +90,7 @@ function count(result, member, time, startnum, finishnum) {
                 ftime = new Date(logDate);
                 datanum = 0;
                 judge = 1;
+                ftime.setMinutes(ftime.getMinutes() + 1);
             }
             else {
                 while (date.getTime() > ftime.getTime()) { //1分経過したのかを判断
@@ -95,6 +98,7 @@ function count(result, member, time, startnum, finishnum) {
                     datanum++;
                 }
             }
+            // console.log(datanum);
 
             if (logTarget.includes('audio volume')) {
             } else if (logTarget.includes('openBook index')) {
@@ -104,11 +108,12 @@ function count(result, member, time, startnum, finishnum) {
             }
         }
     }
+    // console.log(member.length);
 
-    // for (let x = 0; x < time.length; x++) {
-    //     totalnum[x] = totalnum[x] / member.length;  //人数で割って平均を出したい
-    // }
-    // console.log(num);
+    for (let x = 0; x < time.length; x++) {
+        num[member.length][x] = totalnum[x] / member.length;  //人数で割って平均を出したい
+    }
+    console.log(num);
     return num;
 }
 
@@ -160,6 +165,7 @@ function detailcount(result, member, time, startnum, finishnum) {
                 ftime = new Date(logDate);
                 datanum = 0;
                 judge = 1;
+                ftime.setMinutes(ftime.getMinutes() + 1);
             }
             else {
                 while (date.getTime() > ftime.getTime()) { //1分経過したのかを判断

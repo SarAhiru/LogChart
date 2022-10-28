@@ -308,7 +308,8 @@
           query.forEach((doc) => {
             // var data = doc.data();
             var data = doc.val();
-
+            console.log(data);
+            
             result.push([data.time, data.index, data.actor, data.action, data.bookId, data.chapter, data.type, data.pageIdx, data.appId, data.target]);
           });
           console.log(result);
