@@ -77,7 +77,7 @@ function drawBarChart(member, time, num, nickname) {
       totalnum[x] = totalnum[x]/member.length;  //人数で割って平均を出したい
     }
 */
-// console.log(num);
+console.log("確認用");
 
     //ランダムな色の生成
     function generateRandomCode() {
