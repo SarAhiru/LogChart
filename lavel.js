@@ -22,6 +22,7 @@ function lavel(result, choicedate) {
 
       //横軸時間管理
       let date = new Date(logDate);
+      // console.log(logDate);
       // console.log(date);
       // console.log(date.toLocaleString());
       let judgeYear = date.getFullYear();
@@ -33,7 +34,7 @@ function lavel(result, choicedate) {
       choiceMonth = parseInt(choiceMonth); //数字に変更
       let choiceDay = choicedate.value.substr(8, 2);
       choiceDay = parseInt(choiceDay); // 数字に変更
-
+      // console.log(judgeDay);
       if (choiceYear == judgeYear) {
         if (choiceMonth == judgeMonth) {
           if (choiceDay == judgeDay) {
@@ -115,7 +116,7 @@ function lavel(result, choicedate) {
       }
     }
   }
-  // console.log(label);
+  console.log(label);
   return [label, startnum, finishnum];
 }
 

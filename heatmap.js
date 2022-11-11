@@ -1,5 +1,5 @@
 
-function heatmap(member, time, num) {
+function heatmap(member, time, num, nickname) {
 
     // Chart.register(ChartDataLabels);
 
@@ -9,16 +9,33 @@ function heatmap(member, time, num) {
     // データセットの生成
     const generateDatasets = function () {
         const datasets = [];
-        for (let i = mapHeight-1 ; i >= 0; i--) {
-            datasets.push({
-                label: '生徒' + (i+1),
-                data: new Array(mapWidth).fill(1), //時間
-                borderWidth: 0.2,
-                borderColor: "#FFFFFF",
-                // backgroundColor: 'skyblue'
-                backgroundColor: generateColor(i)
-            })
+        if(nickname[0] === undefined){
+            for (let i = mapHeight-1 ; i >= 0; i--) {
+                datasets.push({
+                    label: '生徒' + (i+1),
+                    // label: nickname[i],
+                    data: new Array(mapWidth).fill(1), //時間
+                    borderWidth: 0.2,
+                    borderColor: "#FFFFFF",
+                    // backgroundColor: 'skyblue'
+                    backgroundColor: generateColor(i)
+                })
+            }
+        }else{
+            for (let i = mapHeight-1 ; i >= 0; i--) {
+                datasets.push({
+                    // label: '生徒' + (i+1),
+                    label: nickname[i],
+                    data: new Array(mapWidth).fill(1), //時間
+                    borderWidth: 0.2,
+                    borderColor: "#FFFFFF",
+                    // backgroundColor: 'skyblue'
+                    backgroundColor: generateColor(i)
+                })
+                console.log(nickname[i]);
+            }
         }
+        
         return datasets;
     }
 
@@ -88,7 +105,7 @@ function heatmap(member, time, num) {
                                 // console.log(context.dataIndex);
                                 // console.log(num);
                                 // console.log(num[38 - context.datasetIndex][context.dataIndex]);
-                                label += num[38 - context.datasetIndex][context.dataIndex];
+                                label += num[mapHeight - context.datasetIndex -1][context.dataIndex];//38
                                 label += '回' ;
                             }
                             return label;

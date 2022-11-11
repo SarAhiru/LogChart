@@ -1,6 +1,15 @@
 //児童ごと　操作回数合計　[グラフ]　[全体合計 １分]
 
-function drawBarChart(member, time, num) {
+function drawBarChart(member, time, num, nickname) {
+  let color = ['rgba(255, 0, 0, 1)','rgba(0, 255, 0, 1)','rgba(0, 0, 128, 1)','rgba(128, 128, 0, 1)','rgba(0, 128, 0, 1)'
+              ,'rgba(0, 255, 255, 1)','rgba(0, 128, 128, 1)','rgba(0, 0, 255, 1)','rgba(0, 0, 128, 1)','rgba(255, 0, 255, 1)'
+              ,'rgba(128, 0, 128, 1)','rgba(0, 255, 0, 1)','rgba(128, 0, 0, 1)','rgba(255, 255, 0, 1)','rgba(128, 128, 0, 1)'
+              ,'rgba(0, 128, 0, 1)','rgba(0, 255, 255, 1)','rgba(0, 128, 128, 1)','rgba(0, 0, 255, 1)','rgba(0, 0, 128, 1)'
+              ,'rgba(255, 0, 255, 1)','rgba(128, 0, 128, 1)','rgba(0, 255, 0, 1)','rgba(128, 0, 0, 1)','rgba(255, 255, 0, 1)'
+              ,'rgba(128, 128, 0, 1)','rgba(0, 128, 0, 1)','rgba(0, 255, 255, 1)','rgba(0, 128, 128, 1)','rgba(0, 0, 255, 1)'
+              ,'rgba(0, 0, 128, 1)','rgba(255, 0, 255, 1)','rgba(128, 0, 128, 1)','rgba(0, 255, 0, 1)','rgba(128, 0, 0, 1)'
+              ,'rgba(255, 255, 0, 1)','rgba(128, 128, 0, 1)','rgba(0, 128, 0, 1)','rgba(0, 255, 255, 1)','rgba(0, 128, 128, 1)',]
+
 /*
     //console.log(member);
   
@@ -78,23 +87,36 @@ function drawBarChart(member, time, num) {
 
     //生徒ごとのデータ作成
     const studentDatasets = function () {
-      const datasets = []
-
-      for(let i = 0; i < member.length; i++){
-        datasets.push({
-          label: '生徒' + (i+1),
-          data: num[i],
-          // backgroundColor: 'rgba(255, 0, 0, 1)',
-          backgroundColor: generateRandomCode() ,
-        })
-      }
+      const datasets = [];
 
       datasets.push({
         label: '児童平均',
         data: num[member.length],
-        // backgroundColor: 'rgba(255, 0, 0, 1)',
-        backgroundColor: generateRandomCode() ,
+        backgroundColor: 'rgba(255, 0, 0, 1)',
+        // backgroundColor: generateRandomCode() ,
       })
+
+      if(nickname[0] === undefined){
+        for(let i = 0; i < member.length; i++){
+          datasets.push({
+            // label: nickname[i],
+            label: '生徒' + (i+1),
+            data: num[i],
+            backgroundColor: color[i],
+            // backgroundColor: generateRandomCode() ,
+          })
+        }
+      }else{
+        for(let i = 0; i < member.length; i++){
+          datasets.push({
+            label: nickname[i],
+            // label: '生徒' + (i+1),
+            data: num[i],
+            backgroundColor: color[i],
+            // backgroundColor: generateRandomCode() ,
+          })
+        }
+      }
       return datasets
     }
 

@@ -80,7 +80,6 @@ function count(result, member, time, startnum, finishnum) {
 
             //今回のデータは何人目の生徒なのか
             membernum = member.indexOf(logActor);
-            // console.log(membernum);
 
             //横軸時間管理
             let date = new Date(logDate);
