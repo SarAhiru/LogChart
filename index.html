@@ -180,8 +180,6 @@
     };
 
     stfileReader.onload = () => {
-      // member = stfileReader.result.split(',');
-      // var txt = stfileReader.result;
       //読み取ったcsvデータを配列に格納
       //var arr = txt.split("\r\n" || "\n" || "\r");
       // var arr = txt.split("\r\n"); //意味ないけど一応
@@ -201,42 +199,6 @@
       let file = fileInput.files[0];
       fileReader.readAsText(file, 'Shift_JIS');
     };
-
-
-    // function getCSV() {
-    //   var req = new XMLHttpRequest(); // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
-    //   req.open("get", "./english_data.csv", true); // アクセスするファイルを指定
-    //   console.log(req.responseText);
-    //   req.send(null); // HTTPリクエストの発行
-
-    //   // レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ	
-    //   req.onload = function () {
-    //     convertCSVtoArray(req.responseText); // 渡されるのは読み込んだCSVデータ
-    //   }
-    // }
-
-    // function convertCSVtoArray(txt) { // 読み込んだCSVデータが文字列として渡される
-    //   //読み取ったcsvデータを配列に格納
-    //   //var arr = txt.split("\r\n" || "\n" || "\r");
-    //   var arr = txt.split("\r\n");
-    //   arr = txt.split("\n");
-    //   //arr = txt.split("\r");
-    //   for (var i = 0; i < arr.length; i++) {
-    //     result[i] = arr[i].split(',');
-    //   }
-
-    //   //逆順
-    //   // result.reverse();
-
-    //   //操作している人を取り出す(※本当は児童を指定しておきたい)
-    //   member = actor(result); //actor.js
-    // }
-
-    // getCSV(); //最初に実行される
-
-
-
-
 
     //ファイルを読み取ったら実行２
     fileReader.onload = () => {
@@ -259,7 +221,6 @@
           return -1;
         }
       });
-
       //生徒一覧の配列作成
       // member = actor(result); //actor.js
     }
@@ -290,9 +251,7 @@
       // 回数カウント
       totalnum = totalcount(result, time, startnum, finishnum);
       num = count(result, member, time, startnum, finishnum);
-      // console.log(time[0]);
       startTime.value = time[0];
-      // startTime = time[0];
       finishTime.value = time[time.length - 1];
       // console.log(startTime.value);
       // console.log(finishTime.value);
@@ -331,10 +290,9 @@
     // 時間選択したら開始されるようにしたい
     startTime.addEventListener(`change`, function () {
       document.querySelector(`#startTime`).innerHTML = startTime.value;
-      // let snum;
-      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
-      // console.log(snum);
-      // startnum = snum;
+      startTime = document.querySelector(`input[type='time'][name='startTime']`);
+      finishTime = document.querySelector(`input[type='time'][name='finishTime']`);
+      [time, startnum, finishnum] = lavelChenge2(result, choicedate, startTime.value, finishTime.value);
       num = count(result, member, time, startnum, finishnum);
 
       let changetime = (startTime.value.substring(0, 2) - mintime.substring(0, 2)) * 60 + (startTime.value.substring(3, 5) - mintime.substring(3, 5));
@@ -363,10 +321,10 @@
 
     finishTime.addEventListener(`change`, function () {
       document.querySelector(`#finishTime`).innerHTML = finishTime.value;
-      let fnum
+      startTime = document.querySelector(`input[type='time'][name='startTime']`);
+      finishTime = document.querySelector(`input[type='time'][name='finishTime']`);
       //横軸を決定
-      [time, startnum, fnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
-      finishnum = fnum;
+      [time, startnum, finishnum] = lavelChenge2(result, choicedate, startTime.value, finishTime.value);
       num = count(result, member, time, startnum, finishnum);
 
       let changetime = (maxtime.substring(0, 2) - finishTime.value.substring(0, 2)) * 60 + (maxtime.substring(3, 5) - finishTime.value.substring(3, 5));
@@ -392,27 +350,32 @@
       drawStuNumChart(member, time, num);
     });
 
+    // 時間変更バーを移動させたら変更できるようにする
     range1.addEventListener(`change`, function () {
       document.querySelector(`#range1`).innerHTML
       let changetime = Math.floor(range1.value / permin);
       let hour = parseInt(mintime.substr(0, 2)) + Math.floor(changetime / 60);
       let minute = parseInt(mintime.substr(3, 2)) + changetime % 60;
-      startTime = hour + ":" + minute;
       if (minute >= 60) {
-        hour2 = hour + 1;
-        minute2 = minute - 60;
-        startTime = hour2 + ":" + minute2;
-        if (minute2 < 10) {
-          startTime = hour2 + ":0" + minute2;
-        }
+        hour = hour + 1;
+        minute = minute - 60;
       }
-      // console.log(startTime);
+      if(hour < 10){
+        hour = "0" + hour;
+      }
+      if (minute < 10) {
+        mintime = "0" + minute;
+      }
+      startTime = hour + ":" + minute;
       var ctime = document.querySelector(`input[type='time'][name='startTime']`);
       ctime.value = startTime;
+      finishTime = document.querySelector(`input[type='time'][name='finishTime']`);
+      finishTime = finishTime.value;
+      // console.log(startTime);
+      // console.log(finishTime);
 
-      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime, finishTime.value);
+      [time, startnum, finishnum] = lavelChenge2(result, choicedate, startTime, finishTime);
       num = count(result, member, time, startnum, finishnum);
-
 
       if (studentChart) {
         studentChart.destroy();
@@ -435,30 +398,29 @@
 
     range2.addEventListener(`change`, function () {
       document.querySelector(`#range2`).innerHTML
-      // console.log(range2.value);
       let changetime = Math.floor(range2.value / permin);
-      // console.log(changetime);
       let hour = parseInt(mintime.substring(0, 2)) + Math.floor(changetime / 60);
-      // console.log(hour);
       let minute = parseInt(mintime.substring(3, 5)) + changetime % 60;
-      // console.log(minute);
-      finishTime = hour + ":" + minute;
-      if (parseInt(minute) >= 60) {
-        hour2 = hour + 1;
-        minute2 = minute - 60;
-        finishTime = hour2 + ":" + minute2;
-        if (minute2 < 10) {
-          finishTime = hour2 + ":0" + minute2;
-        }
-        // console.log(finishTime);
+      if (minute >= 60) {
+        hour = hour + 1;
+        minute = minute - 60;
       }
-      console.log(finishTime);
+      if(hour < 10){
+        hour = "0" + hour;
+      }
+      if (minute < 10) {
+        mintime = "0" + minute;
+      }
+      finishTime = hour + ":" + minute;
+      // console.log(finishTime);
       var ctime = document.querySelector(`input[type='time'][name='finishTime']`);
       ctime.value = finishTime;
+      startTime = document.querySelector(`input[type='time'][name='startTime']`);
+      startTime = startTime.value;
+      // console.log(startTime);
 
-      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime, finishTime);
+      [time, startnum, finishnum] = lavelChenge2(result, choicedate, startTime, finishTime);
       num = count(result, member, time, startnum, finishnum);
-
 
       if (studentChart) {
         studentChart.destroy();

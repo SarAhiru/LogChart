@@ -32,7 +32,7 @@ function heatmap(member, time, num, nickname) {
                     // backgroundColor: 'skyblue'
                     backgroundColor: generateColor(i)
                 })
-                console.log(nickname[i]);
+                // console.log(nickname[i]);
             }
         }
         

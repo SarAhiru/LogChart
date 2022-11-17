@@ -82,29 +82,42 @@ function count(result, member, time, startnum, finishnum) {
             membernum = member.indexOf(logActor);
 
             //横軸時間管理
-            let date = new Date(logDate);
+            let date = logDate.substring(11,16);
+            // console.log(date);
 
-            //始めだけfirst timeを設定
-            if (judge == 0) {
-                ftime = new Date(logDate);
-                datanum = 0;
-                judge = 1;
-                ftime.setMinutes(ftime.getMinutes() + 1);
-            }
-            else {
-                while (date.getTime() > ftime.getTime()) { //1分経過したのかを判断
-                    ftime.setMinutes(ftime.getMinutes() + 1);
-                    datanum++;
+            datanum = time.indexOf(date);
+            if(datanum < 0){ 
+            }else{
+                if (logTarget.includes('audio volume')) {
+                } else if (logTarget.includes('openBook index')) {
+                } else {
+                    totalnum[datanum]++;
+                    num[membernum][datanum]++;
                 }
             }
-            // console.log(datanum);
 
-            if (logTarget.includes('audio volume')) {
-            } else if (logTarget.includes('openBook index')) {
-            } else {
-                totalnum[datanum]++;
-                num[membernum][datanum]++;
-            }
+
+            // //始めだけfirst timeを設定
+            // if (judge == 0) {
+            //     ftime = new Date(logDate);
+            //     datanum = 0;
+            //     judge = 1;
+            //     ftime.setMinutes(ftime.getMinutes() + 1);
+            // }
+            // else {
+            //     while (date.getTime() > ftime.getTime()) { //1分経過したのかを判断
+            //         ftime.setMinutes(ftime.getMinutes() + 1);
+            //         datanum++;
+            //     }
+            // }
+            // // console.log(datanum);
+
+            // if (logTarget.includes('audio volume')) {
+            // } else if (logTarget.includes('openBook index')) {
+            // } else {
+            //     totalnum[datanum]++;
+            //     num[membernum][datanum]++;
+            // }
         }
     }
     // console.log(member.length);
