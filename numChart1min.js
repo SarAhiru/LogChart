@@ -84,7 +84,7 @@ function drawStuNumChart(member, time, num) {
       datasets: [{
         label: '操作人数',
         data: stuNum,
-        backgroundColor: 'rgba(255, 0, 0, 0.3)',
+        backgroundColor: 'rgba(255, 0, 0, 0.4)',
         borderColor: 'rgba(255, 0, 0, 1)',
         borderWidth: 1
       }]

@@ -1,4 +1,5 @@
 //学習者用デジタル教科書　英語　ログ　生徒管理用
+//使用していないコード
 
 function actor(result) {
   let actc = [];

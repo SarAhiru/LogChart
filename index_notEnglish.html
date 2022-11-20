@@ -80,7 +80,7 @@
 
     <!-- <a href="EnglishSound.html">音声再生</a> -->
     <!-- <a href="classseat.html">座席</a>　　 -->
-    　<a href="index_notEnglish.html">英語以外の場合</a>
+    　<a href="indexDB.html">英語Ver.へ</a>
     　<a href="indexDB.html">登録しているデータを使う</a>
     　<a href="indexDBreal.html">リアルタイムに使う</a>
     <!-- <a href="dataSet.html">データ登録</a> -->
@@ -169,7 +169,7 @@
     drawChart(time, totalnum);
     drawBarChart(member, time, num, nickname);
     heatmap(member, time, num, nickname);
-    drawChartTarget(result, time, startnum, finishnum);
+    drawChartTarget_noEng(result, time, startnum, finishnum);
     drawStuNumChart(member, time, num);
 
     //生徒一覧ファイルを読み取ったら実行
@@ -283,7 +283,7 @@
       drawChart(time, totalnum);
       drawBarChart(member, time, num, nickname); //totalChart1min.js
       heatmap(member, time, num, nickname); //heatmap.js
-      drawChartTarget(result, time, startnum, finishnum); // targetEnChart1min.js
+      drawChartTarget_noEng(result, time, startnum, finishnum); // targetEnChart1min.js
       drawStuNumChart(member, time, num); // numChart1min.js
     });
 
@@ -316,7 +316,7 @@
 
       drawBarChart(member, time, num, nickname);
       heatmap(member, time, num, nickname);
-      drawChartTarget(result, time, startnum, finishnum);
+      drawChartTarget_noEng(result, time, startnum, finishnum);
       drawStuNumChart(member, time, num);
     });
 
@@ -347,7 +347,7 @@
 
       drawBarChart(member, time, num, nickname);
       heatmap(member, time, num, nickname);
-      drawChartTarget(result, time, startnum, finishnum);
+      drawChartTarget_noEng(result, time, startnum, finishnum);
       drawStuNumChart(member, time, num);
     });
 
@@ -393,7 +393,7 @@
 
       drawBarChart(member, time, num, nickname);
       heatmap(member, time, num, nickname);
-      drawChartTarget(result, time, startnum, finishnum);
+      drawChartTarget_noEng(result, time, startnum, finishnum);
       drawStuNumChart(member, time, num);
     });
 
@@ -438,7 +438,7 @@
 
       drawBarChart(member, time, num, nickname);
       heatmap(member, time, num, nickname);
-      drawChartTarget(result, time, startnum, finishnum);
+      drawChartTarget_noEng(result, time, startnum, finishnum);
       drawStuNumChart(member, time, num);
     });
 

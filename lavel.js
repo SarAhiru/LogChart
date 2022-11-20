@@ -233,11 +233,8 @@ function lavelChenge(result, choicedate, startTime, finishTime) {
     }
   }
   console.log(label);
-  // if(startnum == finishnum){
-  //   startnum = 0;
-  // }
-  console.log("startnum" + startnum);
-  console.log("finishnum" + finishnum);
+  // console.log("startnum" + startnum);
+  // console.log("finishnum" + finishnum);
   return [label, startnum, finishnum];
 }
 
