@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <!--Chart.jsの読み込み-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+
+  <link rel="stylesheet" href="StyleSheet0.css" />
+
+  <title>学習履歴 可視化</title>
+</head>
+
+<body>
+  <script type="text/javascript" src="actor.js"></script>
+  <script type="text/javascript" src="lavel.js"></script>
+  <script type="text/javascript" src="count.js"></script>
+  <script type="text/javascript" src="EnglishSound.js"></script>
+  <!-- 時間選択用　[グラフ] -->
+  <script type="text/javascript" src="timesetChart1min.js"></script>
+
+
+  <header>
+    <!--CSVファイルの読み取り-->
+    <p>
+      〇生徒ファイル登録　　▷　
+      <input type="file" name="st" id="st" accept=".csv">
+      <br>
+      ①CSVファイルを選択　▷　
+      <input type="file" name="file" id="file" multiple>
+      <br>
+      ②日付を選択　　　　　▷　
+      <input type="date" name="date" id="output">
+      <br>
+      ②時間を選択　　　　　▷　
+      <input type="time" name="startTime" id="startTime">　～　
+      <input type="time" name="finishTime" id="finishTime">
+    </p>
+
+    <div class="timesetChart" style="position:absolute; top:10px; left:500px; width:350px; height:300px;">
+      <!-- style="width:500px;"  -->
+      <canvas id="timeset" width="300" height="80"></canvas>
+    </div>
+    <div class="slidebar-multithumb" style="position:absolute; top:95px; left:520px; width:340px;">
+      <input class="thumb-1" type="range" name="range1" id="range1" value="0" min="0" max="100" step="1">
+      <input class="thumb-2" type="range" name="range2" id="range2" value="100" min="0" max="100" step="1">
+    </div>
+  </header>
+
+  <p>
+    　<input type="button" onclick="location.href='./index.html'" value="グラフ">
+    　<a href="index.html">グラフへ</a>
+  </p>
+  <br>
+  <!-- <br><br> -->
+
+
+  <style type="text/css">
+    .Title {
+      background-color: #cccccc;
+      font-weight: bold;
+    }
+
+    .Num {
+      text-align: right;
+      width: 10em;
+    }
+
+    .Price {
+      background-color: #ffcc80;
+      text-align: right;
+      width: 6em;
+    }
+
+    .Other {
+      text-align: right;
+    }
+
+    .Check {
+      color: red;
+    }
+  </style>
+
+
+  <div>
+    <input type="checkbox" id="audiocheck" name="audiocheck">
+    <label for="audiocheck">音声</label>
+  </div>
+  <div>
+    <input type="checkbox" id="videocheck" name="videocheck">
+    <label for="videocheck">動画</label>
+  </div>
+
+  <!-- <h1>オーディオ使用履歴</h1> -->
+  <table border="1" id="targetTable">
+    <!-- <caption>オーディオ使用履歴</caption> -->
+    <caption>利用時間</caption>
+    <colgroup span="1" class="Title"></colgroup>
+    <!--１行を"Title"に-->
+    <colgroup span="1" class="Num"></colgroup>
+    <colgroup span="2" class="Other"></colgroup>
+    <thead>
+      <tr class="Title">
+        <td>名前</td>
+        <td>再生回数</td>
+        <td>再生時間</td>
+        <td>再生コンテンツ数</td>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+
+
+  <!--以下でデータの読み込みを行う-->
+  <script>
+    // console.log("通過しました!!!");
+    let result = []; //csvの中身
+    let stu = [];
+    let member = [];
+    let nickname = [];
+    let time = [];
+    let totalnum = []; //操作回数(全体合計)
+
+    // グラフの型を表示させておく
+    drawChart(time, totalnum);
+
+    //生徒一覧ファイルを読み取ったら実行
+    let stfileInput = document.getElementById('st');
+    let stfileReader = new FileReader();
+    stfileInput.onchange = () => {
+      let stfile = stfileInput.files[0];
+      stfileReader.readAsText(stfile, 'UTF-8');
+    };
+
+    stfileReader.onload = () => {
+      //読み取ったcsvデータを配列に格納
+      //var arr = txt.split("\r\n" || "\n" || "\r");
+      // var arr = txt.split("\r\n"); //意味ないけど一応
+      var arr = stfileReader.result.split("\r\n");
+      for (var i = 1; i < arr.length; i++) {
+        stu[i-1] = arr[i].split(',');
+        member[i-1] = stu[i-1][0];
+        nickname [i-1]= stu[i-1][1];
+      }
+      console.log(member);
+    }
+
+    //ファイルを読み取ったら実行１
+    let fileInput = document.getElementById('file');
+    let fileReader = new FileReader();
+    fileInput.onchange = () => {
+      let file = fileInput.files[0];
+      fileReader.readAsText(file, 'Shift_JIS');
+    };
+
+    //ファイルを読み取ったら実行２
+    fileReader.onload = () => {
+      var txt = fileReader.result
+
+      //読み取ったcsvデータを配列に格納
+      //var arr = txt.split("\r\n" || "\n" || "\r");
+      var arr = txt.split("\r\n");
+      arr = txt.split("\n");
+      //arr = txt.split("\r");
+      for (var i = 0; i < arr.length; ++i) {
+        result[i] = arr[i].split(',');
+      }
+
+      //日時でソート
+      result.sort(function (a, b) {
+        if (a > b) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+
+      //生徒一覧の配列作成
+      // member = actor(result);
+    }
+
+    // 日付選択をしたら開始されるようにする
+    let choicedate = document.querySelector(`input[type='date'][name='date']`);
+    let startTime = document.querySelector(`input[type='time'][name='startTime']`);
+    let finishTime = document.querySelector(`input[type='time'][name='finishTime']`);
+    let range1 = document.querySelector(`input[type='range'][name='range1']`);
+    let range2 = document.querySelector(`input[type='range'][name='range2']`);
+    let selectTime;//全体の時間の長さ
+    let permin;//１分がどのくらいの長さになるのか
+    let mintime;
+    let maxtime;
+
+    // let startnum = 0;
+
+    //日付が選択されたらイベントリスナー発火
+    choicedate.addEventListener(`change`, function () {
+      document.querySelector(`#output`).innerHTML = choicedate.value;
+      let audioc = document.getElementById('audiocheck');
+      audioc.checked = true;
+      let videoc = document.getElementById('videocheck');
+      videoc.checked = true;
+
+      range1.value = 0;
+      range2.value = 100;
+
+      //時間を決定
+      [time, startnum, finishnum] = lavel(result, choicedate);
+      // 回数カウント
+      totalnum = totalcount(result, time, startnum, finishnum);
+      startTime.value = time[0];
+      finishTime.value = time[time.length - 1];
+
+      //時間選択グラフ用
+      selectTime = time.length;
+      permin = 100 / selectTime;
+      mintime = time[0];
+      maxtime = time[time.length - 1];
+      if (timeset) {
+        timeset.destroy();
+      }
+      // グラフ表示
+      drawChart(time, totalnum);
+
+      table2(result, member, choicedate, startnum, finishnum, nickname);
+    });
+
+    // 時間選択したら開始されるようにしたい
+    startTime.addEventListener(`change`, function () {
+      document.querySelector(`#startTime`).innerHTML = startTime.value;
+      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
+      let changetime = (startTime.value.substring(0, 2) - mintime.substring(0, 2)) * 60 + (startTime.value.substring(3, 5) - mintime.substring(3, 5));
+      range1.value = changetime * permin;
+      table2(result, member, choicedate, startnum, finishnum, nickname);
+    });
+
+    finishTime.addEventListener(`change`, function () {
+      document.querySelector(`#finishTime`).innerHTML = finishTime.value;
+      console.log(finishnum);
+      let fnum;
+      [time, startnum, fnum] = lavelChenge(result, choicedate, startTime.value, finishTime.value);
+      finishnum = fnum;
+      let changetime = (maxtime.substring(0, 2) - finishTime.value.substring(0, 2)) * 60 + (maxtime.substring(3, 5) - finishTime.value.substring(3, 5));
+      range2.value = 100 - changetime * permin;
+      console.log(finishnum);
+      table2(result, member, choicedate, startnum, finishnum, nickname);
+    });
+
+    range1.addEventListener(`change`, function () {
+      document.querySelector(`#range1`).innerHTML
+      let changetime = Math.floor(range1.value / permin);
+      let hour = parseInt(mintime.substr(0, 2)) + Math.floor(changetime / 60);
+      let minute = parseInt(mintime.substr(3, 2)) + changetime % 60;
+      startTime = hour + ":" + minute;
+      if (minute >= 60) {
+        hour2 = hour + 1;
+        minute2 = minute - 60;
+        startTime = hour2 + ":" + minute2;
+        if (minute2 < 10) {
+          startTime = hour2 + ":0" + minute2;
+        }
+      }
+      var ctime = document.querySelector(`input[type='time'][name='startTime']`);
+      ctime.value = startTime;
+      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime, finishTime.value);
+
+      table2(result, member, choicedate, startnum, finishnum, nickname);
+    });
+
+    range2.addEventListener(`change`, function () {
+      document.querySelector(`#range2`).innerHTML
+      let changetime = Math.floor(range2.value / permin);
+      let hour = parseInt(mintime.substring(0, 2)) + Math.floor(changetime / 60);
+      let minute = parseInt(mintime.substring(3, 5)) + changetime % 60;
+      finishTime = hour + ":" + minute;
+      if (parseInt(minute) >= 60) {
+        hour2 = hour + 1;
+        minute2 = minute - 60;
+        finishTime = hour2 + ":" + minute2;
+        if (minute2 < 10) {
+          finishTime = hour2 + ":0" + minute2;
+        }
+      }
+      // console.log(finishTime);
+      var ctime = document.querySelector(`input[type='time'][name='finishTime']`);
+      ctime.value = finishTime;
+
+      // 時間を決定
+      [time, startnum, finishnum] = lavelChenge(result, choicedate, startTime, finishTime);
+      table2(result, member, choicedate, startnum, finishnum, nickname);
+    });
+
+
+
+
+    function audiovalueChange(event) {
+      table2(result, member, choicedate, startnum, finishnum, nickname);
+    }
+
+    function videovalueChange(event) {
+      table2(result, member, choicedate, startnum, finishnum, nickname);
+    }
+
+    let audiocheck = document.getElementById('audiocheck');
+    audiocheck.addEventListener('change', audiovalueChange);
+    let videocheck = document.getElementById('videocheck');
+    videocheck.addEventListener('change', videovalueChange);
+
+  </script>
+  <br><br>
+</body>
+
+</html>

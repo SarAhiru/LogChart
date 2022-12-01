@@ -55,8 +55,8 @@ function count(result, member, time, startnum, finishnum) {
     let membernum = 0; //何人目のデータか
 
     let datanum = 0; //配列番号カウント用
-    let ftime = 0; //first time
-    let judge = 0; //初回かどうかを判断
+    // let ftime = 0; //first time
+    // let judge = 0; //初回かどうかを判断
 
     // 初期化
     for (let x = 0; x < time.length; x++) {
@@ -76,7 +76,7 @@ function count(result, member, time, startnum, finishnum) {
             let logTarget = result[x][9]; // target取得
 
             // console.log(x + "  " + result[x][0]);
-            //console.log(x + "  " + result[x][2]);// actor表示
+            // console.log(x + "  " + result[x][9]);
 
             //今回のデータは何人目の生徒なのか
             membernum = member.indexOf(logActor);
@@ -86,6 +86,8 @@ function count(result, member, time, startnum, finishnum) {
             // console.log(date);
 
             datanum = time.indexOf(date);
+
+            console.log(membernum + "  "+ datanum);
             if(datanum < 0){ 
             }else{
                 if (logTarget.includes('audio volume')) {
@@ -130,6 +132,106 @@ function count(result, member, time, startnum, finishnum) {
 }
 
 function detailcount(result, member, time, startnum, finishnum) {
+    let totalnum = []; //全体平均用
+    let num = []; // 操作回数
+    let membernum = 0; //何人目のデータか
+
+    let datanum = 0; //配列番号カウント用
+    // let ftime = 0; //first time
+    // let judge = 0; //初回かどうかを判断
+
+    // 初期化
+    for (let x = 0; x < time.length; x++) {
+        totalnum[x] = 0;
+    }
+    for (let i = 0; i < (member.length * 6); i++) {
+        num.push(Array(time.length));
+        for (let x = 0; x < time.length; x++) {
+            num[i][x] = 0;
+        }
+    }
+    /* num　配列　これが人数分続く
+    num[1][]:目次
+    num[2][]:ページ移動
+    num[3][]:音声
+    num[4][]:動画
+    num[5][]:ペン選択
+    num[6][]:
+    */
+
+    if (result.length > 0) {
+        for (let x = startnum; x <= finishnum; x++) {
+            let logDate = result[x][0]; // date取得
+            let logActor = result[x][2]; // actor取得
+            let logTarget = result[x][9]; // target取得
+
+            //console.log(x + "  " + result[x][0]);
+            //console.log(x + "  " + result[x][2]);// actor表示
+
+            //今回のデータは何人目の生徒なのか
+            membernum = member.indexOf(logActor);
+
+            //横軸時間管理
+            let date = logDate.substring(11,16);
+            datanum = time.indexOf(date);
+
+            // //横軸時間管理
+            // let date = new Date(logDate);
+
+            // //始めだけfirst timeを設定
+            // if (judge == 0) {
+            //     ftime = new Date(logDate);
+            //     datanum = 0;
+            //     judge = 1;
+            //     ftime.setMinutes(ftime.getMinutes() + 1);
+            // }
+            // else {
+            //     while (date.getTime() > ftime.getTime()) { //1分経過したのかを判断
+            //         ftime.setMinutes(ftime.getMinutes() + 1);
+            //         datanum++;
+            //     }
+            // }
+
+            if (logTarget.includes('index')) { // indexの文字を含んでいるのかどうか
+                if (logTarget.includes('openBook index')) {
+                } else {
+                    num[0+6*membernum][datanum]++;
+                }
+            }
+            else if (logTarget.includes('cp')) {
+                if(logTarget.substring(18, 19) == 4){ //cp:ページ遷移のみ取り出し
+                    num[1+6*membernum][datanum]++;
+                }
+            }
+            else if (logTarget.includes('audio')) {
+                if (logTarget.includes('audio volume')) {
+                } else {
+                    num[2+6*membernum][datanum]++;
+                }
+            }
+            else if (logTarget.includes('video')) {
+                if (logTarget.includes('video volume')) {
+                } else {
+                    num[3+6*membernum][datanum]++;
+                }
+            }
+            else if (logTarget.includes('true') || logTarget.includes('penType')) {
+                num[4+6*membernum][datanum]++;
+            }
+            else{
+                num[5+6*membernum][datanum]++;
+            }
+        }
+    }
+
+    // for (let x = 0; x < time.length; x++) {
+    //     totalnum[x] = totalnum[x] / member.length;  //人数で割って平均を出したい
+    // }
+    // console.log(num);
+    return num;
+}
+
+function detailcount_test(result, member, time, startnum, finishnum) {
     let totalnum = []; //全体平均用
     let num = []; // 操作回数
     let membernum = 0; //何人目のデータか
