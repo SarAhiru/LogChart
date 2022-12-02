@@ -28,7 +28,7 @@ function drawChartTarget(result, time, startnum, finishnum) {
       //console.log(x + "  " + result[x][0]);
       //console.log(x + "  " + result[x][9]);
 
-      let date = logDate.substring(11,16);
+      let date = logDate.substring(11, 16);
       datanum = time.indexOf(date);
 
       // let date = new Date(logDate); //logDateをDate型に直す
@@ -54,24 +54,27 @@ function drawChartTarget(result, time, startnum, finishnum) {
         indexCount[datanum]++;
       }
       else if (logTarget.includes('cp')) {
-        let last = logTarget.slice( -2,-1 ) ;
-        if(last == "4"){
+        let last = logTarget.slice(-2, -1);
+        if (last == "4") {
           cpCount[datanum]++;
         }
       }
+      else if (logTarget.includes('pager') || logTarget.includes('open tenkey')) {
+        cpCount[datanum]++;
+      }
       else if (logTarget.includes('audio')) {
-        if (logTarget.includes('audio volume')) {
+        if (logTarget.includes('audio volume') || logTarget.includes('audio button pitch') || logTarget.includes('audio button setting') || logTarget.includes('audio button mute') || logTarget.includes('audio button close')) {
         } else {
           audioCount[datanum]++;
         }
       }
       else if (logTarget.includes('video')) {
-        if (logTarget.includes('video volume')) {
+        if (logTarget.includes('video volume') || logTarget.includes('video button pitch') || logTarget.includes('video button fullscreen') || logTarget.includes('video button setting') || logTarget.includes('video button mute') || logTarget.includes('video button close')) {
         } else {
           videoCount[datanum]++;
         }
       }
-      else if (logTarget.includes('true') || logTarget.includes('penType')) {
+      else if (logTarget.includes('simplePen black: true') || logTarget.includes('simplePen red: true') || logTarget.includes('penType')) {
         penCount[datanum]++;
       }
     }
@@ -144,8 +147,8 @@ function drawChartTarget_noEng(result, time, startnum, finishnum) {
   let penCount = []; //ペン選択回数
 
   let datanum = 0; //配列番号カウント用
-  let ftime = 0; //first time
-  let judge = 0; //初回かどうかを判断
+  // let ftime = 0; //first time
+  // let judge = 0; //初回かどうかを判断
 
   // 初期化
   for (let x = 0; x < time.length; x++) {
@@ -164,7 +167,7 @@ function drawChartTarget_noEng(result, time, startnum, finishnum) {
       //console.log(x + "  " + result[x][0]);
       //console.log(x + "  " + result[x][9]);
 
-      let date = logDate.substring(11,16);
+      let date = logDate.substring(11, 16);
       datanum = time.indexOf(date);
       // let date = new Date(logDate); //logDateをDate型に直す
       // //console.log(date.toLocaleString());
@@ -190,31 +193,31 @@ function drawChartTarget_noEng(result, time, startnum, finishnum) {
       }
       else if (logTarget.includes('cp')) {
         // console.log(logTarget);
-        let last = logTarget.slice( -2,-1 ) ;
+        let last = logTarget.slice(-2, -1);
         // console.log(last);
-        if(last == "4"){
+        if (last == "4") {
           cpCount[datanum]++;
         }
-        if(last == "0" || last == "1" || last == "2" || last =="3" || last == "5" || last =="7"){
+        if (last == "0" || last == "1" || last == "2" || last == "3" || last == "5" || last == "7") {
           rinkCount[datanum]++;
         }
-        if(last == "6"){
+        if (last == "6") {
           pinchCount[datanum]++;
         }
       }
-      // else if (logTarget.includes('audio')) {
-      //   if (logTarget.includes('audio volume')) {
-      //   } else {
-      //     audioCount[datanum]++;
-      //   }
-      // }
-      // else if (logTarget.includes('video')) {
-      //   if (logTarget.includes('video volume')) {
-      //   } else {
-      //     videoCount[datanum]++;
-      //   }
-      // }
-      else if (logTarget.includes('true') || logTarget.includes('penType')) {
+      else if (logTarget.includes('pager') || logTarget.includes('open tenkey')) {
+        cpCount[datanum]++;
+      }
+      else if (logTarget.includes('reflow') || logTarget.includes('bottomTab')) {
+        rinkCount[datanum]++;
+      }
+      else if (logTarget.includes('zoom')) {
+        if (logTarget.includes('zoomEnd')) {
+        } else {
+          pinchCount[datanum]++;
+        }
+      }
+      else if (logTarget.includes('simplePen black: true') || logTarget.includes('simplePen red: true') || logTarget.includes('penType')) {
         penCount[datanum]++;
       }
     }
@@ -361,21 +364,27 @@ function drawChartTarget2(result, time, startnum, finishnum) {
         indexCount[datanum]++;
       }
       else if (logTarget.includes('cp')) {
+        let last = logTarget.slice(-2, -1);
+        if (last == "4") {
+          cpCount[datanum]++;
+        }
+      }
+      else if (logTarget.includes('pager') || logTarget.includes('open tenkey')) {
         cpCount[datanum]++;
       }
       else if (logTarget.includes('audio')) {
-        if (logTarget.includes('audio volume')) {
+        if (logTarget.includes('audio volume') || logTarget.includes('audio button pitch') || logTarget.includes('audio button setting') || logTarget.includes('audio button mute') || logTarget.includes('audio button close')) {
         } else {
           audioCount[datanum]++;
         }
       }
       else if (logTarget.includes('video')) {
-        if (logTarget.includes('video volume')) {
+        if (logTarget.includes('video volume') || logTarget.includes('video button pitch') || logTarget.includes('video button fullscreen') || logTarget.includes('video button setting') || logTarget.includes('video button mute') || logTarget.includes('video button close')) {
         } else {
           videoCount[datanum]++;
         }
       }
-      else if (logTarget.includes('true') || logTarget.includes('penType')) {
+      else if (logTarget.includes('simplePen black: true') || logTarget.includes('simplePen red: true') || logTarget.includes('penType')) {
         penCount[datanum]++;
       }
     }
