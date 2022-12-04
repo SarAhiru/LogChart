@@ -20,7 +20,6 @@
   <script type="text/javascript" src="actor.js"></script>
   <script type="text/javascript" src="lavel.js"></script>
   <script type="text/javascript" src="count.js"></script>
-  <script type="text/javascript" src="EnglishSound.js"></script>
 
   <!--英語　ログ　(棒グラフ)　[機能合計]-->
   <script type="text/javascript" src="totalChart1min.js"></script>
@@ -41,9 +40,9 @@
 
   <header>
     <form>
-      <p>リアルタイム　英語Ver.　
-      <input type="button" onclick="location.href='./index_realtime_noEng.html'" value="通常Ver.はこちら">
-      </p>
+      <p>リアルタイム　通常Ver.　
+        <input type="button" onclick="location.href='./index_realtime.html'" value="英語Ver.はこちら">
+        </p>
     </form>
     <form name="f1">
       <!-- 記録開始ボタン -->
@@ -83,38 +82,7 @@
       <canvas id="numChart" width="300" height=" 100"></canvas>
     </div>
     <br><br>
-
-    <div>
-      <input type="checkbox" id="audiocheck" name="audiocheck">
-      <label for="audiocheck">音声</label>
-    <!-- </div>
-    <div> -->
-      <input type="checkbox" id="videocheck" name="videocheck">
-      <label for="videocheck">動画</label>
-    </div>
-  
-    <!-- <h1>オーディオ使用履歴</h1> -->
-    <table border="1" id="targetTable">
-      <!-- <caption>オーディオ使用履歴</caption> -->
-      <caption>利用時間</caption>
-      <colgroup span="1" class="Title"></colgroup>
-      <!--１行を"Title"に-->
-      <colgroup span="1" class="Num"></colgroup>
-      <colgroup span="2" class="Other"></colgroup>
-      <thead>
-        <tr class="Title">
-          <td>名前</td>
-          <td>再生回数</td>
-          <td>再生時間</td>
-          <td>再生コンテンツ数</td>
-        </tr>
-      </thead>
-      <tbody>
-  
-      </tbody>
-    </table>
   </article>
-
 
 
   <!--以下でデータの読み込みを行う-->
@@ -124,7 +92,7 @@
     // let member = []; //生徒
     let member = ['33788_katonaoki','33788_tanemura','33788_nanashisan'];
     let act;
-    let nickname = ['katonaoki', 'tanemura', 'nanashisan'];
+    let nickname = [];
     let time = []; //時間
     let num = []; //操作回数
 
@@ -154,10 +122,10 @@
     // 各グラフの型を表示させておく
     drawBarChart(member, time, num, nickname);
     heatmap(member, time, num, nickname);
-    // drawChartTarget2_noEng(result, time, startnum, finishnum);
-    drawChartTarget2(result, time, startnum, finishnum);
+    drawChartTarget2_noEng(result, time, startnum, finishnum);
+    // drawChartTarget2(result, time, startnum, finishnum);
     drawStuNumChart(member, time, num);
-    table3(result, member, startnum, finishnum, nickname);
+
 
     var f = new Array(3);
     f[0] = 0;
@@ -171,10 +139,6 @@
         document.f1.elements[b].style.color = '#FFFFFF';
         f[b] = 1;
         // console.log("記録ボタンが押されました！");
-        let audioc = document.getElementById('audiocheck');
-        audioc.checked = true;
-        let videoc = document.getElementById('videocheck');
-        videoc.checked = true;
 
         today = new Date();
         year = today.getFullYear();
@@ -391,7 +355,6 @@
     }
 
     function drawing(result) {
-      console.log(result);
       //横軸を決定
       time = lavel2(startTime);
 
@@ -414,25 +377,11 @@
 
       drawBarChart(member, time, num, nickname);
       heatmap(member, time, num, nickname);
-      // drawChartTarget2_noEng(result, time, startnum, finishnum);
-      drawChartTarget2(result, time, startnum, finishnum);
+      drawChartTarget2_noEng(result, time, startnum, finishnum);
+      // drawChartTarget2(result, time, startnum, finishnum);
       drawStuNumChart(member, time, num);
-      table3(result, member, startnum, finishnum, nickname);
       // console.log("-----------完了--------");
     }
-
-    function audiovalueChange(event) {
-      table3(result, member, startnum, finishnum, nickname);
-    }
-
-    function videovalueChange(event) {
-      table3(result, member, startnum, finishnum, nickname);
-    }
-
-    let audiocheck = document.getElementById('audiocheck');
-    audiocheck.addEventListener('change', audiovalueChange);
-    let videocheck = document.getElementById('videocheck');
-    videocheck.addEventListener('change', videovalueChange);
   </script>
   <br><br>
 </body>

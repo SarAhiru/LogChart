@@ -1,0 +1,329 @@
+<!-- リアルタイム みらスク連携ver. -->
+
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+  <!--Chart.jsの読み込み-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+  <link rel="stylesheet" href="StyleSheet0.css" />
+  <title>学習履歴 可視化</title>
+</head>
+
+<body>
+
+  <!--.jsと連携-->
+  <script type="text/javascript" src="actor.js"></script>
+  <script type="text/javascript" src="lavel.js"></script>
+  <script type="text/javascript" src="count.js"></script>
+
+  <!--英語　ログ　(棒グラフ)　[機能合計]-->
+  <script type="text/javascript" src="totalChart1min.js"></script>
+  <!-- ヒートマップ -->
+  <script src="heatmap.js"></script>
+  <!--英語　ログ　(棒グラフ)　[機能ごと]-->
+  <script type="text/javascript" src="targetEnChart1min.js"></script>
+  <!--英語　ログ　人数合計(棒グラフ)　[全体]-->
+  <script type="text/javascript" src="numChart1min.js"></script>
+
+  <!--▼▼▼ FSI ishiiy ADD ▼▼▼-->
+  <!--aes.js 暗号化／復号ライブラリ-->
+  <script type="text/javascript" src="lib/aes.js"></script>
+  <!--FS_BackEndServer.js みらスクPFバックエンド連携ライブラリ-->
+  <script type="text/javascript" src="lib/FS_BackEndServer.js"></script>
+  <!--▲▲▲ FSI ishiiy ADD ▲▲▲-->
+
+
+  <header>
+    <form>
+      <p>リアルタイム</p>
+    </form>
+    <form name="f1">
+      <!-- 記録開始ボタン -->
+      　<INPUT type="button" value="記録停止中" style="background:#c8eac3" onClick="yesno(0)">
+      </form>
+    <script language="JavaScript">
+      
+      </script>
+  </header>
+
+
+  <p>
+    <input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
+    <input type="button" onclick="location.href='./classseat.html'" value="　座席　">
+    <a href="index.html">過去のデータを使う</a>　　
+    <!-- <a href="dataSet.html">データ登録</a> -->
+  </p>
+  <br>
+
+  <article>
+    <div>
+      <p>＝児童ごとの操作回数の合計＝</p>
+      <!--<div style="width:50%;"></div>-->
+      <canvas id="studentChart" width="300" height="100"></canvas>
+    </div>
+    <div>
+      <canvas id="heatMap" width="300" height=" 150"></canvas>
+    </div>
+    <br><br>
+    <div>
+      <p>＝機能ごとの操作回数の合計＝</p>
+      <canvas id="targetChart" width="300" height=" 100"></canvas>
+    </div>
+    <br><br>
+    <div>
+      <p>＝操作人数の合計＝</p>
+      <canvas id="numChart" width="300" height=" 100"></canvas>
+    </div>
+    <br><br>
+  </article>
+
+
+  <!--以下でデータの読み込みを行う-->
+  <script>
+    let result = []; //csvの中身
+    let member = []; //生徒
+    let time = []; //時間
+    let num = []; //操作回数
+
+    let startnum = 0;
+    let finishnum = 0;
+
+    let today; //開始時間記録用
+    let year;
+    let month;
+    let day;
+    let hour;
+    let min;
+    let sec;
+    let datetime;
+    let startTime;
+
+    var setIV;
+    let begin;
+    let count_time = 0;
+    
+    //▼▼▼ FSI ishiiy ADD ▼▼▼
+    //変数未定義エラーが発生していたため修正
+    let data = [];
+
+    // 各グラフの型を表示させておく
+    drawBarChart(member, time, num);
+    heatmap(member, time, num);
+    drawChartTarget2(result, time, startnum, finishnum);
+    drawStuNumChart(member, time, num);
+
+
+    var f=new Array(3);
+    f[0]=0;
+    f[1]=0;
+    f[2]=0;
+      
+    function yesno(b){
+      if (f[b]==0){
+          document.f1.elements[b].value='　記録中　';
+          document.f1.elements[b].style.background='#1a720d';
+          document.f1.elements[b].style.color='#FFFFFF';
+          f[b]=1;
+          console.log("記録ボタンが押されました！");
+
+          today = new Date();
+          year = today.getFullYear();
+          if(today.getMonth() + 1 < 10){
+            month = "0" + today.getMonth() + 1;
+          }else{
+            month = today.getMonth() + 1;
+          }
+          if(today.getDate() < 10){
+            day = "0" +today.getDate();
+          }else{
+            day = today.getDate();
+          }
+          if(today.getHours() < 10){
+            hour = "0" + today.getHours();
+          }else{
+            hour = today.getHours();
+          }
+          if(today.getMinutes() < 10){
+            min = "0" + today.getMinutes();
+          }else{
+            min = today.getMinutes();
+          }
+          if(today.getSeconds() < 10){
+            sec = "0" + today.getSeconds();
+          }else{
+            sec = today.getSeconds();
+          }
+          datetime = String(year) + String(month) + String(day) + String(hour) + String(min) + String(sec);
+          // datetime = "20221111161000";
+          console.log("datetime :" + datetime);
+          startTime = datetime.substring(8, 12);//不変
+
+          let st_hour;
+          //開始時間の設定
+          if(parseInt(hour) < 9){ //9:00前の場合は一日前扱い
+            st_hour =  24 - ( 9 - parseInt(hour));
+            if(st_hour < 10){
+              st_hour = "0" + st_hour;
+            }
+            if(parseInt(day) <= 10){
+              day = "0" + (today.getDate() - 1);
+            }else{
+              day = today.getDate() - 1;
+            }
+          }else{
+            st_hour =  parseInt(hour) - 9;
+            if(st_hour < 10){
+              st_hour = "0" + st_hour;
+            }
+          }
+          if(today.getMinutes()-2 <= 10){
+            min = "0" + (today.getMinutes()-2);
+          }else{
+            min = today.getMinutes()-2;
+          }
+          begin = String(year) + String(month) + String(day) + String(st_hour) + String(min);// + String(sec);
+          // begin = parseInt(datetime.substring(0, 12)) - 1;//可変
+          // console.log(sec);
+          count_time = Math.floor(sec / 10) - 1;
+
+          update();
+          setIV = setInterval(update, 60000);//10秒ごとの更新
+      } else {
+          document.f1.elements[b].value='記録停止中';
+          document.f1.elements[b].style.background='#c8eac3';
+          document.f1.elements[b].style.color='#000000';
+          f[b]=0;
+          clearInterval(setIV);
+          console.log("記録停止");
+      }
+    }
+
+    var objBESrv = new FS_BackEndServer();
+    
+    //▼▼▼ FSI ishiiy ADD ▼▼▼
+    // 現在ログインしているユーザー情報の取得
+    // まず、この処理を行って、objBESrvにユーザー情報を与える必要がある
+    // この書き方だと非同期になってしまうので、awaitなりしないといけない
+    objBESrv.getAccountInfo(function(res){
+
+        if(res.status == 0 && typeof res.data != "undefined"){
+            objBESrv.setSystemType(3);
+        }else{
+        }
+    
+    });
+    //▲▲▲ FSI ishiiy ADD ▲▲▲
+    
+  
+
+    function update(){
+      // console.log(begin);
+        console.log("60秒経ちました！");
+        count_time ++;
+        console.log("count " + count_time);
+
+        // begin = String(begin);
+        let be_date = begin.substring(0,8);
+        let be_hour = parseInt(begin.substring(8,10));
+        let be_min = parseInt(begin.substring(10,12));
+        if (be_min + 1 >= 60) {
+          be_min = "00";
+          if (be_hour + 1 < 10) {
+            be_hour = "0" + String(be_hour + 1);
+            begin = be_date + be_hour + be_min;
+          }else{
+            be_hour = be_hour + 1;
+            begin = be_date + String(be_hour) + be_min;
+          }
+        }else{
+          begin = parseInt(begin);
+          begin = begin + 1;
+        }
+
+        begin = String(begin);
+        console.log(begin);
+        filter = {
+          "category": "action_log",
+          "actor": "33788_katonaoki",
+          "content_id": "FSI_TEST_SANSUU",
+          "find_begin": begin,//"202211111001",//
+          "find_end": "",
+          "sort_type": "2",
+          "top": "",
+          "limit": 1000
+        }
+        // console.log(filter);
+
+        // let result = []; //csvの中身
+        objBESrv.getActionLog(filter, function(res){
+          // console.log(res);
+            if(typeof res.status !== "undefined" && res.status == 0){
+              // result[result.length-1].index
+
+                for(i=0; i<res.data.length; i++){
+                  result.push([res.data[i].date, res.data[i].index, res.data[i].actor,
+                  res.data[i].json.action, res.data[i].json.page.bookId, res.data[i].json.page.chapter,
+                    res.data[i].json.page.type, res.data[i].json.page.pageIdx, res.data[i].json.page.appId, 
+                    JSON.stringify(res.data[i].json.target)]);
+                }
+
+                //日時でソート
+                result.sort(function (a, b) {
+                  if (a > b) {
+                    return 1;
+                  } else {
+                    return -1;
+                  }
+                });
+                console.log(result);
+                drawing(result);
+            }else if(typeof res.error.code !== "undefined"){
+                // alert(res.error.code + ": " + res.error.message);
+                console.log("ログなし");
+                drawing(result);
+            }
+        });
+      }
+    // setInterval(update, 3000);//とりあえず3秒ごとの更新
+    
+    function drawing(result){
+      member[0] = '33788_katonaoki';
+      // console.log(startTime);
+      //横軸を決定
+      time = lavel2(startTime);
+
+      startnum = 0;
+      finishnum = result.length - 1;
+      num = count2(result, member, time);
+
+      if (studentChart) {
+        studentChart.destroy();
+      }
+      if (heatMap) {
+        heatMap.destroy();
+      }
+      if (targetChart) {
+        targetChart.destroy();
+      }
+      if (numChart) {
+        numChart.destroy();
+      }
+
+      drawBarChart(member, time, num);
+      heatmap(member, time, num);
+      drawChartTarget2(result, time, startnum, finishnum);
+      drawStuNumChart(member, time, num);
+      console.log("-----------完了--------");
+    }
+
+
+  </script>
+  <br><br>
+</body>
+
+</html>

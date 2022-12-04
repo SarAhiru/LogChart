@@ -19,6 +19,7 @@ function lavel(result, choicedate) {
   if (result.length > 0) {
     for (let x = 1; x < result.length; x++) {
       let logDate = result[x][0]; // ログからdate取得
+      // console.log(logDate);
 
       //横軸時間管理
       let date = new Date(logDate); //ログの時間を細かく取得
@@ -426,7 +427,7 @@ function lavelChenge2(result, choicedate, startTime, finishTime) {
 //   return choice;
 // }
 
-function lavel2(result) {
+function lavel_DB(result) {
 
   //横軸ラベル作成
   let label = []; // グラフ横軸　配列
@@ -481,4 +482,149 @@ function lavel2(result) {
   }
   return [label, startTime, finishTime];
   // return label;
+}
+
+
+//リアルタイムver
+function lavel2(startTime) {
+  // console.log(startTime);
+
+  //横軸ラベル作成
+  let label = []; // グラフ横軸　配列
+  let num = 0; //配列番号カウント用
+
+  var now = new Date();
+  var hour = now.getHours();
+  var min = now.getMinutes();
+  // console.log(hour + "  " + min);
+
+  let starthour = parseInt(startTime.substring(0, 2));// + 9;
+  let startmin = parseInt(startTime.substring(2, 4));
+  // console.log(startmin);
+
+  let judge = 0;
+  while (starthour != hour) {
+    if (judge == 0) {
+      for (let i = startmin; i < 60; i++) {
+        //10より小さい場合には最初に0を付ける
+        if (i < 10 || starthour < 10) {
+          let minute2 = i;
+          let hour2 = starthour;
+
+          if (i < 10) {
+            minute2 = "0" + String(i);
+          }
+          if (starthour < 10) {
+            hour2 = "0" + String(starthour);
+          }
+          time = hour2 + ":" + minute2;
+          label[num] = time;
+        }
+        else {
+          time = starthour + ":" + i;
+          label[num] = time;
+        }
+        num = num + 1;
+      }
+      judge = 1;
+      starthour++;
+    }
+    else {
+      for (let i = 0; i < 60; i++) {
+        //10より小さい場合には最初に0を付ける
+        if (i < 10 || starthour < 10) {
+          let minute2 = i;
+          let hour2 = starthour;
+
+          if (i < 10) {
+            minute2 = "0" + String(i);
+          }
+          if (starthour < 10) {
+            hour2 = "0" + String(starthour);
+          }
+          time = hour2 + ":" + minute2;
+          label[num] = time;
+        }
+        else {
+          time = starthour + ":" + i;
+          label[num] = time;
+        }
+        num = num + 1;
+      }
+      starthour++;
+    }
+  }
+
+  if (judge == 0) {
+    if (startmin == min) {
+      if (startmin < 10 || starthour < 10) {
+        let minute2 = startmin;
+        let hour2 = starthour;
+
+        if (startmin < 10) {
+          minute2 = "0" + String(startmin);
+        }
+        if (starthour < 10) {
+          hour2 = "0" + String(starthour);
+        }
+        time = hour2 + ":" + minute2;
+        label[0] = time;
+      }
+      else {
+        time = starthour + ":" + startmin;
+        label[0] = time;
+      }
+    } else {
+      for (let i = startmin; i <= min; i++) {
+        //10より小さい場合には最初に0を付ける
+        if (i < 10 || starthour < 10) {
+          let minute2 = i;
+          let hour2 = starthour;
+
+          if (i < 10) {
+            minute2 = "0" + String(i);
+          }
+          if (starthour < 10) {
+            hour2 = "0" + String(starthour);
+          }
+          time = hour2 + ":" + minute2;
+          label[num] = time;
+        }
+        else {
+          time = starthour + ":" + i;
+          label[num] = time;
+        }
+        num = num + 1;
+      }
+      starthour++;
+    }
+  }
+  else {
+    for (let i = 0; i <= min; i++) {
+      //10より小さい場合には最初に0を付ける
+      if (i < 10 || starthour < 10) {
+        let minute2 = i;
+        let hour2 = starthour;
+
+        if (i < 10) {
+          minute2 = "0" + String(i);
+        }
+        if (starthour < 10) {
+          hour2 = "0" + String(starthour);
+        }
+        time = hour2 + ":" + minute2;
+        label[num] = time;
+      }
+      else {
+        time = starthour + ":" + i;
+        label[num] = time;
+      }
+      num = num + 1;
+    }
+    starthour++;
+  }
+
+
+  // console.log(label);
+  return label;
 }

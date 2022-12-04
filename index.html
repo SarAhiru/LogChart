@@ -13,6 +13,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <!-- jQuery UI -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+
   <!-- グラフ内に数字を入れる -->
   <!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script> -->
   <!-- <script>
@@ -31,6 +38,8 @@
   <script type="text/javascript" src="lavel.js"></script>
   <script type="text/javascript" src="count.js"></script>
   <script type="text/javascript" src="database.js"></script>
+  <script type="text/javascript" src="EnglishSound.js"></script>
+  <script type="text/javascript" src="dateselector.js"></script>
 
   <!-- 時間選択用　[グラフ] -->
   <script type="text/javascript" src="timesetChart1min.js"></script>
@@ -42,7 +51,6 @@
   <script type="text/javascript" src="targetEnChart1min.js"></script>
   <!--人数合計　[グラフ]-->
   <script type="text/javascript" src="numChart1min.js"></script>
-
 
   <header>
     <form>
@@ -56,6 +64,10 @@
         <br>
         ②日付を選択　　　　　▷　
         <input type="date" name="date" id="output">
+        　候補：<select name="dateselect" id="dateselect">
+          <!-- <option value="a">a</option> -->
+        </select>
+        <!-- <input type="text" id="datepicker"> -->
         <br>
         ②時間を選択　　　　　▷　
         <input type="time" name="startTime" id="startTime">　～　
@@ -75,7 +87,7 @@
 
 
   <p>
-    　<input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生">
+    　<input type="button" onclick="location.href='./EnglishSound_nickname.html'" value="音声再生">
     　<input type="button" onclick="location.href='./classseat.html'" value="　座席　">
 
     <!-- <a href="EnglishSound.html">音声再生</a> -->
@@ -145,11 +157,43 @@
       <canvas id="numChart" width="300" height=" 100"></canvas>
     </div>
     <br><br>
+
+    <div>
+      <input type="checkbox" id="audiocheck" name="audiocheck">
+      <label for="audiocheck">音声</label>
+      <!-- </div>
+    <div> -->
+      <input type="checkbox" id="videocheck" name="videocheck">
+      <label for="videocheck">動画</label>
+    </div>
+
+    <!-- <h1>オーディオ使用履歴</h1> -->
+    <table border="1" id="targetTable">
+      <!-- <caption>オーディオ使用履歴</caption> -->
+      <caption>利用時間</caption>
+      <colgroup span="1" class="Title"></colgroup>
+      <!--１行を"Title"に-->
+      <colgroup span="1" class="Num"></colgroup>
+      <colgroup span="2" class="Other"></colgroup>
+      <thead>
+        <tr class="Title">
+          <td>名前</td>
+          <td>再生回数</td>
+          <td>再生時間</td>
+          <td>再生コンテンツ数</td>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
   </article>
 
 
   <!--以下でデータの読み込みを行う-->
   <script>
+    // $('#datepicker').datepicker();
+
     let result = []; //ログ ストック用
     let stu = [];
     let member = []; //生徒
@@ -163,6 +207,21 @@
 
     let startnum = 0; //可視化の最初の番号
     let finishnum = 0; //可視化の最後の番号
+    let choicedate;
+
+    // 日付選択をしたら開始されるようにする
+    choicedate = document.querySelector(`input[type='date'][name='date']`);
+    let startTime = document.querySelector(`input[type='time'][name='startTime']`);
+    // startTime = startTime.value;
+    let finishTime = document.querySelector(`input[type='time'][name='finishTime']`);
+    // finishTime = finishTime.value;
+    let range1 = document.querySelector(`input[type='range'][name='range1']`);
+    let range2 = document.querySelector(`input[type='range'][name='range2']`);
+    let selectTime;//全体の時間の長さ
+    let permin;//１分がどのくらいの長さになるのか
+    let mintime;
+    let maxtime;
+    
 
 
     // 各グラフの型を表示させておく
@@ -171,6 +230,7 @@
     heatmap(member, time, num, nickname);
     drawChartTarget(result, time, startnum, finishnum);
     drawStuNumChart(member, time, num);
+    table2(result, member, choicedate, startnum, finishnum, nickname);
 
     //生徒一覧ファイルを読み取ったら実行
     let stfileInput = document.getElementById('st');
@@ -186,13 +246,13 @@
       // var arr = txt.split("\r\n"); //意味ないけど一応
       var arr = stfileReader.result.split("\r\n");
       for (var i = 1; i < arr.length; i++) {
-        stu[i-1] = arr[i].split(',');
-        member[i-1] = stu[i-1][0];
-        nickname [i-1]= stu[i-1][1];
+        stu[i - 1] = arr[i].split(',');
+        member[i - 1] = stu[i - 1][0];
+        nickname[i - 1] = stu[i - 1][1];
       }
       console.log(member);
     }
-    
+
     //ファイルを読み取ったら実行１
     let fileInput = document.getElementById('file');
     let fileReader = new FileReader();
@@ -204,7 +264,6 @@
     //ファイルを読み取ったら実行２
     fileReader.onload = () => {
       var txt = fileReader.result;
-
       //読み取ったcsvデータを配列に格納
       //var arr = txt.split("\r\n" || "\n" || "\r");
       var arr = txt.split("\r\n"); //意味ないけど一応
@@ -213,7 +272,6 @@
       for (var i = 0; i < arr.length; i++) {
         result[i] = arr[i].split(',');
       }
-
       //日時でソート
       result.sort(function (a, b) {
         if (a > b) {
@@ -222,28 +280,62 @@
           return -1;
         }
       });
-      console.log(result);
-      //生徒一覧の配列作成
-      // member = actor(result); //actor.js
+      dateselect(result);
+      firstchartset();
     }
 
+    function firstchartset(){
+      document.querySelector(`#output`).innerHTML = choicedate.value;
+      let audioc = document.getElementById('audiocheck');
+      audioc.checked = true;
+      let videoc = document.getElementById('videocheck');
+      videoc.checked = true;
+      range1.value = 0;
+      range2.value = 100;
 
-    // 日付選択をしたら開始されるようにする
-    let choicedate = document.querySelector(`input[type='date'][name='date']`);
-    let startTime = document.querySelector(`input[type='time'][name='startTime']`);
-    // startTime = startTime.value;
-    let finishTime = document.querySelector(`input[type='time'][name='finishTime']`);
-    // finishTime = finishTime.value;
-    let range1 = document.querySelector(`input[type='range'][name='range1']`);
-    let range2 = document.querySelector(`input[type='range'][name='range2']`);
-    let selectTime;//全体の時間の長さ
-    let permin;//１分がどのくらいの長さになるのか
-    let mintime;
-    let maxtime;
+      //横軸を決定
+      [time, startnum, finishnum] = lavel(result, choicedate);
 
+      // 回数カウント
+      totalnum = totalcount(result, time, startnum, finishnum);
+      num = count(result, member, time, startnum, finishnum);
+      startTime.value = time[0];
+      finishTime.value = time[time.length - 1];
+
+      //時間選択グラフ用
+      selectTime = time.length;
+      permin = 100 / selectTime;
+      mintime = time[0];
+      maxtime = time[time.length - 1];
+      if (timeset) {
+        timeset.destroy();
+      }
+      // グラフ表示
+      drawChart(time, totalnum);
+      chartset();
+    }
+
+    const select= document.getElementById('dateselect'); // トリガーになる要素を取得
+    //select要素のchangeイベントの登録
+    select.addEventListener('change', function(){
+      let index= select.value;
+      // console.log(index);
+      var yyyy = index.substring(0, 4);
+      var mm = index.substring(5, 7);
+      var dd = index.substring(8, 10);
+      document.getElementById("output").value = yyyy + '-' + mm + '-' + dd;
+      firstchartset();
+    });
+   
     //日付が選択されたらイベントリスナー発火
     choicedate.addEventListener(`change`, function () {
       document.querySelector(`#output`).innerHTML = choicedate.value;
+      let audioc = document.getElementById('audiocheck');
+      audioc.checked = true;
+      let videoc = document.getElementById('videocheck');
+      videoc.checked = true;
+      // dateselect(result);
+
       range1.value = 0;
       range2.value = 100;
 
@@ -267,25 +359,9 @@
       if (timeset) {
         timeset.destroy();
       }
-      if (heatMap) {
-        heatMap.destroy();
-      }
-      if (studentChart) {
-        studentChart.destroy();
-      }
-      if (targetChart) {
-        targetChart.destroy();
-      }
-      if (numChart) {
-        numChart.destroy();
-      }
-
       // グラフ表示
       drawChart(time, totalnum);
-      drawBarChart(member, time, num, nickname); //totalChart1min.js
-      heatmap(member, time, num, nickname); //heatmap.js
-      drawChartTarget(result, time, startnum, finishnum); // targetEnChart1min.js
-      drawStuNumChart(member, time, num); // numChart1min.js
+      chartset();
     });
 
 
@@ -301,24 +377,7 @@
       // let changetime = (startTime.value.substr(0, 2) - mintime.substr(0, 2)) * 60 + (startTime.value.substr(3, 2) - mintime.substr(3, 2))
       console.log(changetime);
       range1.value = changetime * permin;
-
-      if (studentChart) {
-        studentChart.destroy();
-      }
-      if (heatMap) {
-        heatMap.destroy();
-      }
-      if (targetChart) {
-        targetChart.destroy();
-      }
-      if (numChart) {
-        numChart.destroy();
-      }
-
-      drawBarChart(member, time, num, nickname);
-      heatmap(member, time, num, nickname);
-      drawChartTarget(result, time, startnum, finishnum);
-      drawStuNumChart(member, time, num);
+      chartset();
     });
 
     finishTime.addEventListener(`change`, function () {
@@ -332,24 +391,7 @@
       let changetime = (maxtime.substring(0, 2) - finishTime.value.substring(0, 2)) * 60 + (maxtime.substring(3, 5) - finishTime.value.substring(3, 5));
       console.log(changetime);
       range2.value = 100 - changetime * permin;
-
-      if (studentChart) {
-        studentChart.destroy();
-      }
-      if (heatMap) {
-        heatMap.destroy();
-      }
-      if (targetChart) {
-        targetChart.destroy();
-      }
-      if (numChart) {
-        numChart.destroy();
-      }
-
-      drawBarChart(member, time, num, nickname);
-      heatmap(member, time, num, nickname);
-      drawChartTarget(result, time, startnum, finishnum);
-      drawStuNumChart(member, time, num);
+      chartset();
     });
 
     // 時間変更バーを移動させたら変更できるようにする
@@ -362,7 +404,7 @@
         hour = hour + 1;
         minute = minute - 60;
       }
-      if(hour < 10){
+      if (hour < 10) {
         hour = "0" + hour;
       }
       if (minute < 10) {
@@ -378,24 +420,7 @@
 
       [time, startnum, finishnum] = lavelChenge2(result, choicedate, startTime, finishTime);
       num = count(result, member, time, startnum, finishnum);
-
-      if (studentChart) {
-        studentChart.destroy();
-      }
-      if (heatMap) {
-        heatMap.destroy();
-      }
-      if (targetChart) {
-        targetChart.destroy();
-      }
-      if (numChart) {
-        numChart.destroy();
-      }
-
-      drawBarChart(member, time, num, nickname);
-      heatmap(member, time, num, nickname);
-      drawChartTarget(result, time, startnum, finishnum);
-      drawStuNumChart(member, time, num);
+      chartset();
     });
 
     range2.addEventListener(`change`, function () {
@@ -407,7 +432,7 @@
         hour = hour + 1;
         minute = minute - 60;
       }
-      if(hour < 10){
+      if (hour < 10) {
         hour = "0" + hour;
       }
       if (minute < 10) {
@@ -423,7 +448,23 @@
 
       [time, startnum, finishnum] = lavelChenge2(result, choicedate, startTime, finishTime);
       num = count(result, member, time, startnum, finishnum);
+      chartset();
+    });
 
+    function audiovalueChange(event) {
+      table2(result, member, choicedate, startnum, finishnum, nickname);
+    }
+
+    function videovalueChange(event) {
+      table2(result, member, choicedate, startnum, finishnum, nickname);
+    }
+
+    let audiocheck = document.getElementById('audiocheck');
+    audiocheck.addEventListener('change', audiovalueChange);
+    let videocheck = document.getElementById('videocheck');
+    videocheck.addEventListener('change', videovalueChange);
+
+    function chartset() {
       if (studentChart) {
         studentChart.destroy();
       }
@@ -441,23 +482,8 @@
       heatmap(member, time, num, nickname);
       drawChartTarget(result, time, startnum, finishnum);
       drawStuNumChart(member, time, num);
-    });
-
-    // //. クリックイベントハンドラー
-    // ctx.addEventListener( 'click', function( evt ){
-    // var item = myChart.getElementByEvent( evt );
-    // var item = myChart.getElementAtEvent( evt );
-    // if( item.length == 0 ){
-    //   return;
-    // }
-
-    // item = item[0];
-    // var index = item._index;  //. 配列の何番目のデータがクリックされたか
-    // var item_data = item._chart.config.data.datasets;  //. クリックされたオブジェクトのデータセット
-    // console.log( index );
-    // console.log( item_data );
-    // });
-
+      table2(result, member, choicedate, startnum, finishnum, nickname);
+    }
   </script>
   <br><br>
 </body>

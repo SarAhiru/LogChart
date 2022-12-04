@@ -40,7 +40,7 @@ function totalcount(result, time, startnum, finishnum) {
             }
         }
     }
-    console.log(totalnum);
+    // console.log(totalnum);
     return totalnum;
 }
 
@@ -80,16 +80,26 @@ function count(result, member, time, startnum, finishnum) {
 
             //今回のデータは何人目の生徒なのか
             membernum = member.indexOf(logActor);
+            if (member.indexOf(logActor) < 0) {
+                membernum = member.length;
+                member[membernum] = logActor;
+                num.push(Array(time.length));
+                for (let x = 0; x < time.length; x++) {
+                    num[member.length-1][x] = 0;
+                }
+            }
+            // console.log(member);
+            // console.log(num);
 
             //横軸時間管理
-            let date = logDate.substring(11,16);
+            let date = logDate.substring(11, 16);
             // console.log(date);
 
             datanum = time.indexOf(date);
 
-            console.log(membernum + "  "+ datanum);
-            if(datanum < 0){ 
-            }else{
+            // console.log(membernum + "  "+ datanum);
+            if (datanum < 0) {
+            } else {
                 if (logTarget.includes('audio volume')) {
                 } else if (logTarget.includes('openBook index')) {
                 } else {
@@ -127,7 +137,7 @@ function count(result, member, time, startnum, finishnum) {
     for (let x = 0; x < time.length; x++) {
         num[member.length][x] = totalnum[x] / member.length;  //人数で割って平均を出したい
     }
-    console.log(num);
+    // console.log(num);
     return num;
 }
 
@@ -172,7 +182,7 @@ function detailcount(result, member, time, startnum, finishnum) {
             membernum = member.indexOf(logActor);
 
             //横軸時間管理
-            let date = logDate.substring(11,16);
+            let date = logDate.substring(11, 16);
             datanum = time.indexOf(date);
 
             // //横軸時間管理
@@ -195,31 +205,31 @@ function detailcount(result, member, time, startnum, finishnum) {
             if (logTarget.includes('index')) { // indexの文字を含んでいるのかどうか
                 if (logTarget.includes('openBook index')) {
                 } else {
-                    num[0+6*membernum][datanum]++;
+                    num[0 + 6 * membernum][datanum]++;
                 }
             }
             else if (logTarget.includes('cp')) {
-                if(logTarget.substring(18, 19) == 4){ //cp:ページ遷移のみ取り出し
-                    num[1+6*membernum][datanum]++;
+                if (logTarget.substring(18, 19) == 4) { //cp:ページ遷移のみ取り出し
+                    num[1 + 6 * membernum][datanum]++;
                 }
             }
             else if (logTarget.includes('audio')) {
                 if (logTarget.includes('audio volume')) {
                 } else {
-                    num[2+6*membernum][datanum]++;
+                    num[2 + 6 * membernum][datanum]++;
                 }
             }
             else if (logTarget.includes('video')) {
                 if (logTarget.includes('video volume')) {
                 } else {
-                    num[3+6*membernum][datanum]++;
+                    num[3 + 6 * membernum][datanum]++;
                 }
             }
             else if (logTarget.includes('true') || logTarget.includes('penType')) {
-                num[4+6*membernum][datanum]++;
+                num[4 + 6 * membernum][datanum]++;
             }
-            else{
-                num[5+6*membernum][datanum]++;
+            else {
+                num[5 + 6 * membernum][datanum]++;
             }
         }
     }
@@ -291,31 +301,31 @@ function detailcount_test(result, member, time, startnum, finishnum) {
             if (logTarget.includes('index')) { // indexの文字を含んでいるのかどうか
                 if (logTarget.includes('openBook index')) {
                 } else {
-                    num[0+6*membernum][datanum]++;
+                    num[0 + 6 * membernum][datanum]++;
                 }
             }
             else if (logTarget.includes('cp')) {
-                if(logTarget.substring(18, 19) == 4){ //cp:ページ遷移のみ取り出し
-                    num[1+6*membernum][datanum]++;
+                if (logTarget.substring(18, 19) == 4) { //cp:ページ遷移のみ取り出し
+                    num[1 + 6 * membernum][datanum]++;
                 }
             }
             else if (logTarget.includes('audio')) {
                 if (logTarget.includes('audio volume')) {
                 } else {
-                    num[2+6*membernum][datanum]++;
+                    num[2 + 6 * membernum][datanum]++;
                 }
             }
             else if (logTarget.includes('video')) {
                 if (logTarget.includes('video volume')) {
                 } else {
-                    num[3+6*membernum][datanum]++;
+                    num[3 + 6 * membernum][datanum]++;
                 }
             }
             else if (logTarget.includes('true') || logTarget.includes('penType')) {
-                num[4+6*membernum][datanum]++;
+                num[4 + 6 * membernum][datanum]++;
             }
-            else{
-                num[5+6*membernum][datanum]++;
+            else {
+                num[5 + 6 * membernum][datanum]++;
             }
         }
     }
@@ -329,7 +339,7 @@ function detailcount_test(result, member, time, startnum, finishnum) {
 
 
 //学習者用デジタル教科書　英語　ログ　グラフ生成　[全体合計 １分]
-// database用
+//realtime database用
 function countttt(result, member, time, startnum, finishnum) {
     let totalnum = []; //全体平均用
     let num = []; // 操作回数
@@ -498,24 +508,17 @@ function countttt(result, member, time, startnum, finishnum) {
 // }
 
 // リアルタイム用
-
 function count2(result, member, time) {
-    // console.log(startnum);
-    // console.log(finishnum);
-
     let totalnum = []; //全体平均用
     let num = []; // 操作回数
     let membernum = 0; //何人目のデータか
-
-    let datanum = 0; //配列番号カウント用
-    let ftime = 0; //first time
-    let judge = 0; //初回かどうかを判断
+    let datanum = 0
 
     // 初期化
     for (let x = 0; x < time.length; x++) {
         totalnum[x] = 0;
     }
-    for (let i = 0; i < member.length; i++) {
+    for (let i = 0; i <= member.length; i++) {
         num.push(Array(time.length));
         for (let x = 0; x < time.length; x++) {
             num[i][x] = 0;
@@ -523,66 +526,51 @@ function count2(result, member, time) {
     }
 
     if (result.length > 0) {
-        for (let x = 0; x <= result.length - 1; x++) {
-            let logDate = result[x][0]; // date取得
+        for (let x = startnum; x <= finishnum; x++) {
+            // console.log(result[x]);
+            let logTime = result[x][0]; // time取得
             let logActor = result[x][2]; // actor取得
             let logTarget = result[x][9]; // target取得
 
             // console.log(x + "  " + result[x][0]);
-            //console.log(x + "  " + result[x][2]);// actor表示
+            // console.log(x + "  " + result[x][9]);// actor表示
 
             //今回のデータは何人目の生徒なのか
             membernum = member.indexOf(logActor);
 
-            //始めだけfirst timeを設定
-            if (judge == 0) {
-                ftime = logDate;
-                datanum = 0;
-                judge = 1;
+            //今回のデータは何番目の時間なのか
+            let loghour = parseInt(logTime.substring(8, 10));// + 9;
+            let logmin = logTime.substring(10, 12);
+            let logt;
+            if (loghour < 10) {
+                logt = "0" + String(loghour) + ":" + logmin;
             }
-            else {
-                while (logDate > ftime) { //1分経過したのかを判断
-                    // console.log("1分経過");
-                    let hour = parseInt(ftime.substring(0, 2));
-                    let minute = parseInt(ftime.substring(3, 5));
+            logt = loghour + ":" + logmin;
+            // console.log(logt);
+            datanum = time.indexOf(logt);
+            // console.log(datanum);
 
-                    minute = minute + 1;
-                    if (minute >= 60) { //60分より大きい場合の調整
-                        minute = 00;
-                        hour = hour + 1;
-                    }
-
-                    if (minute < 10 || hour < 10) {
-                        let minute2 = minute;
-                        let hour2 = hour;
-
-                        if (minute < 10) {
-                            minute2 = "0" + String(minute);
-                        }
-                        if (hour < 10) {
-                            hour2 = "0" + String(hour);
-                        }
-                        ftime = hour2 + ":" + minute2;
-                    }
-                    else {
-                        ftime = hour + ":" + minute;
-                    }
-                    datanum++;
+            // console.log(membernum + " "+datanum)
+            if (datanum < 0) {
+            } else {
+                if (logTarget.includes('audio volume')) {
+                } else if (logTarget.includes('openBook index')) {
+                } else {
+                    totalnum[datanum]++;
+                    num[membernum][datanum]++;
                 }
             }
+        }
+        // console.log(num);
+    }
 
-            if (logTarget.includes('audio volume')) {
-
-            } else {
-                totalnum[datanum]++;
-                num[membernum][datanum]++;
-            }
+    if (time.length == 0) {
+    } else {
+        for (let x = 0; x < time.length; x++) {
+            num[member.length][x] = totalnum[x] / member.length;  //人数で割って平均を出したい
         }
     }
 
-    // for (let x = 0; x < time.length; x++) {
-    //     totalnum[x] = totalnum[x] / member.length;  //人数で割って平均を出したい
-    // }
-    console.log(num);
+    // console.log(num);
     return num;
 }

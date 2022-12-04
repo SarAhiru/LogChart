@@ -129,3 +129,27 @@ input:checked+.tab_class {
 input:checked+.tab_class+.content_class {
   display: block;
 }
+
+.Title {
+  background-color: #cccccc;
+  font-weight: bold;
+}
+
+.Num {
+  text-align: right;
+  width: 10em;
+}
+
+.Price {
+  background-color: #ffcc80;
+  text-align: right;
+  width: 6em;
+}
+
+.Other {
+  text-align: right;
+}
+
+.Check {
+  color: red;
+}
