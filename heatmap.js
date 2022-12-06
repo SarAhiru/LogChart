@@ -9,10 +9,10 @@ function heatmap(member, time, num, nickname) {
     // データセットの生成
     const generateDatasets = function () {
         const datasets = [];
-        if(nickname[0] === undefined){
-            for (let i = mapHeight-1 ; i >= 0; i--) {
+        for (let i = mapHeight - 1; i >= 0; i--) {
+            if (nickname[i] === undefined) {
                 datasets.push({
-                    label: '生徒' + (i+1),
+                    label: '生徒' + (i + 1),
                     // label: nickname[i],
                     data: new Array(mapWidth).fill(1), //時間
                     borderWidth: 0.2,
@@ -20,9 +20,7 @@ function heatmap(member, time, num, nickname) {
                     // backgroundColor: 'skyblue'
                     backgroundColor: generateColor(i)
                 })
-            }
-        }else{
-            for (let i = mapHeight-1 ; i >= 0; i--) {
+            } else {
                 datasets.push({
                     // label: '生徒' + (i+1),
                     label: nickname[i],
@@ -32,37 +30,35 @@ function heatmap(member, time, num, nickname) {
                     // backgroundColor: 'skyblue'
                     backgroundColor: generateColor(i)
                 })
-                // console.log(nickname[i]);
             }
         }
-        
         return datasets;
     }
 
     // 色配列の生成 (追加）
-    const generateColor = function(y){
+    const generateColor = function (y) {
         const datasetColors = []
-        for(let x=0; x<mapWidth; x++){
+        for (let x = 0; x < mapWidth; x++) {
             // const opa = ((x * y / maxVal)*0.7 + 0.3).toFixed(2);
             let opa = 0;
 
             //ここの閾値を今度考える
-            if(num[y][x] == 0){
+            if (num[y][x] == 0) {
                 opa = 0;
             }
-            else if(num[y][x] <= 70){
+            else if (num[y][x] <= 70) {
                 opa = (num[y][x] / 100 + 0.1).toFixed(1);
             }
-            else if(num[y][x] <= 100){
+            else if (num[y][x] <= 100) {
                 opa = 0.8;
             }
-            else if(num[y][x] <= 150){
+            else if (num[y][x] <= 150) {
                 opa = 0.9;
             }
             // else if(num[y][x] <= 200){
             //     opa = 0.9;
             // }
-            else{
+            else {
                 opa = 1;
             }
             // const opa = ((num[member])*0.7 + 0.3).toFixed(2);
@@ -82,7 +78,7 @@ function heatmap(member, time, num, nickname) {
         },
         options: {
             responsive: true,
-            plugins:{
+            plugins: {
                 title: {
                     display: true,
                     text: 'Heat Map',
@@ -93,11 +89,11 @@ function heatmap(member, time, num, nickname) {
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             let label = context.dataset.label || '';
                             // console.log(context);
                             // console.log(context.dataset.data.length);
-                            
+
                             if (label) {
                                 label += ': ';
                                 // console.log(context);
@@ -105,8 +101,8 @@ function heatmap(member, time, num, nickname) {
                                 // console.log(context.dataIndex);
                                 // console.log(num);
                                 // console.log(num[38 - context.datasetIndex][context.dataIndex]);
-                                label += num[mapHeight - context.datasetIndex -1][context.dataIndex];//38
-                                label += '回' ;
+                                label += num[mapHeight - context.datasetIndex - 1][context.dataIndex];//38
+                                label += '回';
                             }
                             return label;
                         },
@@ -150,14 +146,14 @@ function heatmap(member, time, num, nickname) {
                     },
                     stacked: true,
                     ticks: {
-                    //     min: 0,
-                    //     stepSize: 1,
+                        //     min: 0,
+                        //     stepSize: 1,
                         display: false,
-                    //     // lavel: member,
-                    //     callback: function(tick, member){
-                    //         return tick.toString() + '人';
-                    //         // return tick.toString() + member;
-                    //     }
+                        //     // lavel: member,
+                        //     callback: function(tick, member){
+                        //         return tick.toString() + '人';
+                        //         // return tick.toString() + member;
+                        //     }
                     }
                 },
                 // responsive: false,
@@ -165,7 +161,7 @@ function heatmap(member, time, num, nickname) {
                 //     lavel: [20,22,24,26],
                 // }
             },
-            
+
         },
         //グラフ内に数字を入れる
         // plugins: [
@@ -180,11 +176,180 @@ function heatmap(member, time, num, nickname) {
     //     if( item.length == 0 ){
     //       return;
     //     }
-    
+
     //     item = item[0];
     //     var index = item._index;  //. 配列の何番目のデータがクリックされたか
     //     var item_data = item._chart.config.data.datasets;  //. クリックされたオブジェクトのデータセット
     //     console.log( index );
     //     console.log( item_data );
     // });
+}
+
+function heatmap_pen(member, time, num, detailnum, nickname) {
+    const mapHeight = member.length * 2; //人数
+    const mapWidth = time.length;
+
+    // データセットの生成
+    const generateDatasets = function () {
+        const datasets = [];
+        for (let i = mapHeight - 1; i >= 0; i--) {
+            // console.log(~~(i / 2));
+            if (nickname[~~(i / 2)] === undefined) {
+                console.log('生徒' + (~~(i / 2) + 1))
+                datasets.push({
+                    label: '生徒' + (~~(i / 2) + 1),
+                    // label: nickname[i],
+                    data: new Array(mapWidth).fill(1), //時間
+                    borderWidth: 0.2,
+                    borderColor: "#FFFFFF",
+                    // backgroundColor: 'skyblue'
+                    backgroundColor: generateColor(i)
+                })
+            } else {
+                datasets.push({
+                    // label: '生徒' + (i+1),
+                    label: nickname[~~(i / 2)],
+                    data: new Array(mapWidth).fill(1), //時間
+                    borderWidth: 0.2,
+                    borderColor: "#FFFFFF",
+                    // backgroundColor: 'skyblue'
+                    backgroundColor: generateColor(i)
+                })
+            }
+        }
+        return datasets;
+    }
+
+    // 色配列の生成 (追加）
+    const generateColor = function (y) {
+        const datasetColors = []
+        for (let x = 0; x < mapWidth; x++) {
+            // const opa = ((x * y / maxVal)*0.7 + 0.3).toFixed(2);
+            let opa = 0;
+            let heatmapnum;
+            // console.log(~~(y / 2))//77
+
+            if (y % 2 === 0) { // 偶数
+                // console.log(~~(y / 2));
+                heatmapnum = ~~(y / 2);
+                //ここの閾値を今度考える
+                if (num[heatmapnum][x] == 0) {
+                    opa = 0;
+                }
+                else if (num[heatmapnum][x] <= 70) {
+                    opa = (num[heatmapnum][x] / 100 + 0.1).toFixed(1);
+                }
+                else if (num[heatmapnum][x] <= 100) {
+                    opa = 0.8;
+                }
+                else if (num[heatmapnum][x] <= 150) {
+                    opa = 0.9;
+                }
+                // else if(num[y][x] <= 200){
+                //     opa = 0.9;
+                // }
+                else {
+                    opa = 1;
+                }
+                // const opa = ((num[member])*0.7 + 0.3).toFixed(2);
+                // const opa = ((datalist[x + (mapHeight-y-1) * mapWidth])*0.7 + 0.3).toFixed(2);
+                // datasetColors.push("rgba(135,206,235," + opa + ")"
+                datasetColors.push("rgba(255,0,0," + opa + ")")
+            } else {
+                // console.log(4 + 6 * ~~(y / 2));
+                // console.log(4 + 6 * ((y - 1) / 2));
+                heatmapnum = 4 + 6 * (~~(y / 2));
+                //ここの閾値を今度考える
+                if (detailnum[heatmapnum][x] == 0) {
+                    opa = 0;
+                }
+                else if (detailnum[heatmapnum][x] <= 70) {
+                    opa = (detailnum[heatmapnum][x] / 100 + 0.1).toFixed(1);
+                }
+                else if (detailnum[heatmapnum][x] <= 100) {
+                    opa = 0.8;
+                }
+                else if (detailnum[heatmapnum][x] <= 150) {
+                    opa = 0.9;
+                }
+                // else if(num[y][x] <= 200){
+                //     opa = 0.9;
+                // }
+                else {
+                    opa = 1;
+                }
+                // const opa = ((num[member])*0.7 + 0.3).toFixed(2);
+                // const opa = ((datalist[x + (mapHeight-y-1) * mapWidth])*0.7 + 0.3).toFixed(2);
+                // datasetColors.push("rgba(135,206,235," + opa + ")"
+                datasetColors.push("rgba(0,255,0," + opa + ")")
+            }
+        }
+        return datasetColors;
+    }
+
+    let ctx = document.getElementById('heatMap').getContext('2d');
+    window.heatMap = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: time, //generateLabels()
+            datasets: generateDatasets(),
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Heat Map',
+                    fontSize: 18,
+                },
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            let label = context.dataset.label || '';
+                            console.log(context.datasetIndex)
+                            if (label) {
+                                label += ': ';
+                                if (context.datasetIndex % 2 === 0) {
+                                    label += num[mapHeight - (~~(context.datasetIndex/2)) - 1][(~~(context.datasetIndex/2))];//38
+                                }else{
+                                    label += detailnum[mapHeight - (4 + 6 * (~~(context.datasetIndex / 2))) - 1][(~~(context.datasetIndex/2))];
+                                }
+                                label += '回';
+                            }
+                            return label;
+                        },
+                    }
+                },
+            },
+            animation: false,
+            scales: {
+                x: {
+                    gridLines: {
+                        color: '#FFFFFF',
+                    },
+                    barPercentage: 0.99,
+                    categoryPercentage: 0.99,
+                    stacked: true,
+                    ticks: {
+                        min: 0,
+                        // display: false,
+                    }
+                },
+                y: {
+                    gridLines: {
+                        color: '#FFFFFF',
+                        zeroLineWidth: 0
+                    },
+                    stacked: true,
+                    ticks: {
+                        display: false,
+                    }
+                },
+            },
+
+        },
+    });
 }

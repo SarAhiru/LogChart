@@ -87,14 +87,14 @@
 
 
   <p>
-    　<input type="button" onclick="location.href='./EnglishSound_nickname.html'" value="音声再生">
+    <!-- 　<input type="button" onclick="location.href='./EnglishSound_nickname.html'" value="音声再生"> -->
     　<input type="button" onclick="location.href='./classseat.html'" value="　座席　">
 
     <!-- <a href="EnglishSound.html">音声再生</a> -->
     <!-- <a href="classseat.html">座席</a>　　 -->
     　<a href="index_notEnglish.html">英語以外の場合</a>
-    　<a href="indexDB.html">登録しているデータを使う</a>
-    　<a href="indexDBreal.html">リアルタイムに使う</a>
+    <!-- 　<a href="indexDB.html">登録しているデータを使う</a> -->
+    　<a href="index_realtime.html">リアルタイムに使う</a>
     <!-- <a href="dataSet.html">データ登録</a> -->
   </p>
   <br>
@@ -269,7 +269,7 @@
       var arr = txt.split("\r\n"); //意味ないけど一応
       arr = txt.split("\n");
       //arr = txt.split("\r");
-      for (var i = 0; i < arr.length; i++) {
+      for (var i = 0; i < arr.length-1; i++) {
         result[i] = arr[i].split(',');
       }
       //日時でソート

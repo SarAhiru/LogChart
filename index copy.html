@@ -201,6 +201,7 @@
     let time = []; //横軸 時間
     let num = []; //操作回数(生徒ごと)
     let totalnum = []; //操作回数(全体合計)
+    let detailnum = [];
 
     let datasta = 0; //データの最初の番号(変更なし)
     let datafin = 0; //データの最後の番号
@@ -227,7 +228,8 @@
     // 各グラフの型を表示させておく
     drawChart(time, totalnum);
     drawBarChart(member, time, num, nickname);
-    heatmap(member, time, num, nickname);
+    // heatmap(member, time, num, nickname);
+    heatmap_pen(member, time, num, detailnum, nickname)
     drawChartTarget(result, time, startnum, finishnum);
     drawStuNumChart(member, time, num);
     table2(result, member, choicedate, startnum, finishnum, nickname);
@@ -301,6 +303,7 @@
       num = count(result, member, time, startnum, finishnum);
       startTime.value = time[0];
       finishTime.value = time[time.length - 1];
+      detailnum = detailcount(result, member, time, startnum, finishnum);
 
       //時間選択グラフ用
       selectTime = time.length;
@@ -481,7 +484,8 @@
       }
 
       drawBarChart(member, time, num, nickname);
-      heatmap(member, time, num, nickname);
+      // heatmap(member, time, num, nickname);
+      heatmap_pen(member, time, num, detailnum, nickname)
       drawChartTarget(result, time, startnum, finishnum);
       drawStuNumChart(member, time, num);
       table2(result, member, choicedate, startnum, finishnum, nickname);
