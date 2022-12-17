@@ -40,40 +40,18 @@
 
 
   <header>
-    <form name="form1">
-      <p>リアルタイムVer.　
-      <!-- <input type="button" onclick="location.href='./index_realtime_noEng.html'" value="通常Ver.はこちら"> -->
+    <form>
+      <p>リアルタイム　英語Ver.　
+      <input type="button" onclick="location.href='./index_realtime_noEng.html'" value="通常Ver.はこちら">
       <br>
-      <!--
-      　〇生徒ファイル登録　
+      　〇生徒ファイル登録　▷
       <input type="file" name="st" id="st" accept=".csv">
-      -->
-      <br>
-      　〇対象児童選択　　
-      <select name="student" id="student">
-          <option value="6_a" selected>６年全員</option>
-          <option value="6_test">テスト</option>
-          <option value="6_1">６年１組</option>
-          <option value="6_2">６年２組</option>
-          <option value="6_3">６年３組</option>
-          <!-- <option value="6_1" disabled>６年１組</option>
-          <option value="6_2" disabled>６年２組</option>
-          <option value="6_3" disabled>６年３組</option> -->
-      </select>
-      <br>
-      　〇対象教科書選択　
-      <select name="textbook" id="textbook">
-          <option value="KSK_E_EIGO_6_M" selected>小学英語６年</option>
-          <option value="rika6_p104">小学理科６年</option>
-          <option value="FSI_TEST_SANSUU" >サンプル算数</option>
-      </select>
       </p>
     </form>
     <form name="f1">
       <!-- 記録開始ボタン -->
       　<INPUT type="button" value="記録停止中" style="background:#c8eac3" onClick="yesno(0)">
-      　　　【開始時間を指定したい場合は最初にここを変更<input type="time" name="startTime" id="startTime">】
-    </form>
+      </form>
     <script language="JavaScript">
       
       </script>
@@ -146,25 +124,10 @@
   <script>
     let result = []; //csvの中身
     let result_DB = [];
-    let member = []; //生徒
-    //let member = [];//['33788_katonaoki','33788_tanemura','33788_nanashisan'];
-    let member_all = ["12746_s20170401","12746_s20170402","12746_s20170403","12746_s20170404","12746_s20170405","12746_s20170406","12746_s20170407","12746_s20170408","12746_s20170409","12746_s20170410","12746_s20170411","12746_s20170412","12746_s20170413","12746_s20170414","12746_s20170415","12746_s20170416","12746_s20170417","12746_s20170418","12746_s20170419","12746_s20170420","12746_s20170421","12746_s20170422","12746_s20170423","12746_s20170424","12746_s20170425","12746_s20170426","12746_s20170428","12746_s20170429","12746_s20170430","12746_s20170431","12746_s20170432","12746_s20170433","12746_s20170434","12746_s20170435","12746_s20170436","12746_s20170437","12746_s20170438","12746_s20170439","12746_s20170440","12746_s20170441","12746_s20170442","12746_s20170443","12746_s20170444","12746_s20170445","12746_s20170446","12746_s20170447","12746_s20170448","12746_s20170449","12746_s20170450","12746_s20170451","12746_s20170452","12746_s20170453","12746_s20170454","12746_s20170455","12746_s20170456","12746_s20170457","12746_s20170458","12746_s20170459","12746_s20170460","12746_s20170461","12746_s20170462","12746_s20170463","12746_s20170464","12746_s20170465","12746_s20170466","12746_s20170467","12746_s20170468","12746_s20170469","12746_s20170470","12746_s20170471","12746_s20170472","12746_s20170473","12746_s20170474","12746_s20170475","12746_s20170476","12746_s20170477","12746_s20170478","12746_s20170479","12746_s20170480","12746_s20170481","12746_s20170482","12746_s20170483","12746_s20170484","12746_s20170485","12746_s20170486","12746_s20170487","12746_s20170488","12746_s20170489","12746_s20170490","12746_s20170491","12746_s20170492","12746_s20170493","12746_s20170494","12746_s20170495","12746_s20170496","12746_s20170497","12746_s20170498","12746_s20170499","12746_s20170500","12746_s20170501","12746_s20170502","12746_s20170503","12746_s20170504","12746_s20170505","12746_s20170506","12746_s20170517","12746_s20170519","12746_s20170520","12746_s20170521"];
-    let member_test = ["33788_logtest01", "33788_logtest02", "33788_logtest03", "33788_logtest04", "33788_logtest05"];
-    let member_61 = ["12746_s20170402","12746_s20170409","12746_s20170410","12746_s20170412","12746_s20170415","12746_s20170417","12746_s20170418","12746_s20170419","12746_s20170423","12746_s20170426","12746_s20170428","12746_s20170430","12746_s20170436","12746_s20170447","12746_s20170449","12746_s20170451","12746_s20170452","12746_s20170454","12746_s20170455","12746_s20170457","12746_s20170459","12746_s20170463","12746_s20170466","12746_s20170467","12746_s20170468","12746_s20170469","12746_s20170470","12746_s20170474","12746_s20170478","12746_s20170485","12746_s20170489","12746_s20170490","12746_s20170501","12746_s20170503","12746_s20170504"];
-    let member_62 = ["12746_s20170403","12746_s20170404","12746_s20170405","12746_s20170406","12746_s20170407","12746_s20170411","12746_s20170414","12746_s20170420","12746_s20170421","12746_s20170422","12746_s20170424","12746_s20170425","12746_s20170431","12746_s20170433","12746_s20170434","12746_s20170437","12746_s20170444","12746_s20170445","12746_s20170446","12746_s20170448","12746_s20170453","12746_s20170462","12746_s20170472","12746_s20170473","12746_s20170475","12746_s20170476","12746_s20170479","12746_s20170483","12746_s20170491","12746_s20170492","12746_s20170495","12746_s20170497","12746_s20170498","12746_s20170499","12746_s20170506"];
-    let member_63 = ["12746_s20170401","12746_s20170408","12746_s20170413","12746_s20170416","12746_s20170429","12746_s20170432","12746_s20170435","12746_s20170438","12746_s20170439","12746_s20170440","12746_s20170441","12746_s20170442","12746_s20170443","12746_s20170450","12746_s20170456","12746_s20170458","12746_s20170460","12746_s20170461","12746_s20170464","12746_s20170465","12746_s20170471","12746_s20170477","12746_s20170480","12746_s20170481","12746_s20170482","12746_s20170484","12746_s20170486","12746_s20170487","12746_s20170488","12746_s20170493","12746_s20170494","12746_s20170496","12746_s20170500","12746_s20170502","12746_s20170505"];
-    
+    // let member = []; //生徒
+    let member = [];//['33788_katonaoki','33788_tanemura','33788_nanashisan'];
     let act;
     let nickname = [];//['katonaoki', 'tanemura', 'nanashisan'];
-    let nickname_all = ["s20170401","s20170402","s20170403","s20170404","s20170405","s20170406","s20170407","s20170408","s20170409","s20170410","s20170411","s20170412","s20170413","s20170414","s20170415","s20170416","s20170417","s20170418","s20170419","s20170420","s20170421","s20170422","s20170423","s20170424","s20170425","s20170426","s20170428","s20170429","s20170430","s20170431","s20170432","s20170433","s20170434","s20170435","s20170436","s20170437","s20170438","s20170439","s20170440","s20170441","s20170442","s20170443","s20170444","s20170445","s20170446","s20170447","s20170448","s20170449","s20170450","s20170451","s20170452","s20170453","s20170454","s20170455","s20170456","s20170457","s20170458","s20170459","s20170460","s20170461","s20170462","s20170463","s20170464","s20170465","s20170466","s20170467","s20170468","s20170469","s20170470","s20170471","s20170472","s20170473","s20170474","s20170475","s20170476","s20170477","s20170478","s20170479","s20170480","s20170481","s20170482","s20170483","s20170484","s20170485","s20170486","s20170487","s20170488","s20170489","s20170490","s20170491","s20170492","s20170493","s20170494","s20170495","s20170496","s20170497","s20170498","s20170499","s20170500","s20170501","s20170502","s20170503","s20170504","s20170505","s20170506","s20170517","s20170519","s20170520","s20170521"];
-    let nickname_test = ["33788_logtest01", "33788_logtest02", "33788_logtest03", "33788_logtest04", "33788_logtest05"];
-    let nickname_61 = ["あおさら","こうき","さら","はる","かんた","ななみ","はるか","ここひ","こころ","みつき","おとた","だいき","そうま","るな","さわ","あやか","れんと","るく","あん","ゆうと","さな","ゆら","ゆうき","さくら","れん","かなた","のりよし","こうたろう","さやと","あゆむ","はると","ゆうま","みゆう","かのう","まお"];
-    let nickname_62 = ["こうき","はるか","しんじ","さら","つばさ","ゆうさく","ゆら","かいと","りの","みらい","とらのすけ","ゆうせい","はる","ひかり","くるみ","いつき","えみか","しほ","ひな","あゆみ","ひろむ","しゅん","ゆうね","なる","はやと","かのん","ゆうま","みき","ゆう","ようた","ことこ","しんたろう","ぜん","こうた","わかな"];
-    let nickname_63 = ["かなた","ゆずな","あん","しずく","たくみ","てる","ゆうき","こたろう","たいが","まさふみ","かい","りな","えいた","きわ","たかひろ","こてつ","みわ","こうすけ","ひろや","ゆうか","ちな","ゆう","すみれ","なおき","りいや","なつめ","いずみ","るき","はるか","みなみ","わたる","けんたろう","ちさと","みり","noname"];
-    
-    member = member_all;
-    nickname = nickname_all;
-    
     let time = []; //時間
     let num = []; //操作回数
 
@@ -186,44 +149,38 @@
     let end;
     let count_time = 0;
     let judge = 0;
-    let event_count = 0;
-    let event_max = 300; //繰り返しの最大回数（放置防止）
-
-    let sTime = document.querySelector(`input[type='time'][name='startTime']`);
 
     //▼▼▼ FSI ishiiy ADD ▼▼▼
     //変数未定義エラーが発生していたため修正
     let data = [];
-    
-    var objBESrv = new FS_BackEndServer();
 
     // 各グラフの型を表示させておく
     drawBarChart(member, time, num, nickname);
     heatmap(member, time, num, nickname);
+    // drawChartTarget2_noEng(result, time, startnum, finishnum);
     drawChartTarget2(result, time, startnum, finishnum);
     drawStuNumChart(member, time, num);
     table3(result, member, startnum, finishnum, nickname);
 
+    //生徒一覧ファイルを読み取ったら実行
+    let stfileInput = document.getElementById('st');
+    let stfileReader = new FileReader();
+    stfileInput.onchange = () => {
+      let stfile = stfileInput.files[0];
+      stfileReader.readAsText(stfile, 'UTF-8');
+    };
 
-//    //生徒一覧ファイルを読み取ったら実行
-//    let stfileInput = document.getElementById('st');
-//    let stfileReader = new FileReader();
-//    stfileInput.onchange = () => {
-//      let stfile = stfileInput.files[0];
-//      stfileReader.readAsText(stfile, 'UTF-8');
-//    };
-//    
-//    let stu = [];
-//    stfileReader.onload = () => {
-//      //読み取ったcsvデータを配列に格納
-//      var arr = stfileReader.result.split("\r\n");
-//      for (var i = 1; i < arr.length; i++) {
-//        stu[i - 1] = arr[i].split(',');
-//        member[i - 1] = stu[i - 1][0];
-//        nickname[i - 1] = stu[i - 1][1];
-//      }
-//      console.log(member);
-//    }
+    let stu = [];
+    stfileReader.onload = () => {
+      //読み取ったcsvデータを配列に格納
+      var arr = stfileReader.result.split("\r\n");
+      for (var i = 1; i < arr.length; i++) {
+        stu[i - 1] = arr[i].split(',');
+        member[i - 1] = stu[i - 1][0];
+        nickname[i - 1] = stu[i - 1][1];
+      }
+      console.log(member);
+    }
 
     var f = new Array(3);
     f[0] = 0;
@@ -272,7 +229,6 @@
         datetime = String(year) + String(month) + String(day) + String(hour) + String(min) + String(sec);
         // datetime = "20221111161000";
         // console.log("datetime :" + datetime);
-
         startTime = datetime.substring(8, 12);//不変
 
         let st_hour;
@@ -317,77 +273,31 @@
       }
     }
 
+    var objBESrv = new FS_BackEndServer();
 
-    let sel_textbook = document.form1.textbook;
-    let sel_content_id = sel_textbook.options[sel_textbook.selectedIndex].value;
+    //▼▼▼ FSI ishiiy ADD ▼▼▼
+    // 現在ログインしているユーザー情報の取得
+    // まず、この処理を行って、objBESrvにユーザー情報を与える必要がある
+    // この書き方だと非同期になってしまうので、awaitなりしないといけない
+    objBESrv.getAccountInfo(function (res) {
 
-    function update() {
-      event_count++;
-      // console.log("開始後、" + event_count + "秒");s
-      if(event_count > event_max){
-          yesno(0);
+      if (res.status == 0 && typeof res.data != "undefined") {
+        objBESrv.setSystemType(3);
+      } else {
       }
 
+    });
+    //▲▲▲ FSI ishiiy ADD ▲▲▲
+
+
+
+    function update() {
       // console.log("60秒経ちました！");
       count_time++;
       if (count_time == 60) { //更新時間の変更の際にはここを変更！
         count_time = 0;
       }
       // console.log("count " + count_time);
-
-      sel_content_id = sel_textbook.options[sel_textbook.selectedIndex].value;
-
-      if(judge == 0){
-        if(!sTime){
-        }else{
-          startTime = sTime.value.substring(0, 2)+sTime.value.substring(3, 5);
-          console.log(sTime.value);
-          // console.log(startTime);
-          let be_date = begin.substring(0, 8);
-          let be_hour = parseInt(sTime.value.substring(0, 2)) - 9;
-          let be_min = sTime.value.substring(3, 5);
-          if (be_hour < 10) {
-            be_hour = "0" + String(be_hour);
-          }
-          let be_begin = be_date + be_hour + be_min;
-          // console.log(be_begin);
-
-          for (i = 0; i < member.length; i++) {
-            act = member[i];
-            filter = {
-              "category": "action_log",
-              "actor": act,
-              "content_id": sel_content_id,
-              "find_begin": be_begin,
-              "find_end": begin,
-              "sort_type": "2",
-              "top": "",
-              "limit": 10000
-            }
-            // console.log(filter);
-            objBESrv.getActionLog(filter, function (res) {
-              if (typeof res.status !== "undefined" && res.status == 0) {
-                for (i = 0; i < res.data.length; i++) {
-                  result_DB.push([res.data[i].date, res.data[i].index, res.data[i].actor,
-                  res.data[i].json.action, res.data[i].json.page.bookId, res.data[i].json.page.chapter,
-                  res.data[i].json.page.type, res.data[i].json.page.pageIdx, res.data[i].json.page.appId,
-                  JSON.stringify(res.data[i].json.target)]);
-                }
-              }
-            });
-          }
-          result.sort(function (a, b) {
-          if (a > b) {
-            return 1;
-          } else {
-            return -1;
-          }
-          });
-          // console.log(result);
-          drawing(result);
-        }
-      }
-      
 
       if (count_time == 0 || judge == 0) {
         let be_date = begin.substring(0, 8);
@@ -407,21 +317,24 @@
           end = end + 1;
         }
         end = String(end);
-
+        // console.log("begin " + begin);
+        // console.log("end   " + end);
+      
 
         for (i = 0; i < member.length; i++) {
           act = member[i];
           filter = {
             "category": "action_log",
             "actor": act,//'33788_katonaoki',//member[i],
-            "content_id": sel_content_id,
+            "content_id": "FSI_TEST_SANSUU",
             "find_begin": begin,
             "find_end": end,
             "sort_type": "2",
             "top": "",
-            "limit": 10000
+            "limit": 1000
           }
           // console.log(filter);
+          
           objBESrv.getActionLog(filter, function (res) {
             if (typeof res.status !== "undefined" && res.status == 0) {
             if (count_time == 0 || judge == 0) {
@@ -449,14 +362,14 @@
       
       begin = end;
       // console.log("begin" + begin);
-      
+
       let result_add = []; //追加分
       for (i = 0; i < member.length; i++) {
         act = member[i];
         filter = {
           "category": "action_log",
           "actor": act,//'33788_katonaoki',//act,//
-          "content_id": sel_content_id,
+          "content_id": "FSI_TEST_SANSUU",
           "find_begin": begin,//"202211111001",//
           "find_end": "",
           "sort_type": "2",
@@ -488,6 +401,7 @@
               }
             });
             // console.log(result);
+            drawing(result);
           // } else if (typeof res.error.code !== "undefined") {
           //   // alert(res.error.code + ": " + res.error.message);
           //   console.log("追加ログなし");
@@ -497,7 +411,6 @@
           judge = 1;
         });
       }
-      drawing(result);
     }
 
     function drawing(result) {
@@ -543,73 +456,6 @@
     audiocheck.addEventListener('change', audiovalueChange);
     let videocheck = document.getElementById('videocheck');
     videocheck.addEventListener('change', videovalueChange);
-    
-    //▼▼▼ FSI ishiiy ADD ▼▼▼
-    // 現在ログインしているユーザー情報の取得
-    // まず、この処理を行って、objBESrvにユーザー情報を与える必要がある
-    objBESrv.getAccountInfo(function (res) {
-      if (res.status == 0 && typeof res.data != "undefined") {
-        objBESrv.setSystemType(3);
-        objBESrv.setCurrentUser(res.data.login_id);
-      } else {
-      }
-
-    });
-
-
-    $('#student').change(function() {
-        var r = $('option:selected').val();
-        if(r == "6_a"){
-            member = member_all;
-            nickname = nickname_all;
-        }
-        else if(r == "6_test"){
-            member = member_test;
-            nickname = nickname_test;
-        }
-        else if(r == "6_1"){
-            member = member_61;
-            nickname = nickname_61;
-        }
-        else if(r == "6_2"){
-            member = member_61;
-            nickname = nickname_62;
-        }
-        else if(r == "6_3"){
-            member = member_61;
-            nickname = nickname_63;
-        }
-        
-        time = [];
-        num = [];
-
-        startnum = 0;
-        finishnum = 0;
-        
-        if (studentChart) {
-          studentChart.destroy();
-        }
-        if (heatMap) {
-          heatMap.destroy();
-        }
-        if (targetChart) {
-          targetChart.destroy();
-        }
-        if (numChart) {
-          numChart.destroy();
-        }
-
-	    // 各グラフの型を表示させておく
-	    drawBarChart(member, time, num, nickname);
-	    heatmap(member, time, num, nickname);
-	    // drawChartTarget2_noEng(result, time, startnum, finishnum);
-	    drawChartTarget2(result, time, startnum, finishnum);
-	    drawStuNumChart(member, time, num);
-	    table3(result, member, startnum, finishnum, nickname);
-        
-    });
-    //▲▲▲ FSI ishiiy ADD ▲▲▲
-    
   </script>
   <br><br>
 </body>

@@ -54,7 +54,7 @@
 
   <header>
     <form>
-      <!--CSVファイルの読み取り-->
+      <!-- CSVファイルの読み取り -->
       <p>
         〇生徒ファイル登録　　▷　
         <input type="file" name="st" id="st" accept=".csv">
@@ -65,14 +65,29 @@
         ②日付を選択　　　　　▷　
         <input type="date" name="date" id="output">
         　候補：<select name="dateselect" id="dateselect">
-          <!-- <option value="a">a</option> -->
         </select>
-        <!-- <input type="text" id="datepicker"> -->
         <br>
         ②時間を選択　　　　　▷　
         <input type="time" name="startTime" id="startTime">　～　
         <input type="time" name="finishTime" id="finishTime">
       </p>
+      <!--データの読み取り-->
+      <!-- <p>
+        〇学校選択　　▷　
+        <input type="file" name="st" id="st" accept=".csv">
+        <br>
+        ①CSVファイルを選択　▷　
+        <input type="file" name="file" id="file" accept=".csv" multiple>
+        <br>
+        ②日付を選択　　　　　▷　
+        <input type="date" name="date" id="output">
+        　候補：<select name="dateselect" id="dateselect">
+        </select>
+        <br>
+        ②時間を選択　　　　　▷　
+        <input type="time" name="startTime" id="startTime">　～　
+        <input type="time" name="finishTime" id="finishTime">
+      </p> -->
     </form>
 
     <div class="timesetChart" style="position:absolute; top:10px; left:500px; width:350px; height:300px;">
@@ -92,68 +107,57 @@
 
     <!-- <a href="EnglishSound.html">音声再生</a> -->
     <!-- <a href="classseat.html">座席</a>　　 -->
-    　<a href="index_notEnglish.html">英語以外の場合</a>
+    <!-- 　<a href="index_notEnglish.html">英語以外の場合</a> -->
     <!-- 　<a href="indexDB.html">登録しているデータを使う</a> -->
     　<a href="index_realtime.html">リアルタイムに使う</a>
     <!-- <a href="dataSet.html">データ登録</a> -->
   </p>
   <br>
 
-  <!-- <div class="area">
-    <input type="radio" name="tab_name" id="tab1" checked>
-    <label class="tab_class" for="tab1">グラフ</label>
-    <div class="content_class">
-      <p>タブ1のコンテンツを表示します</p> -->
-  <!-- <script>
-        drawBarChart(member, time, num);
-        heatmap(member, time, num);
-        drawChartTarget(result, time, startnum, finishnum);
-        drawStuNumChart(member, time, num);
-      </script> -->
-  <!-- </div>
-    <input type="radio" name="tab_name" id="tab2">
-    <label class="tab_class" for="tab2">音声再生</label>
-    <div class="content_class">
-      <p>タブ2のコンテンツを表示します</p>
-    </div>
-    <input type="radio" name="tab_name" id="tab3">
-    <label class="tab_class" for="tab3">座席</label>
-    <div class="content_class">
-      <p>タブ3のコンテンツを表示します</p>
-    </div>
-    <input type="radio" name="tab_name" id="tab4">
-    <label class="tab_class" for="tab4">タブ4</label>
-    <div class="content_class">
-      <p>タブ4のコンテンツを表示します</p>
-    </div>
-    <input type="radio" name="tab_name" id="tab5">
-    <label class="tab_class" for="tab5">タブ5</label>
-    <div class="content_class">
-      <p>タブ5のコンテンツを表示します</p>
-    </div>
-  </div> -->
-
-
-
 
   <article>
     <!-- <h1>個人表示</h1> -->
     <div>
-      <p>＝児童ごとの操作回数の合計＝</p>
+      <p>＝児童ごとの操作回数＝</p>
       <!--<div style="width:50%;"></div>-->
       <canvas id="studentChart" width="300" height="100"></canvas>
     </div>
+    <br>
+    <form id="target">
+      <label><input type="radio" name="target" value="allckeck">すべて</label>
+      <label><input type="radio" name="target" value="indexcheck">目次閲覧</label>
+      <label><input type="radio" name="target" value="cpcheck">ページ遷移</label>
+      <label><input type="radio" name="target" value="rinkcheck">リンク</label>
+      <label><input type="radio" name="target" value="zoomcheck">図の拡大</label>
+      <label><input type="radio" name="target" value="audiocheck2">音声</label>
+      <label><input type="radio" name="target" value="videocheck2">動画</label>
+      <label><input type="radio" name="target" value="pencheck">ペン</label>
+
+      <!-- <input type="checkbox" id="indexcheck" name="indexcheck">
+      <label for="indexcheck">目次閲覧</label>
+      <input type="checkbox" id="cpcheck" name="cpcheck">
+      <label for="cpcheck">ページ遷移</label>
+      <input type="checkbox" id="rinkcheck" name="rinkcheck">
+      <label for="rinkcheck">リンククリック</label>
+      <input type="checkbox" id="zoomcheck" name="zoomcheck">
+      <label for="zoomcheck">図の拡大</label>
+      <input type="checkbox" id="audiocheck2" name="audiocheck2">
+      <label for="audiocheck2">音声</label>
+      <input type="checkbox" id="videocheck2" name="videocheck2">
+      <label for="videocheck2">動画</label>
+      <input type="checkbox" id="pencheck" name="pencheck"><label for="pencheck">ペン</label> -->
+    </form>
     <div>
       <canvas id="heatMap" width="300" height=" 150"></canvas>
     </div>
     <br><br>
     <div>
-      <p>＝機能ごとの操作回数の合計＝</p>
+      <p>＝機能ごとの操作回数＝</p>
       <canvas id="targetChart" width="300" height=" 100"></canvas>
     </div>
     <br><br>
     <div>
-      <p>＝操作人数の合計＝</p>
+      <p>＝操作人数＝</p>
       <canvas id="numChart" width="300" height=" 100"></canvas>
     </div>
     <br><br>
@@ -201,6 +205,7 @@
     let time = []; //横軸 時間
     let num = []; //操作回数(生徒ごと)
     let totalnum = []; //操作回数(全体合計)
+    let detailnum = [];
 
     let datasta = 0; //データの最初の番号(変更なし)
     let datafin = 0; //データの最後の番号
@@ -221,13 +226,16 @@
     let permin;//１分がどのくらいの長さになるのか
     let mintime;
     let maxtime;
-    
 
+    let selectjudge;
+    
 
     // 各グラフの型を表示させておく
     drawChart(time, totalnum);
     drawBarChart(member, time, num, nickname);
     heatmap(member, time, num, nickname);
+    // heatmap_pen(member, time, num, detailnum, nickname)
+    // heatmap_select(member, time, detailnum, nickname, selectjudge);
     drawChartTarget(result, time, startnum, finishnum);
     drawStuNumChart(member, time, num);
     table2(result, member, choicedate, startnum, finishnum, nickname);
@@ -263,13 +271,14 @@
 
     //ファイルを読み取ったら実行２
     fileReader.onload = () => {
+      console.log(fileReader.result);
       var txt = fileReader.result;
       //読み取ったcsvデータを配列に格納
       //var arr = txt.split("\r\n" || "\n" || "\r");
       var arr = txt.split("\r\n"); //意味ないけど一応
       arr = txt.split("\n");
       //arr = txt.split("\r");
-      for (var i = 0; i < arr.length-1; i++) {
+      for (var i = 0; i < arr.length; i++) {
         result[i] = arr[i].split(',');
       }
       //日時でソート
@@ -301,6 +310,7 @@
       num = count(result, member, time, startnum, finishnum);
       startTime.value = time[0];
       finishTime.value = time[time.length - 1];
+      detailnum = detailcount(result, member, time, startnum, finishnum);
 
       //時間選択グラフ用
       selectTime = time.length;
@@ -315,11 +325,12 @@
       chartset();
     }
 
+
     const select= document.getElementById('dateselect'); // トリガーになる要素を取得
     //select要素のchangeイベントの登録
     select.addEventListener('change', function(){
       let index= select.value;
-      // console.log(index);
+      console.log(index);
       var yyyy = index.substring(0, 4);
       var mm = index.substring(5, 7);
       var dd = index.substring(8, 10);
@@ -372,6 +383,7 @@
       finishTime = document.querySelector(`input[type='time'][name='finishTime']`);
       [time, startnum, finishnum] = lavelChenge2(result, choicedate, startTime.value, finishTime.value);
       num = count(result, member, time, startnum, finishnum);
+      detailnum = detailcount(result, member, time, startnum, finishnum);
 
       let changetime = (startTime.value.substring(0, 2) - mintime.substring(0, 2)) * 60 + (startTime.value.substring(3, 5) - mintime.substring(3, 5));
       // let changetime = (startTime.value.substr(0, 2) - mintime.substr(0, 2)) * 60 + (startTime.value.substr(3, 2) - mintime.substr(3, 2))
@@ -387,6 +399,7 @@
       //横軸を決定
       [time, startnum, finishnum] = lavelChenge2(result, choicedate, startTime.value, finishTime.value);
       num = count(result, member, time, startnum, finishnum);
+      detailnum = detailcount(result, member, time, startnum, finishnum);
 
       let changetime = (maxtime.substring(0, 2) - finishTime.value.substring(0, 2)) * 60 + (maxtime.substring(3, 5) - finishTime.value.substring(3, 5));
       console.log(changetime);
@@ -420,6 +433,7 @@
 
       [time, startnum, finishnum] = lavelChenge2(result, choicedate, startTime, finishTime);
       num = count(result, member, time, startnum, finishnum);
+      detailnum = detailcount(result, member, time, startnum, finishnum);
       chartset();
     });
 
@@ -448,6 +462,7 @@
 
       [time, startnum, finishnum] = lavelChenge2(result, choicedate, startTime, finishTime);
       num = count(result, member, time, startnum, finishnum);
+      detailnum = detailcount(result, member, time, startnum, finishnum);
       chartset();
     });
 
@@ -464,6 +479,74 @@
     let videocheck = document.getElementById('videocheck');
     videocheck.addEventListener('change', videovalueChange);
 
+    
+    // let pencheck = document.getElementById('pencheck');
+    // pencheck.addEventListener('change', penvalueChange);
+    // function penvalueChange(event) {
+    //   let pencheck = document.getElementById('pencheck');
+    //   if(pencheck.checked == true){
+    //     if (studentChart) {
+    //       studentChart.destroy();
+    //     }
+    //     drawBarChart_pen(member, time, detailnum, nickname);
+    //   }else{
+    //     if (studentChart) {
+    //       studentChart.destroy();
+    //     }
+    //     drawBarChart(member, time, num, nickname);
+    //   }
+    // }
+
+    function valueChange(event){
+      let select = target.elements['target'].value;
+      if(select == "allckeck"){
+        // console.log('選択されているのは ' + target.elements['target'].value + ' です');
+        if (studentChart) {
+          studentChart.destroy();
+        }
+        if (heatMap) {
+          heatMap.destroy();
+        }
+        heatmap(member, time, num, nickname);
+        drawBarChart(member, time, num, nickname);
+      } else {
+        if(select == "indexcheck"){
+          selectjudge = 0;
+        }
+        if(select == "cpcheck"){
+          selectjudge = 1;
+        }
+        if(select == "rinkcheck"){
+          selectjudge = 2;
+        }
+        if(select == "zoomcheck"){
+          selectjudge = 3;
+        }
+        if(select == "audiocheck2"){
+          selectjudge = 4;
+        }
+        if(select == "videocheck2"){
+          selectjudge = 5;
+        }
+        if(select == "pencheck"){
+          selectjudge = 6;
+        }
+
+        if (studentChart) {
+          studentChart.destroy();
+        }
+        if (heatMap) {
+          heatMap.destroy();
+        }
+        drawBarChart_select(member, time, detailnum, nickname, selectjudge);
+        heatmap_select(member, time, detailnum, nickname, selectjudge);
+      }
+    }
+    let target = document.getElementById('target');
+    target.elements[0].checked = true;
+    target.addEventListener('change', valueChange);
+
+
     function chartset() {
       if (studentChart) {
         studentChart.destroy();
@@ -478,8 +561,14 @@
         numChart.destroy();
       }
 
-      drawBarChart(member, time, num, nickname);
-      heatmap(member, time, num, nickname);
+      if(target.elements[0].checked){
+        drawBarChart(member, time, num, nickname);
+        heatmap(member, time, num, nickname);
+      }else{
+        drawBarChart_select(member, time, detailnum, nickname, selectjudge);
+        heatmap_select(member, time, detailnum, nickname, selectjudge);
+      } 
+      // heatmap_pen(member, time, num, detailnum, nickname);
       drawChartTarget(result, time, startnum, finishnum);
       drawStuNumChart(member, time, num);
       table2(result, member, choicedate, startnum, finishnum, nickname);

@@ -111,10 +111,126 @@ function drawBarChart(member, time, num, nickname) {
     datasets.push({
       label: '児童平均',
       data: num[member.length],
-      backgroundColor: 'rgba(255, 0, 0, 1)',
+      backgroundColor: 'rgba(255, 75, 0, 1)',//'rgba(255, 0, 0, 1)',
       // backgroundColor: generateRandomCode() ,
     })
 
+
+    for (let i = 0; i < member.length; i++) {
+      if (nickname[i] === undefined) {
+        datasets.push({
+          label: '生徒' + (i + 1),
+          data: num[i],
+          backgroundColor: color[i],
+          // backgroundColor: generateRandomCode() ,
+        })
+      } else {
+        datasets.push({
+          label: nickname[i],
+          data: num[i],
+          backgroundColor: color[i],
+          // backgroundColor: generateRandomCode() ,
+        })
+      }
+    }
+    return datasets
+  }
+
+  let ctx = document.getElementById('studentChart').getContext('2d');
+  window.studentChart = new Chart(ctx, {
+    //線グラフ
+    type: 'bar',
+    //データ
+    data: {
+      labels: time,
+      datasets: studentDatasets(),
+      /*
+      //データセット
+      datasets: [{
+        label: '全体平均',
+        data: num[0], //totalnum,
+        backgroundColor: 'rgba(255, 0, 0, 1)',
+        borderColor:'rgba(255, 0, 0, 1)',
+        borderWidth: 1
+      },
+      {
+        label: '1_生徒1',
+        data: num[0],
+        backgroundColor: 'rgba(0, 255, 0, 1)',
+        borderColor:'rgba(0, 255, 0, 1)',
+        borderWidth: 1
+      },
+      {
+        label: '1_生徒2',
+        data: num[1],
+        backgroundColor: 'rgba(128, 0, 0, 1)',
+        borderColor:'rgba(128, 0, 0, 1)',
+        borderWidth: 1
+      }
+    ]*/
+    },
+    options: {
+      animation: false,
+      scales: {
+        x: {
+          categoryPercentage: 1.1,
+          barPercentage: 1,
+        },
+        y: {
+          ticks: {
+            beginAtZero: true
+          }
+        }
+      }
+    }
+  });
+  // console.log("表示完了！");
+}
+
+function drawBarChart_select(member, time, detailnum, nickname, selectjudge) {
+  let color = ['rgba(102, 102, 204, 1)', 'rgba(0, 255, 0, 1)', 'rgba(0, 0, 128, 1)', 'rgba(128, 128, 0, 1)', 'rgba(0, 128, 0, 1)'
+    , 'rgba(0, 255, 255, 1)', 'rgba(0, 128, 128, 1)', 'rgba(0, 0, 255, 1)', 'rgba(0, 0, 128, 1)', 'rgba(255, 0, 255, 1)'
+    , 'rgba(128, 0, 128, 1)', 'rgba(0, 255, 0, 1)', 'rgba(128, 0, 0, 1)', 'rgba(255, 102, 0, 1)', 'rgba(128, 128, 0, 1)'
+    , 'rgba(0, 128, 0, 1)', 'rgba(0, 255, 255, 1)', 'rgba(0, 128, 128, 1)', 'rgba(0, 0, 255, 1)', 'rgba(0, 0, 128, 1)'
+    , 'rgba(255, 0, 255, 1)', 'rgba(128, 0, 128, 1)', 'rgba(0, 255, 0, 1)', 'rgba(128, 0, 0, 1)', 'rgba(255, 102, 0, 1)'
+    , 'rgba(128, 128, 0, 1)', 'rgba(0, 128, 0, 1)', 'rgba(0, 255, 255, 1)', 'rgba(0, 128, 128, 1)', 'rgba(0, 0, 255, 1)'
+    , 'rgba(0, 0, 128, 1)', 'rgba(255, 0, 255, 1)', 'rgba(128, 0, 128, 1)', 'rgba(0, 255, 0, 1)', 'rgba(128, 0, 0, 1)'
+    , 'rgba(255, 102, 0, 1)', 'rgba(128, 128, 0, 1)', 'rgba(0, 128, 0, 1)', 'rgba(0, 255, 255, 1)', 'rgba(0, 128, 128, 1)',]
+
+  // //ランダムな色の生成
+  // function generateRandomCode() {
+  //   var myRandomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  //   return myRandomColor;
+  // }
+
+  //生徒ごとのデータ作成
+  const studentDatasets = function () {
+    const datasets = [];
+    let num = [];
+    for (let i = 0; i < member.length; i++) {
+      num.push(Array(time.length));
+      for (let x = 0; x < time.length; x++) {
+        num[i][x] = 0;
+      }
+    }
+    // console.log(num);
+    console.log(selectjudge);
+    for (let i = 0; i < member.length; i++) {
+      // num.push(Array(time.length));
+      for (let x = 0; x < time.length; x++) {
+        // console.log(detailnum[selectjudge + 8 * i][x]);
+        num[i][x] = detailnum[selectjudge + 8 * i][x];
+        // console.log(num);
+      }
+    }
+
+
+    // datasets.push({
+    //   label: '児童平均',
+    //   data: num[member.length],
+    //   backgroundColor: 'rgba(255, 75, 0, 1)',//'rgba(255, 0, 0, 1)',
+    //   // backgroundColor: generateRandomCode() ,
+    // })
 
     for (let i = 0; i < member.length; i++) {
       if (nickname[i] === undefined) {

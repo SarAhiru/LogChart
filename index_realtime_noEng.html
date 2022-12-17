@@ -296,7 +296,7 @@
             "top": "",
             "limit": 1000
           }
-          // console.log(filter);
+          console.log(filter);
           
           objBESrv.getActionLog(filter, function (res) {
             if (typeof res.status !== "undefined" && res.status == 0) {
@@ -318,7 +318,7 @@
         }
         // result = result_DB;
         judge = 1;
-        // console.log("区切れ目");
+        console.log("区切れ目");
       }
 
       
@@ -377,12 +377,17 @@
     }
 
     function drawing(result) {
+      console.log(result);
       //横軸を決定
       time = lavel2(startTime);
 
       startnum = 0;
       finishnum = result.length - 1;
+
+      // console.log(member);
+      // console.log(time);
       num = count2(result, member, time);
+      // console.log(num);
 
       if (studentChart) {
         studentChart.destroy();
