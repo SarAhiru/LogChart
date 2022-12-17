@@ -40,6 +40,7 @@
   <script type="text/javascript" src="database.js"></script>
   <script type="text/javascript" src="EnglishSound.js"></script>
   <script type="text/javascript" src="dateselector.js"></script>
+  <script type="text/javascript" src="fileRead_noUse.js"></script>
 
   <!-- 時間選択用　[グラフ] -->
   <script type="text/javascript" src="timesetChart1min.js"></script>
@@ -55,7 +56,7 @@
   <header>
     <form>
       <!-- CSVファイルの読み取り -->
-      <p>
+      <!-- <p>
         〇生徒ファイル登録　　▷　
         <input type="file" name="st" id="st" accept=".csv">
         <br>
@@ -70,24 +71,37 @@
         ②時間を選択　　　　　▷　
         <input type="time" name="startTime" id="startTime">　～　
         <input type="time" name="finishTime" id="finishTime">
-      </p>
+      </p> -->
       <!--データの読み取り-->
-      <!-- <p>
-        〇学校選択　　▷　
-        <input type="file" name="st" id="st" accept=".csv">
+      <p>
+        　〇学校・科目選択　
+        <select name="school" id="school">
+          <option value="school_test">テスト</option>
+          <option value="honncyo" selected>本町小学校</option>
+        </select>
+        <select name="subject" id="subject">
+          <option value="subject_test">テスト</option>
+          <option value="english" selected>英語</option>
+          <option value="sciense">理科</option>
+        </select>
         <br>
-        ①CSVファイルを選択　▷　
-        <input type="file" name="file" id="file" accept=".csv" multiple>
+        　〇対象児童選択　　
+        <select name="student" id="student">
+          <option value="6_a" selected>６年全員</option>
+          <option value="6_1">６年１組</option>
+          <option value="6_2">６年２組</option>
+          <option value="6_3">６年３組</option>
+        </select>
         <br>
-        ②日付を選択　　　　　▷　
+        　日付を選択　　　▷　
         <input type="date" name="date" id="output">
         　候補：<select name="dateselect" id="dateselect">
         </select>
         <br>
-        ②時間を選択　　　　　▷　
+        　時間を選択　　　▷　
         <input type="time" name="startTime" id="startTime">　～　
         <input type="time" name="finishTime" id="finishTime">
-      </p> -->
+      </p>
     </form>
 
     <div class="timesetChart" style="position:absolute; top:10px; left:500px; width:350px; height:300px;">

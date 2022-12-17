@@ -1,0 +1,12 @@
+date, index, actor, action, bookId, chapter, type, pageIdx, appId, target
+2022/9/20 10:07,65,12741_050201,played,KSK_E_EIGO_6_M,320,5,1,,audio end:01:35
+2022/9/20 10:07,65,12741_050202,played,KSK_E_EIGO_6_M,320,5,1,,audio end:01:00
+2022/9/20 10:07,65,12741_050203,played,KSK_E_EIGO_6_M,320,5,1,,audio end:03:53
+2022/9/20 10:07,65,12741_050204,played,KSK_E_EIGO_6_M,320,5,1,,audio end:01:00
+2022/9/20 10:07,65,12741_050205,played,KSK_E_EIGO_6_M,320,5,1,,audio end:05:55
+2022/9/20 10:07,65,12741_050204,played,KSK_E_EIGO_6_M,320,5,1,,audio end:06:17
+2022/9/20 10:07,65,12741_050203,played,KSK_E_EIGO_6_M,320,5,1,,audio end:01:00
+2022/9/20 10:07,65,12741_050202,played,KSK_E_EIGO_6_M,320,5,1,,audio end:00:30
+2022/9/20 10:09,65,12741_050203,played,KSK_E_EIGO_6_M,320,5,1,,audio end:00:30
+2022/9/20 10:10,65,12741_050204,played,KSK_E_EIGO_6_M,320,5,1,,audio end:02:00
+2022/9/20 10:10,65,12741_050204,played,KSK_E_EIGO_6_M,320,5,1,,audio end:03:00
