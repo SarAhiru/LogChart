@@ -1,7 +1,6 @@
 //グラフ　横軸ラベル作成
 //自分で読み取りVer
 function lavel(result, choicedate) {
-
   //横軸ラベル作成
   let label = []; // グラフ横軸　配列
   let lognum = 0; //配列番号カウント用
@@ -439,13 +438,79 @@ function lavel_DB(result) {
     let startT = result[0][0]; // 最初の時間を取得
     let finishT = result[result.length - 1][0]; // 最後の時間を取得
 
-    startTime = startT.substring(0, 5);
-    let hour = parseInt(startT.substring(0, 2));
-    let minute = parseInt(startT.substring(3, 5));
+    startTime = startT.substring(11, 16);
+    let hour = parseInt(startT.substring(11, 13));
+    let minute = parseInt(startT.substring(14, 16));
     label[num] = startTime;
     num = num + 1;
 
-    finishTime = finishT.substring(0, 5);
+    finishTime = finishT.substring(11, 16);
+    // console.log(hour);
+    // console.log(minute);
+
+    let time = startTime;
+
+    while (time != finishTime) {
+      minute = minute + 1;
+      if (minute >= 60) { //60分より大きい場合の調整
+        minute = 00;
+        hour = hour + 1;
+      }
+
+      //10より小さい場合には最初に0を付ける
+      if (minute < 10 || hour < 10) {
+        let minute2 = minute;
+        let hour2 = hour;
+
+        if (minute < 10) {
+          minute2 = "0" + String(minute);
+        }
+        if (hour < 10) {
+          hour2 = "0" + String(hour);
+        }
+        time = hour2 + ":" + minute2;
+        label[num] = time;
+      }
+      else {
+        time = hour + ":" + minute;
+        label[num] = time;
+      }
+      num = num + 1;
+    }
+    console.log(label);
+  }
+  startnum = 0;
+  finishnum = result.length - 1;
+  return [label, startnum, finishnum];
+  // return label;
+}
+
+function lavelChenge_DB(result, startTime, finishTime) {
+
+  //横軸ラベル作成
+  let label = []; // グラフ横軸　配列
+  let num = 0; //配列番号カウント用
+  let judge = 0; //初回かどうかを判断
+  let judge2 = 0;
+  let time;
+  let startnum = 0;
+  let finishnum = 0;
+  let starthour = parseInt(startTime.substring(0, 2));
+  let startmin = parseInt(startTime.substring(3, 5));
+  let finishhour = parseInt(finishTime.substring(0, 2));
+  let finishmin = parseInt(finishTime.substring(3, 5));
+
+  if (result.length > 0) {
+    let startT = result[0][0]; // 最初の時間を取得
+    let finishT = result[result.length - 1][0]; // 最後の時間を取得
+
+    startTime = startT.substring(11, 16);
+    let hour = parseInt(startT.substring(11, 13));
+    let minute = parseInt(startT.substring(14, 16));
+    label[num] = startTime;
+    num = num + 1;
+
+    finishTime = finishT.substring(11, 16);
     // console.log(hour);
     // console.log(minute);
 
@@ -483,7 +548,6 @@ function lavel_DB(result) {
   return [label, startTime, finishTime];
   // return label;
 }
-
 
 //リアルタイムver
 function lavel2(startTime) {

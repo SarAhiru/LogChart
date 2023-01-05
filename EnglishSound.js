@@ -260,7 +260,7 @@ function table(result, member, choicedate, startnum, finishnum) {
 }
 
 
-function table2(result, member, choicedate, startnum, finishnum, nickname) {
+function table2(result, member, time, startnum, finishnum, nickname) {
     // console.log(startnum+"   "+finishnum)
     let table = document.getElementById('targetTable');
     let audiocheck = document.getElementById('audiocheck');
@@ -300,95 +300,113 @@ function table2(result, member, choicedate, startnum, finishnum, nickname) {
             let logTarget = result[x][9]; // target取得
             let user = 0;
 
-            let date = new Date(logDate);
+            // let date = new Date(logDate);
 
-            let judgeYear = date.getFullYear();
-            let judgeMonth = date.getMonth() + 1;
-            let judgeDay = date.getDate();
+            // let judgeYear = date.getFullYear();
+            // let judgeMonth = date.getMonth() + 1;
+            // let judgeDay = date.getDate();
 
-            let choiceYear = choicedate.value.substr(0, 4);
-            let choiceMonth = choicedate.value.substr(5, 2);
-            choiceMonth = parseInt(choiceMonth); //数字に変更
-            let choiceDay = choicedate.value.substr(8, 2);
-            choiceDay = parseInt(choiceDay); // 数字に変更
+            // let choiceYear = choicedate.value.substr(0, 4);
+            // let choiceMonth = choicedate.value.substr(5, 2);
+            // choiceMonth = parseInt(choiceMonth); //数字に変更
+            // let choiceDay = choicedate.value.substr(8, 2);
+            // choiceDay = parseInt(choiceDay); // 数字に変更
 
-            if (choiceYear == judgeYear) {
-                if (choiceMonth == judgeMonth) {
-                    if (choiceDay == judgeDay) {
-
-                        if (audiocheck.checked == true) {
-                            // console.log("一旦ここまで");
-                            if (logTarget.includes('audio end') || logTarget.includes('audio stop') || logTarget.includes('audio seek')) {
-                                // console.log("音声再生");
-                                for (let a = 0; a < member.length; a++) {
-                                    if (logActor.includes(member[a])) {
-                                        user = a; //ユーザーの識別
-                                    }
-                                }
-                                audioData[user][1]++; //再生回数のカウントを+1
-                                //console.log(audioData);
-
-                                //再生時間
-                                if (logTarget.includes('audio end')) {
-                                    // console.log(logTarget);
-                                    var addminute = logTarget.substring(11, 13);
-                                    // console.log("minute"+addminute);
-                                    var addsecond = logTarget.substring(14, 16);
-                                    // console.log("second"+addsecond);
-                                }
-                                if (logTarget.includes('audio stop') || logTarget.includes('audio seek')) {
-                                    // console.log(logTarget);
-                                    var addminute = logTarget.substring(12, 14);
-                                    // console.log("minute"+addminute);
-                                    var addsecond = logTarget.substring(15, 17);
-                                    // console.log("second"+addsecond);
-                                }
-
-                                addminute = parseInt(addminute);
-                                addsecond = parseInt(addsecond);
-
-
-                                minute[user] = minute[user] + addminute;
-                                second[user] = second[user] + addsecond;
-                                if (second[user] >= 60) { //60秒を越えていたときの処理
-                                    minute[user] = minute[user] + 1;
-                                    second[user] = second[user] - 60;
-                                }
-                                // console.log(second);
-                            }
+            // if (choiceYear == judgeYear) {
+            //     if (choiceMonth == judgeMonth) {
+            //         if (choiceDay == judgeDay) {
+            // console.log(result[x]);
+            if (audiocheck.checked == true) {
+                // console.log("一旦ここまで");
+                if (logTarget.includes('audio end') || logTarget.includes('audio stop') || logTarget.includes('audio seek')) {
+                    // console.log("音声再生");
+                    for (let a = 0; a < member.length; a++) {
+                        if (logActor.includes(member[a])) {
+                            user = a; //ユーザーの識別
                         }
+                    }
+                    if (user < 0) {
+                    } else {
+                        let date = logDate.substring(11, 16);
+                        datanum = time.indexOf(date);
 
-                        if (videocheck.checked == true) {
-                            if (logTarget.includes('video end')) {
-                                // console.log("動画再生");
-                                //audioData[0][1] ++ ;
-                                for (let a = 0; a < member.length; a++) {
-                                    if (logActor.includes(member[a])) {
-                                        user = a; //ユーザーの識別
-                                    }
-                                }
-                                audioData[user][1]++; //再生回数のカウントを+1
-                                //console.log(audioData);
+                        if (datanum < 0) {
+                        } else {
+                            audioData[user][1]++; //再生回数のカウントを+1
+                            //console.log(audioData);
 
-                                //再生時間
+                            //再生時間
+                            if (logTarget.includes('audio end')) {
                                 // console.log(logTarget);
-                                let addminute = logTarget.substr(11, 2);
-                                // console.log(addminute);
-                                addminute = parseInt(addminute);
-                                let addsecond = logTarget.substr(14, 2);
-                                // console.log(addsecond);
-                                addsecond = parseInt(addsecond);
+                                var addminute = logTarget.substring(11, 13);
+                                // console.log("minute"+addminute);
+                                var addsecond = logTarget.substring(14, 16);
+                                // console.log("second"+addsecond);
+                            }
+                            if (logTarget.includes('audio stop') || logTarget.includes('audio seek')) {
+                                // console.log(logTarget);
+                                var addminute = logTarget.substring(12, 14);
+                                // console.log("minute"+addminute);
+                                var addsecond = logTarget.substring(15, 17);
+                                // console.log("second"+addsecond);
+                            }
 
-                                minute[user] = minute[user] + addminute;
-                                second[user] = second[user] + addsecond;
-                                if (second[user] >= 60) { //60秒を越えていたときの処理
-                                    minute[user] = minute[user] + 1;
-                                    second[user] = second[user] - 60;
-                                }
+                            addminute = parseInt(addminute);
+                            addsecond = parseInt(addsecond);
+
+
+                            minute[user] = minute[user] + addminute;
+                            second[user] = second[user] + addsecond;
+                            if (second[user] >= 60) { //60秒を越えていたときの処理
+                                minute[user] = minute[user] + 1;
+                                second[user] = second[user] - 60;
+                            }
+                            // console.log(second);
+                        }
+                    }
+                }
+            }
+
+            if (videocheck.checked == true) {
+                if (logTarget.includes('video end')) {
+                    // console.log("動画再生");
+                    //audioData[0][1] ++ ;
+                    for (let a = 0; a < member.length; a++) {
+                        if (logActor.includes(member[a])) {
+                            user = a; //ユーザーの識別
+                        }
+                    }
+                    if (user < 0) {
+                    } else {
+                        let date = logDate.substring(11, 16);
+                        datanum = time.indexOf(date);
+
+                        if (datanum < 0) {
+                        } else {
+                            audioData[user][1]++; //再生回数のカウントを+1
+                            //console.log(audioData);
+
+                            //再生時間
+                            // console.log(logTarget);
+                            let addminute = logTarget.substr(11, 2);
+                            // console.log(addminute);
+                            addminute = parseInt(addminute);
+                            let addsecond = logTarget.substr(14, 2);
+                            // console.log(addsecond);
+                            addsecond = parseInt(addsecond);
+
+                            minute[user] = minute[user] + addminute;
+                            second[user] = second[user] + addsecond;
+                            if (second[user] >= 60) { //60秒を越えていたときの処理
+                                minute[user] = minute[user] + 1;
+                                second[user] = second[user] - 60;
                             }
                         }
                     }
                 }
+                //         }
+                //     }
+                // }
             }
         }
     }
@@ -422,22 +440,22 @@ function table2(result, member, choicedate, startnum, finishnum, nickname) {
 
     //ここに計算式を入れてセルの色変更をする
     //再生時間の最大値ー最小値をした時間を５分割にする
-    let time = new Array();
+    let listen_time = new Array();
     for (let x = 0; x < member.length; x++) {
-        time[x] = minute[x] * 60 + second[x];
+        listen_time[x] = minute[x] * 60 + second[x];
     }
     //時間の最大値判定【再生時間】
-    let maxtime = time[0];
+    let maxtime = listen_time[0];
     for (let x = 0; x < member.length; x++) {
-        if (maxtime < time[x]) {
-            maxtime = time[x];
+        if (maxtime < listen_time[x]) {
+            maxtime = listen_time[x];
         }
     }
     //時間の最小値判定【再生時間】
-    let mintime = time[0];
+    let mintime = listen_time[0];
     for (let x = 0; x < member.length; x++) {
-        if (mintime > time[x]) {
-            mintime = time[x];
+        if (mintime > listen_time[x]) {
+            mintime = listen_time[x];
         }
     }
     //５分割【再生時間】
@@ -502,23 +520,23 @@ function table2(result, member, choicedate, startnum, finishnum, nickname) {
 
             //再生時間の色分け
             if (y == 2) {
-                if (time[x] <= (mintime + divetime)) {
+                if (listen_time[x] <= (mintime + divetime)) {
                     newCell.style.backgroundColor = "#ffffff";
                     // console.log(1);
                 }
-                else if (time[x] <= (mintime + divetime * 2)) {
+                else if (listen_time[x] <= (mintime + divetime * 2)) {
                     newCell.style.backgroundColor = "#ffcc99";//S40
                     // console.log(2);
                 }
-                else if (time[x] <= (mintime + divetime * 3)) {
+                else if (listen_time[x] <= (mintime + divetime * 3)) {
                     newCell.style.backgroundColor = "#ffb566";//S60
                     // console.log(3);
                 }
-                else if (time[x] <= (mintime + divetime * 4)) {
+                else if (listen_time[x] <= (mintime + divetime * 4)) {
                     newCell.style.backgroundColor = "#ff9c32";//S80
                     // console.log(4);
                 }
-                else if (time[x] <= maxtime) {
+                else if (listen_time[x] <= maxtime) {
                     newCell.style.backgroundColor = "#ff8300";//S100
                     // console.log(5);
                 }

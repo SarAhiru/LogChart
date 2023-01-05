@@ -46,13 +46,13 @@ function heatmap(member, time, num, nickname) {
             if (num[y][x] == 0) {
                 opa = 0;
             }
-            else if (num[y][x] <= 70) {
+            else if (num[y][x] < 80) {
                 opa = (num[y][x] / 100 + 0.1).toFixed(1);
             }
-            else if (num[y][x] <= 100) {
+            else if (num[y][x] < 100) {
                 opa = 0.8;
             }
-            else if (num[y][x] <= 150) {
+            else if (num[y][x] < 150) {
                 opa = 0.9;
             }
             // else if(num[y][x] <= 200){
@@ -224,19 +224,20 @@ function heatmap_select(member, time, detailnum, nickname, selectjudge) {
         for (let x = 0; x < mapWidth; x++) {
             let opa = 0;
             let heatmapnum;
-            heatmapnum = selectjudge + 8 * y
+            // console.log(selectjudge);
+            heatmapnum = selectjudge + 8 * y;
 
             //ここの閾値を今度考える
             if (detailnum[heatmapnum][x] == 0) {
                 opa = 0;
             }
-            else if (detailnum[heatmapnum][x] <= 7) {
+            else if (detailnum[heatmapnum][x] < 8) {
                 opa = (detailnum[heatmapnum][x] / 10 + 0.1).toFixed(1);
             }
-            else if (detailnum[heatmapnum][x] <= 10) {
+            else if (detailnum[heatmapnum][x] < 10) {
                 opa = 0.8;
             }
-            else if (detailnum[heatmapnum][x] <= 50) {
+            else if (detailnum[heatmapnum][x] < 50) {
                 opa = 0.9;
             }
             // else if(num[y][x] <= 200){
@@ -302,7 +303,7 @@ function heatmap_select(member, time, detailnum, nickname, selectjudge) {
                                 // console.log(context.dataIndex);
                                 // console.log(num);
                                 // console.log(num[38 - context.datasetIndex][context.dataIndex]);
-                                label += num[mapHeight - context.datasetIndex - 1][context.dataIndex];//38
+                                label += detailnum[selectjudge+8*(mapHeight - context.datasetIndex - 1)][context.dataIndex];//38
                                 label += '回';
                             }
                             return label;
@@ -437,13 +438,13 @@ function heatmap_pen(member, time, num, detailnum, nickname) {
                 if (num[heatmapnum][x] == 0) {
                     opa = 0;
                 }
-                else if (num[heatmapnum][x] <= 70) {
+                else if (num[heatmapnum][x] < 80) {
                     opa = (num[heatmapnum][x] / 100 + 0.1).toFixed(1);
                 }
-                else if (num[heatmapnum][x] <= 100) {
+                else if (num[heatmapnum][x] < 100) {
                     opa = 0.8;
                 }
-                else if (num[heatmapnum][x] <= 150) {
+                else if (num[heatmapnum][x] < 150) {
                     opa = 0.9;
                 }
                 // else if(num[y][x] <= 200){
@@ -465,13 +466,13 @@ function heatmap_pen(member, time, num, detailnum, nickname) {
                 if (detailnum[heatmapnum][x] == 0) {
                     opa = 0;
                 }
-                else if (detailnum[heatmapnum][x] <= 7) {
+                else if (detailnum[heatmapnum][x] < 8) {
                     opa = (detailnum[heatmapnum][x] / 10 + 0.1).toFixed(1);
                 }
-                else if (detailnum[heatmapnum][x] <= 10) {
+                else if (detailnum[heatmapnum][x] < 10) {
                     opa = 0.8;
                 }
-                else if (detailnum[heatmapnum][x] <= 50) {
+                else if (detailnum[heatmapnum][x] < 50) {
                     opa = 0.9;
                 }
                 // else if(num[y][x] <= 200){

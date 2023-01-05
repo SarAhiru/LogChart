@@ -72,8 +72,8 @@
     <form name="f1">
       <!-- 記録開始ボタン -->
       　<INPUT type="button" value="記録停止中" style="background:#c8eac3" onClick="yesno(0)">
-      　　　【開始時間を指定したい場合は最初にここを変更<input type="time" name="startTime" id="startTime">】
     </form>
+    　　　【開始時間を指定したい場合は最初にここを変更<input type="time" name="startTime" id="startTime">】
     <script language="JavaScript">
       
       </script>
@@ -162,8 +162,8 @@
     let nickname_62 = ["こうき","はるか","しんじ","さら","つばさ","ゆうさく","ゆら","かいと","りの","みらい","とらのすけ","ゆうせい","はる","ひかり","くるみ","いつき","えみか","しほ","ひな","あゆみ","ひろむ","しゅん","ゆうね","なる","はやと","かのん","ゆうま","みき","ゆう","ようた","ことこ","しんたろう","ぜん","こうた","わかな"];
     let nickname_63 = ["かなた","ゆずな","あん","しずく","たくみ","てる","ゆうき","こたろう","たいが","まさふみ","かい","りな","えいた","きわ","たかひろ","こてつ","みわ","こうすけ","ひろや","ゆうか","ちな","ゆう","すみれ","なおき","りいや","なつめ","いずみ","るき","はるか","みなみ","わたる","けんたろう","ちさと","みり","noname"];
     
-    member = member_all;
-    nickname = nickname_all;
+    // member = member_all;
+    // nickname = nickname_all;
     
     let time = []; //時間
     let num = []; //操作回数
@@ -323,10 +323,11 @@
 
     function update() {
       event_count++;
+      // console.log(member);
       // console.log("開始後、" + event_count + "秒");s
-      if(event_count > event_max){
-          yesno(0);
-      }
+      // if(event_count > event_max){
+      //     yesno(0);
+      // }
 
       // console.log("60秒経ちました！");
       count_time++;
@@ -337,11 +338,12 @@
 
       sel_content_id = sel_textbook.options[sel_textbook.selectedIndex].value;
 
+      
       if(judge == 0){
-        if(!sTime){
-        }else{
+        if(parseInt(sTime.value.substring(0, 1)) < 10){
+          console.log("OK");
           startTime = sTime.value.substring(0, 2)+sTime.value.substring(3, 5);
-          console.log(sTime.value);
+          // console.log(sTime.value);
           // console.log(startTime);
           let be_date = begin.substring(0, 8);
           let be_hour = parseInt(sTime.value.substring(0, 2)) - 9;
@@ -376,6 +378,7 @@
               }
             });
           }
+          result = result_DB;
           result.sort(function (a, b) {
           if (a > b) {
             return 1;
@@ -385,6 +388,8 @@
           });
           // console.log(result);
           drawing(result);
+        }else{
+          console.log("NG");
         }
       }
       
@@ -448,7 +453,7 @@
       
       
       begin = end;
-      // console.log("begin" + begin);
+      console.log("begin" + begin);
       
       let result_add = []; //追加分
       for (i = 0; i < member.length; i++) {
@@ -501,7 +506,7 @@
     }
 
     function drawing(result) {
-      console.log(result);
+      // console.log(result);
       //横軸を決定
       time = lavel2(startTime);
 
@@ -572,11 +577,11 @@
             nickname = nickname_61;
         }
         else if(r == "6_2"){
-            member = member_61;
+            member = member_62;
             nickname = nickname_62;
         }
         else if(r == "6_3"){
-            member = member_61;
+            member = member_63;
             nickname = nickname_63;
         }
         

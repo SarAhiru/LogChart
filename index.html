@@ -28,6 +28,34 @@
 
   <link rel="stylesheet" href="StyleSheet0.css" />
 
+   <!-- Firebase と Cloud Firestore のライブラリ -->
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase.js"></script>
+   <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script> -->
+   <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script> -->
+   <script>
+     const firebaseConfig = {
+       apiKey: "AIzaSyAqpZCu9q3ceSb7mqo8BTznvB8BoQ8WYPc",
+       authDomain: "digitaltextbook-log.firebaseapp.com",
+       projectId: "digitaltextbook-log",
+       storageBucket: "digitaltextbook-log.appspot.com",
+       messagingSenderId: "183191791064",
+       appId: "1:183191791064:web:76bab35c17af1ed2677ead",
+       measurementId: "G-8QVFYZZZX4"
+     };
+     // const firebaseConfig = {
+     //   apiKey: "AIzaSyBLMcvO4956nbGA_1v8gzVYjlkZFiGcL_g",
+     //   authDomain: "test-f3377.firebaseapp.com",
+     //   databaseURL: "https://test-f3377-default-rtdb.firebaseio.com",
+     //   projectId: "test-f3377",
+     //   storageBucket: "test-f3377.appspot.com",
+     //   messagingSenderId: "175518244773",
+     //   appId: "1:175518244773:web:cadb4b78bc5270e84c924c",
+     //   measurementId: "G-1YFKTPPN7L"
+     // };
+     // init firebase
+     firebase.initializeApp(firebaseConfig) // バックエンドのfirebaseを初期化する
+   </script>
+
   <title>学習履歴 可視化</title>
 </head>
 
@@ -37,7 +65,6 @@
   <!-- <script type="text/javascript" src="actor.js"></script> -->
   <script type="text/javascript" src="lavel.js"></script>
   <script type="text/javascript" src="count.js"></script>
-  <script type="text/javascript" src="database.js"></script>
   <script type="text/javascript" src="EnglishSound.js"></script>
   <script type="text/javascript" src="dateselector.js"></script>
 
@@ -56,38 +83,39 @@
     <form>
       <!-- CSVファイルの読み取り -->
       <p>
-        〇生徒ファイル登録　　▷　
+        <!-- 〇生徒ファイル登録　　▷　
         <input type="file" name="st" id="st" accept=".csv">
         <br>
         ①CSVファイルを選択　▷　
         <input type="file" name="file" id="file" accept=".csv" multiple>
+        <br> -->
+        　〇学校名：　
+        <select name="schoolselect" id="schoolselect">
+          <option value="">ー</option>
+          <option value="test_6_eng">test小学校_6年_英語</option>
+          <option value="honcyo_5_eng">本町小学校_5年_英語</option>
+          <option value="kodaira3_5_eng">小平第3小学校_5年_英語</option>
+          <option value="kodaira3_6_eng">小平第3小学校_6年_英語</option>
+          <option value="kodaira3_6_sci">小平第3小学校_6年_理科</option>
+          <option value="kodaira5_5_eng" disabled>小平第5小学校_5年_英語</option>
+          <option value="koganei_5_soc" disabled>附属小金井小学校_5年_社会</option>
+          <option value="koganei_6_soc">附属小金井小学校_6年_社会</option>
+        </select>
         <br>
-        ②日付を選択　　　　　▷　
+        　〇クラス：　
+        <select name="schoolclass" id="schoolclass">
+          <option value="">ー</option>
+        </select>
+        <br>
+        　日付を選択　　▷　
         <input type="date" name="date" id="output">
         　候補：<select name="dateselect" id="dateselect">
         </select>
         <br>
-        ②時間を選択　　　　　▷　
+        　時間を選択　　▷　
         <input type="time" name="startTime" id="startTime">　～　
         <input type="time" name="finishTime" id="finishTime">
       </p>
-      <!--データの読み取り-->
-      <!-- <p>
-        〇学校選択　　▷　
-        <input type="file" name="st" id="st" accept=".csv">
-        <br>
-        ①CSVファイルを選択　▷　
-        <input type="file" name="file" id="file" accept=".csv" multiple>
-        <br>
-        ②日付を選択　　　　　▷　
-        <input type="date" name="date" id="output">
-        　候補：<select name="dateselect" id="dateselect">
-        </select>
-        <br>
-        ②時間を選択　　　　　▷　
-        <input type="time" name="startTime" id="startTime">　～　
-        <input type="time" name="finishTime" id="finishTime">
-      </p> -->
     </form>
 
     <div class="timesetChart" style="position:absolute; top:10px; left:500px; width:350px; height:300px;">
@@ -102,16 +130,11 @@
 
 
   <p>
-    <!-- 　<input type="button" onclick="location.href='./EnglishSound_nickname.html'" value="音声再生"> -->
-    　<input type="button" onclick="location.href='./classseat.html'" value="　座席　">
-
-    <!-- <a href="EnglishSound.html">音声再生</a> -->
-    <!-- <a href="classseat.html">座席</a>　　 -->
-    <!-- 　<a href="index_notEnglish.html">英語以外の場合</a> -->
-    <!-- 　<a href="indexDB.html">登録しているデータを使う</a> -->
-    　<a href="index_realtime.html">リアルタイムに使う</a>
-    　<a href="index copy.html">実験用</a>
-    <!-- <a href="dataSet.html">データ登録</a> -->
+    <!-- 　<input type="button" onclick="location.href='./EnglishSound.html'" value="音声再生"> -->
+    <!-- 　<input type="button" onclick="location.href='./classseat.html'" value="　座席　"> -->
+    <!-- 　<a href="index.html">持っているデータを使う</a> -->
+    <!-- 　<a href="indexDBreal.html">リアルタイムに使う</a> -->
+    <!-- 　<a href="dataSet.html">データ登録</a> -->
   </p>
   <br>
 
@@ -133,20 +156,6 @@
       <label><input type="radio" name="target" value="audiocheck2">音声</label>
       <label><input type="radio" name="target" value="videocheck2">動画</label>
       <label><input type="radio" name="target" value="pencheck">ペン</label>
-
-      <!-- <input type="checkbox" id="indexcheck" name="indexcheck">
-      <label for="indexcheck">目次閲覧</label>
-      <input type="checkbox" id="cpcheck" name="cpcheck">
-      <label for="cpcheck">ページ遷移</label>
-      <input type="checkbox" id="rinkcheck" name="rinkcheck">
-      <label for="rinkcheck">リンククリック</label>
-      <input type="checkbox" id="zoomcheck" name="zoomcheck">
-      <label for="zoomcheck">図の拡大</label>
-      <input type="checkbox" id="audiocheck2" name="audiocheck2">
-      <label for="audiocheck2">音声</label>
-      <input type="checkbox" id="videocheck2" name="videocheck2">
-      <label for="videocheck2">動画</label>
-      <input type="checkbox" id="pencheck" name="pencheck"><label for="pencheck">ペン</label> -->
     </form>
     <div>
       <canvas id="heatMap" width="300" height=" 150"></canvas>
@@ -197,19 +206,15 @@
 
   <!--以下でデータの読み込みを行う-->
   <script>
-    // $('#datepicker').datepicker();
-
     let result = []; //ログ ストック用
-    let stu = [];
+    let school;
     let member = []; //生徒
     let nickname = [];
     let time = []; //横軸 時間
     let num = []; //操作回数(生徒ごと)
     let totalnum = []; //操作回数(全体合計)
     let detailnum = [];
-
-    let datasta = 0; //データの最初の番号(変更なし)
-    let datafin = 0; //データの最後の番号
+    let datesel = [];
 
     let startnum = 0; //可視化の最初の番号
     let finishnum = 0; //可視化の最後の番号
@@ -229,103 +234,123 @@
     let maxtime;
 
     let selectjudge;
-    
 
     // 各グラフの型を表示させておく
     drawChart(time, totalnum);
     drawBarChart(member, time, num, nickname);
     heatmap(member, time, num, nickname);
-    // heatmap_pen(member, time, num, detailnum, nickname)
-    // heatmap_select(member, time, detailnum, nickname, selectjudge);
-    drawChartTarget(result, time, startnum, finishnum);
+    drawChartTarget(result, member, time, startnum, finishnum);
     drawStuNumChart(member, time, num);
-    table2(result, member, choicedate, startnum, finishnum, nickname);
+    table2(result, member, time, startnum, finishnum, nickname);
 
-    //生徒一覧ファイルを読み取ったら実行
-    let stfileInput = document.getElementById('st');
-    let stfileReader = new FileReader();
-    stfileInput.onchange = () => {
-      let stfile = stfileInput.files[0];
-      stfileReader.readAsText(stfile, 'UTF-8');
-    };
 
-    stfileReader.onload = () => {
-      //読み取ったcsvデータを配列に格納
-      //var arr = txt.split("\r\n" || "\n" || "\r");
-      // var arr = txt.split("\r\n"); //意味ないけど一応
-      var arr = stfileReader.result.split("\r\n");
-      for (var i = 1; i < arr.length; i++) {
-        stu[i - 1] = arr[i].split(',');
-        member[i - 1] = stu[i - 1][0];
-        nickname[i - 1] = stu[i - 1][1];
+    const schoolselect= document.getElementById('schoolselect'); // トリガーになる要素を取得
+    //select要素のchangeイベントの登録
+    schoolselect.addEventListener('change', function(){
+      if(schoolselect.value == "test_6_eng"){
+        school = "test小学校_6年_英語";
+        datesel = ["2022-12-21"];
+        member = ["12746_s20170402","12746_s20170409","12746_s20170410","12746_s20170412","12746_s20170415","12746_s20170417","12746_s20170418","12746_s20170419","12746_s20170423","12746_s20170426","12746_s20170428","12746_s20170430","12746_s20170436","12746_s20170447","12746_s20170449","12746_s20170451","12746_s20170452","12746_s20170454","12746_s20170455","12746_s20170457","12746_s20170459","12746_s20170463","12746_s20170466","12746_s20170467","12746_s20170468","12746_s20170469","12746_s20170470","12746_s20170474","12746_s20170478","12746_s20170485","12746_s20170489","12746_s20170490","12746_s20170501","12746_s20170503","12746_s20170504"];
+        schoolclass_add();
       }
-      console.log(member);
-    }
-
-    //ファイルを読み取ったら実行１
-    let fileInput = document.getElementById('file');
-    let fileReader = new FileReader();
-    fileInput.onchange = () => {
-      let file = fileInput.files[0];
-      fileReader.readAsText(file, 'Shift_JIS');
-    };
-
-    //ファイルを読み取ったら実行２
-    fileReader.onload = () => {
-      console.log(fileReader.result);
-      var txt = fileReader.result;
-      //読み取ったcsvデータを配列に格納
-      //var arr = txt.split("\r\n" || "\n" || "\r");
-      var arr = txt.split("\r\n"); //意味ないけど一応
-      arr = txt.split("\n");
-      //arr = txt.split("\r");
-      for (var i = 0; i < arr.length; i++) {
-        result[i] = arr[i].split(',');
+      if(schoolselect.value == "honcyo_5_eng"){
+        school = "本町小学校_5年_英語";
+        datesel = ["2022-02-02","2022-02-03","2022-02-08","2022-02-15","2022-02-17","2022-02-22","2022-03-01","2022-03-03"];
+        member = ['12741_050201','12741_050202','12741_050203','12741_050204','12741_050205','12741_050206','12741_050207','12741_050208','12741_050209','12741_050210','12741_050211','12741_050212','12741_050213','12741_050214','12741_050215','12741_050216','12741_050217','12741_050218','12741_050219','12741_050220','12741_050221','12741_050222','12741_050223','12741_050224','12741_050225','12741_050226','12741_050227','12741_050228','12741_050229','12741_050230','12741_050231','12741_050232','12741_050233','12741_050234','12741_050235','12741_050236','12741_050237','12741_050238','12741_050239']; //生徒
+        schoolclass_remove();
       }
-      //日時でソート
-      result.sort(function (a, b) {
-        if (a > b) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-      dateselect(result);
+      if(schoolselect.value == "kodaira3_5_eng"){
+        school = "小平第3小学校_5年_英語";
+        datesel = ["2022-04-22","2022-06-28","2022-08-11","2022-09-16","2022-09-22","2022-10-03","2022-10-05","2022-10-07","2022-10-13","2022-10-14","2022-10-20","2022-10-21","2022-10-25","2022-10-28","2022-11-03","2022-11-04","2022-11-10","2022-11-11","2022-11-15","2022-11-16"];
+        member = ["12746_s20180407","12746_s20180408","12746_s20180431","12746_s20180433","12746_s20180439","12746_s20180441","12746_s20180445","12746_s20180459","12746_s20180461","12746_s20180467","12746_s20180473","12746_s20180480","12746_s20180483","12746_s20180485","12746_s20180495","12746_s20180500","12746_s20180506","12746_s20180508","12746_s20180517","12746_s20180519","12746_s20180523"];
+        schoolclass_remove();
+      }
+      if(schoolselect.value == "kodaira3_6_eng"){
+        school = "小平第3小学校_6年_英語";
+        datesel = ["2022-04-26","2022-05-06","2022-05-07","2022-05-20","2022-05-25","2022-06-01","2022-06-02","2022-06-03","2022-06-07","2022-06-09","2022-06-10","2022-06-15","2022-07-27","2022-08-01","2022-08-10","2022-09-14","2022-09-21","2022-09-22","2022-09-30","2022-10-05","2022-10-11","2022-11-02","2022-11-08","2022-11-09","2022-11-15","2022-11-16","2022-11-18","2022-12-01","2022-12-02","2022-12-03","2022-12-05","2022-12-06","2022-12-14","2022-12-16","2022-12-19","2022-12-20","2022-12-21"];
+        member = ["12746_s20170401","12746_s20170402","12746_s20170403","12746_s20170404","12746_s20170405","12746_s20170406","12746_s20170407","12746_s20170408","12746_s20170409","12746_s20170410","12746_s20170411","12746_s20170412","12746_s20170413","12746_s20170414","12746_s20170415","12746_s20170416","12746_s20170417","12746_s20170418","12746_s20170419","12746_s20170420","12746_s20170421","12746_s20170422","12746_s20170423","12746_s20170424","12746_s20170425","12746_s20170426","12746_s20170428","12746_s20170429","12746_s20170430","12746_s20170431","12746_s20170432","12746_s20170433","12746_s20170434","12746_s20170435","12746_s20170436","12746_s20170437","12746_s20170438","12746_s20170439","12746_s20170440","12746_s20170441","12746_s20170442","12746_s20170443","12746_s20170444","12746_s20170445","12746_s20170446","12746_s20170447","12746_s20170448","12746_s20170449","12746_s20170450","12746_s20170451","12746_s20170452","12746_s20170453","12746_s20170454","12746_s20170455","12746_s20170456","12746_s20170457","12746_s20170458","12746_s20170459","12746_s20170460","12746_s20170461","12746_s20170462","12746_s20170463","12746_s20170464","12746_s20170465","12746_s20170466","12746_s20170467","12746_s20170468","12746_s20170469","12746_s20170470","12746_s20170471","12746_s20170472","12746_s20170473","12746_s20170474","12746_s20170475","12746_s20170476","12746_s20170477","12746_s20170478","12746_s20170479","12746_s20170480","12746_s20170481","12746_s20170482","12746_s20170483","12746_s20170484","12746_s20170485","12746_s20170486","12746_s20170487","12746_s20170488","12746_s20170489","12746_s20170490","12746_s20170491","12746_s20170492","12746_s20170493","12746_s20170494","12746_s20170495","12746_s20170496","12746_s20170497","12746_s20170498","12746_s20170499","12746_s20170500","12746_s20170501","12746_s20170502","12746_s20170503","12746_s20170504","12746_s20170505","12746_s20170506","12746_s20170517","12746_s20170519","12746_s20170520","12746_s20170521"];
+        schoolclass_add();
+      }
+      if(schoolselect.value == "kodaira3_6_sci"){
+        school = "小平第3小学校_6年_理科";
+        datesel = ["2022-11-02","2022-11-08","2022-11-09","2022-11-28","2022-12-05","2022-12-06"];
+        member = ["12746_s20170401","12746_s20170402","12746_s20170403","12746_s20170404","12746_s20170405","12746_s20170406","12746_s20170407","12746_s20170408","12746_s20170409","12746_s20170410","12746_s20170411","12746_s20170412","12746_s20170413","12746_s20170414","12746_s20170415","12746_s20170416","12746_s20170417","12746_s20170418","12746_s20170419","12746_s20170420","12746_s20170421","12746_s20170422","12746_s20170423","12746_s20170424","12746_s20170425","12746_s20170426","12746_s20170428","12746_s20170429","12746_s20170430","12746_s20170431","12746_s20170432","12746_s20170433","12746_s20170434","12746_s20170435","12746_s20170436","12746_s20170437","12746_s20170438","12746_s20170439","12746_s20170440","12746_s20170441","12746_s20170442","12746_s20170443","12746_s20170444","12746_s20170445","12746_s20170446","12746_s20170447","12746_s20170448","12746_s20170449","12746_s20170450","12746_s20170451","12746_s20170452","12746_s20170453","12746_s20170454","12746_s20170455","12746_s20170456","12746_s20170457","12746_s20170458","12746_s20170459","12746_s20170460","12746_s20170461","12746_s20170462","12746_s20170463","12746_s20170464","12746_s20170465","12746_s20170466","12746_s20170467","12746_s20170468","12746_s20170469","12746_s20170470","12746_s20170471","12746_s20170472","12746_s20170473","12746_s20170474","12746_s20170475","12746_s20170476","12746_s20170477","12746_s20170478","12746_s20170479","12746_s20170480","12746_s20170481","12746_s20170482","12746_s20170483","12746_s20170484","12746_s20170485","12746_s20170486","12746_s20170487","12746_s20170488","12746_s20170489","12746_s20170490","12746_s20170491","12746_s20170492","12746_s20170493","12746_s20170494","12746_s20170495","12746_s20170496","12746_s20170497","12746_s20170498","12746_s20170499","12746_s20170500","12746_s20170501","12746_s20170502","12746_s20170503","12746_s20170504","12746_s20170505","12746_s20170506","12746_s20170517","12746_s20170519","12746_s20170520","12746_s20170521"];
+        schoolclass_add();
+      }
+      if(schoolselect.value == "kodaira5_5_eng"){
+        school = "小平第5小学校_5年_英語";
+        datesel = [];
+        member;
+        schoolclass_remove();
+      }
+      if(schoolselect.value == "koganei_5_soc"){
+        school = "附属小金井小学校_5年_社会";
+        datesel = [];
+        member;
+        schoolclass_remove();
+      }
+      if(schoolselect.value == "koganei_6_soc"){
+        school = "附属小金井小学校_6年_社会";
+        datesel = ["2022-06-17","2022-06-20","2022-06-21","2022-06-23","2022-06-24","2022-06-25","2022-06-26","2022-06-27","2022-06-28","2022-06-29","2022-06-30","2022-07-04","2022-07-12"];
+        member = ["11685_4106","11685_4110","11685_4113","11685_4114","11685_4122","11685_4123","11685_4125","11685_4130","11685_4132","11685_4133","11685_4203","11685_4205","11685_4206","11685_4208","11685_4217","11685_4203","11685_4223","11685_4225","11685_4226","11685_4228","11685_4234","11685_4301","11685_4303","11685_4304","11685_4312","11685_4313","11685_4315","11685_4316","11685_4319","11685_4325","11685_4326","11685_4327","11685_4330","11685_4331","11685_tt55"];
+        schoolclass_remove();
+      }
+      dateselect2(datesel);
+      let index= select.value;
+      console.log(index);
+      var yyyy = index.substring(0, 4);
+      var mm = index.substring(5, 7);
+      var dd = index.substring(8, 10);
+      document.getElementById("output").value = yyyy + '-' + mm + '-' + dd;
+
+      var db = firebase.database();
+      db.ref(school + "/" + index)//.orderBy("time")//.limit(1)
+        .get()
+        .then((query) => {
+          result = [];
+          query.forEach((doc) => {
+            // var data = doc.data();
+            var data = doc.val();
+
+            result.push([data.time, data.index, data.actor, data.action, data.bookId, data.chapter, data.type, data.pageIdx, data.appId, data.target]);
+            // result.push([data.log]);
+          });
+          result.sort(function (a, b) {
+            if (a > b) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+          console.log(result);
+          firstchartset();
+        })
+        .catch((error) => {
+          alert('データの取得に失敗しました。もう一度日時選択をしてください。');
+          console.log(`データの取得に失敗しました (${error})`);
+        });
+    });
+
+    const schoolclass= document.getElementById('schoolclass'); // トリガーになる要素を取得
+    schoolclass.addEventListener('change', function(){
+      if(schoolclass.value == "6"){
+        member = ["12746_s20170401","12746_s20170402","12746_s20170403","12746_s20170404","12746_s20170405","12746_s20170406","12746_s20170407","12746_s20170408","12746_s20170409","12746_s20170410","12746_s20170411","12746_s20170412","12746_s20170413","12746_s20170414","12746_s20170415","12746_s20170416","12746_s20170417","12746_s20170418","12746_s20170419","12746_s20170420","12746_s20170421","12746_s20170422","12746_s20170423","12746_s20170424","12746_s20170425","12746_s20170426","12746_s20170428","12746_s20170429","12746_s20170430","12746_s20170431","12746_s20170432","12746_s20170433","12746_s20170434","12746_s20170435","12746_s20170436","12746_s20170437","12746_s20170438","12746_s20170439","12746_s20170440","12746_s20170441","12746_s20170442","12746_s20170443","12746_s20170444","12746_s20170445","12746_s20170446","12746_s20170447","12746_s20170448","12746_s20170449","12746_s20170450","12746_s20170451","12746_s20170452","12746_s20170453","12746_s20170454","12746_s20170455","12746_s20170456","12746_s20170457","12746_s20170458","12746_s20170459","12746_s20170460","12746_s20170461","12746_s20170462","12746_s20170463","12746_s20170464","12746_s20170465","12746_s20170466","12746_s20170467","12746_s20170468","12746_s20170469","12746_s20170470","12746_s20170471","12746_s20170472","12746_s20170473","12746_s20170474","12746_s20170475","12746_s20170476","12746_s20170477","12746_s20170478","12746_s20170479","12746_s20170480","12746_s20170481","12746_s20170482","12746_s20170483","12746_s20170484","12746_s20170485","12746_s20170486","12746_s20170487","12746_s20170488","12746_s20170489","12746_s20170490","12746_s20170491","12746_s20170492","12746_s20170493","12746_s20170494","12746_s20170495","12746_s20170496","12746_s20170497","12746_s20170498","12746_s20170499","12746_s20170500","12746_s20170501","12746_s20170502","12746_s20170503","12746_s20170504","12746_s20170505","12746_s20170506","12746_s20170517","12746_s20170519","12746_s20170520","12746_s20170521"];
+        // nickname = nickname_61;
+      }
+      else if(schoolclass.value == "6-1"){
+        member = ["12746_s20170402","12746_s20170409","12746_s20170410","12746_s20170412","12746_s20170415","12746_s20170417","12746_s20170418","12746_s20170419","12746_s20170423","12746_s20170426","12746_s20170428","12746_s20170430","12746_s20170436","12746_s20170447","12746_s20170449","12746_s20170451","12746_s20170452","12746_s20170454","12746_s20170455","12746_s20170457","12746_s20170459","12746_s20170463","12746_s20170466","12746_s20170467","12746_s20170468","12746_s20170469","12746_s20170470","12746_s20170474","12746_s20170478","12746_s20170485","12746_s20170489","12746_s20170490","12746_s20170501","12746_s20170503","12746_s20170504"];
+        // nickname = nickname_61;
+      }
+      else if(schoolclass.value == "6-2"){
+        member = ["12746_s20170403","12746_s20170404","12746_s20170405","12746_s20170406","12746_s20170407","12746_s20170411","12746_s20170414","12746_s20170420","12746_s20170421","12746_s20170422","12746_s20170424","12746_s20170425","12746_s20170431","12746_s20170433","12746_s20170434","12746_s20170437","12746_s20170444","12746_s20170445","12746_s20170446","12746_s20170448","12746_s20170453","12746_s20170462","12746_s20170472","12746_s20170473","12746_s20170475","12746_s20170476","12746_s20170479","12746_s20170483","12746_s20170491","12746_s20170492","12746_s20170495","12746_s20170497","12746_s20170498","12746_s20170499","12746_s20170506"];
+        // nickname = nickname_62;
+      }
+      else if(schoolclass.value == "6-3"){
+        member = ["12746_s20170401","12746_s20170408","12746_s20170413","12746_s20170416","12746_s20170429","12746_s20170432","12746_s20170435","12746_s20170438","12746_s20170439","12746_s20170440","12746_s20170441","12746_s20170442","12746_s20170443","12746_s20170450","12746_s20170456","12746_s20170458","12746_s20170460","12746_s20170461","12746_s20170464","12746_s20170465","12746_s20170471","12746_s20170477","12746_s20170480","12746_s20170481","12746_s20170482","12746_s20170484","12746_s20170486","12746_s20170487","12746_s20170488","12746_s20170493","12746_s20170494","12746_s20170496","12746_s20170500","12746_s20170502","12746_s20170505"];
+        // nickname = nickname_63;
+      }
       firstchartset();
-    }
-
-    function firstchartset(){
-      document.querySelector(`#output`).innerHTML = choicedate.value;
-      let audioc = document.getElementById('audiocheck');
-      audioc.checked = true;
-      let videoc = document.getElementById('videocheck');
-      videoc.checked = true;
-      range1.value = 0;
-      range2.value = 100;
-
-      //横軸を決定
-      [time, startnum, finishnum] = lavel(result, choicedate);
-
-      // 回数カウント
-      totalnum = totalcount(result, time, startnum, finishnum);
-      num = count(result, member, time, startnum, finishnum);
-      startTime.value = time[0];
-      finishTime.value = time[time.length - 1];
-      detailnum = detailcount(result, member, time, startnum, finishnum);
-
-      //時間選択グラフ用
-      selectTime = time.length;
-      permin = 100 / selectTime;
-      mintime = time[0];
-      maxtime = time[time.length - 1];
-      if (timeset) {
-        timeset.destroy();
-      }
-      // グラフ表示
-      drawChart(time, totalnum);
-      chartset();
-    }
-
+    });
 
     const select= document.getElementById('dateselect'); // トリガーになる要素を取得
     //select要素のchangeイベントの登録
@@ -336,44 +361,81 @@
       var mm = index.substring(5, 7);
       var dd = index.substring(8, 10);
       document.getElementById("output").value = yyyy + '-' + mm + '-' + dd;
-      firstchartset();
+
+      var db = firebase.database();
+      db.ref(school + "/" + index)//.orderBy("time")//.limit(1)
+        .get()
+        .then((query) => {
+          result = [];
+          query.forEach((doc) => {
+            // var data = doc.data();
+            var data = doc.val();
+
+            result.push([data.time, data.index, data.actor, data.action, data.bookId, data.chapter, data.type, data.pageIdx, data.appId, data.target]);
+            // result.push([data.log]);
+          });
+          result.sort(function (a, b) {
+            if (a > b) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+          console.log(result);
+          firstchartset();
+        })
+        .catch((error) => {
+          alert('データの取得に失敗しました。もう一度日時選択をしてください。');
+          console.log(`データの取得に失敗しました (${error})`);
+        });
     });
    
+
     //日付が選択されたらイベントリスナー発火
     choicedate.addEventListener(`change`, function () {
-      document.querySelector(`#output`).innerHTML = choicedate.value;
-      let audioc = document.getElementById('audiocheck');
-      audioc.checked = true;
-      let videoc = document.getElementById('videocheck');
-      videoc.checked = true;
-      // dateselect(result);
-
       range1.value = 0;
       range2.value = 100;
 
-      //横軸を決定
-      [time, startnum, finishnum] = lavel(result, choicedate);
-
-      // 回数カウント
-      totalnum = totalcount(result, time, startnum, finishnum);
-      num = count(result, member, time, startnum, finishnum);
-      startTime.value = time[0];
-      finishTime.value = time[time.length - 1];
-      // console.log(startTime.value);
-      // console.log(finishTime.value);
-
-      //時間選択グラフ用
-      selectTime = time.length;
-      permin = 100 / selectTime;
-      mintime = time[0];
-      maxtime = time[time.length - 1];
-
-      if (timeset) {
-        timeset.destroy();
+      let d = new Date(choicedate.value);
+      let year = d.getFullYear();
+      let month = d.getMonth() + 1;
+      let day = d.getDate();
+      let date;
+      if(month < 10){
+        month = "0" + String(month);
       }
-      // グラフ表示
-      drawChart(time, totalnum);
-      chartset();
+      if(day < 10){
+        day = "0" + String(day);
+      }
+      date = year + "-" + month + "-" + day;
+      console.log(date);
+
+      var db = firebase.database();
+      db.ref("本町小学校_5年_英語/" + date)//.orderBy("time")//.limit(1)
+        .get()
+        .then((query) => {
+          result = [];
+          query.forEach((doc) => {
+            // var data = doc.data();
+            var data = doc.val();
+
+            result.push([data.time, data.index, data.actor, data.action, data.bookId, data.chapter, data.type, data.pageIdx, data.appId, data.target]);
+            // result.push([data.log]);
+          });
+          result.sort(function (a, b) {
+            if (a > b) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+          console.log(result);
+          firstchartset();
+        })
+        .catch((error) => {
+          alert('データの取得に失敗しました。もう一度日時選択をしてください。');
+          console.log(`データの取得に失敗しました (${error})`);
+        });
     });
 
 
@@ -403,7 +465,7 @@
       detailnum = detailcount(result, member, time, startnum, finishnum);
 
       let changetime = (maxtime.substring(0, 2) - finishTime.value.substring(0, 2)) * 60 + (maxtime.substring(3, 5) - finishTime.value.substring(3, 5));
-      console.log(changetime);
+      // console.log(changetime);
       range2.value = 100 - changetime * permin;
       chartset();
     });
@@ -419,10 +481,10 @@
         minute = minute - 60;
       }
       if (hour < 10) {
-        hour = "0" + hour;
+        hour = "0" + String(hour);
       }
       if (minute < 10) {
-        mintime = "0" + minute;
+        minute = "0" + String(minute);
       }
       startTime = hour + ":" + minute;
       var ctime = document.querySelector(`input[type='time'][name='startTime']`);
@@ -448,10 +510,10 @@
         minute = minute - 60;
       }
       if (hour < 10) {
-        hour = "0" + hour;
+        hour = "0" + String(hour);
       }
       if (minute < 10) {
-        mintime = "0" + minute;
+        minute = "0" + String(minute);
       }
       finishTime = hour + ":" + minute;
       // console.log(finishTime);
@@ -468,11 +530,11 @@
     });
 
     function audiovalueChange(event) {
-      table2(result, member, choicedate, startnum, finishnum, nickname);
+      table2(result, member, time, startnum, finishnum, nickname);
     }
 
     function videovalueChange(event) {
-      table2(result, member, choicedate, startnum, finishnum, nickname);
+      table2(result, member, time, startnum, finishnum, nickname);
     }
 
     let audiocheck = document.getElementById('audiocheck');
@@ -547,6 +609,38 @@
     target.elements[0].checked = true;
     target.addEventListener('change', valueChange);
 
+    function firstchartset(){
+      document.querySelector(`#output`).innerHTML = choicedate.value;
+      let audioc = document.getElementById('audiocheck');
+      audioc.checked = true;
+      let videoc = document.getElementById('videocheck');
+      videoc.checked = true;
+      range1.value = 0;
+      range2.value = 100;
+
+      //横軸を決定
+      // [time, startnum, finishnum] = lavel_DB(result, choicedate);
+      [time, startnum, finishnum] = lavel(result, choicedate);
+
+      // 回数カウント
+      totalnum = totalcount(result, time, startnum, finishnum);
+      num = count(result, member, time, startnum, finishnum);
+      startTime.value = time[0];
+      finishTime.value = time[time.length - 1];
+      detailnum = detailcount(result, member, time, startnum, finishnum);
+
+      //時間選択グラフ用
+      selectTime = time.length;
+      permin = 100 / selectTime;
+      mintime = time[0];
+      maxtime = time[time.length - 1];
+      if (timeset) {
+        timeset.destroy();
+      }
+      // グラフ表示
+      drawChart(time, totalnum);
+      chartset();
+    }
 
     function chartset() {
       if (studentChart) {
@@ -570,10 +664,13 @@
         heatmap_select(member, time, detailnum, nickname, selectjudge);
       } 
       // heatmap_pen(member, time, num, detailnum, nickname);
-      drawChartTarget(result, time, startnum, finishnum);
+      drawChartTarget(result, member, time, startnum, finishnum);
       drawStuNumChart(member, time, num);
-      table2(result, member, choicedate, startnum, finishnum, nickname);
+      table2(result, member, time, startnum, finishnum, nickname);
     }
+
+
+    
   </script>
   <br><br>
 </body>

@@ -1,5 +1,5 @@
 //英語　機能　[グラフ]
-function drawChartTarget(result, time, startnum, finishnum) {
+function drawChartTarget(result, member, time, startnum, finishnum) {
   let indexCount = []; //目次を見た回数
   let cpCount = []; //ページ移動の回数
   let rinkCount = []; //リンクを踏んだ回数
@@ -24,61 +24,71 @@ function drawChartTarget(result, time, startnum, finishnum) {
   if (result.length > 0) {
     for (let x = startnum; x <= finishnum; ++x) {
       let logDate = result[x][0]; // date取得
+      let logActor = result[x][2]; // actor取得
       let logTarget = result[x][9]; // target取得
 
       //console.log(x + "  " + result[x][0]);
       //console.log(x + "  " + result[x][9]);
 
-      let date = logDate.substring(11, 16);
-      datanum = time.indexOf(date);
+      membernum = member.indexOf(logActor);
+      if (member.indexOf(logActor) < 0) {
+      } else {
 
-      if (logTarget.includes('index')) { // indexの文字を含んでいるのかどうか
-        if (logTarget.includes('openBook index')) {
+        let date = logDate.substring(11, 16);
+        datanum = time.indexOf(date);
+
+        if (datanum < 0) {
+          // console.log(date);
         } else {
-          indexCount[datanum]++;
-        } 
-      }
-      else if (logTarget.includes('cp')) {
-        let last = logTarget.slice(-2, -1);
-        if (last == "4") {
-          cpCount[datanum]++;
+          if (logTarget.includes('index')) { // indexの文字を含んでいるのかどうか
+            if (logTarget.includes('openBook index')) {
+            } else {
+              indexCount[datanum]++;
+            }
+          }
+          else if (logTarget.includes('cp')) {
+            let last = logTarget.slice(-2, -1);
+            if (last == "4") {
+              cpCount[datanum]++;
+            }
+            if (last == "0" || last == "1" || last == "2" || last == "3" || last == "5" || last == "7") {
+              rinkCount[datanum]++;
+            }
+            if (last == "6") {
+              pinchCount[datanum]++;
+            }
+          }
+          else if (logTarget.includes('pager') || logTarget.includes('open tenkey')) {
+            cpCount[datanum]++;
+          }
+          else if (logTarget.includes('reflow') || logTarget.includes('bottomTab')) {
+            rinkCount[datanum]++;
+          }
+          else if (logTarget.includes('zoom')) {
+            if (logTarget.includes('zoomEnd')) {
+            } else {
+              pinchCount[datanum]++;
+            }
+          }
+          else if (logTarget.includes('audio')) {
+            if (logTarget.includes('audio volume') || logTarget.includes('audio button pitch') || logTarget.includes('audio button setting') || logTarget.includes('audio button mute') || logTarget.includes('audio button close')) {
+            } else {
+              audioCount[datanum]++;
+            }
+          }
+          else if (logTarget.includes('video')) {
+            if (logTarget.includes('video volume') || logTarget.includes('video button pitch') || logTarget.includes('video button fullscreen') || logTarget.includes('video button setting') || logTarget.includes('video button mute') || logTarget.includes('video button close')) {
+            } else {
+              videoCount[datanum]++;
+            }
+          }
+          else if (logTarget.includes('simplePen black:true') || logTarget.includes('simplePen red:true') || logTarget.includes('penType')) {
+            penCount[datanum]++;
+          }
+          else if (logTarget.includes('draw' && 'pen')) {
+            penCount[datanum]++;
+          }
         }
-        if (last == "0" || last == "1" || last == "2" || last == "3" || last == "5" || last == "7") {
-          rinkCount[datanum]++;
-        }
-        if (last == "6") {
-          pinchCount[datanum]++;
-        }
-      }
-      else if (logTarget.includes('pager') || logTarget.includes('open tenkey')) {
-        cpCount[datanum]++;
-      }
-      else if (logTarget.includes('reflow') || logTarget.includes('bottomTab')) {
-        rinkCount[datanum]++;
-      }
-      else if (logTarget.includes('zoom')) {
-        if (logTarget.includes('zoomEnd')) {
-        } else {
-          pinchCount[datanum]++;
-        }
-      }
-      else if (logTarget.includes('audio')) {
-        if (logTarget.includes('audio volume') || logTarget.includes('audio button pitch') || logTarget.includes('audio button setting') || logTarget.includes('audio button mute') || logTarget.includes('audio button close')) {
-        } else {
-          audioCount[datanum]++;
-        }
-      }
-      else if (logTarget.includes('video')) {
-        if (logTarget.includes('video volume') || logTarget.includes('video button pitch') || logTarget.includes('video button fullscreen') || logTarget.includes('video button setting') || logTarget.includes('video button mute') || logTarget.includes('video button close')) {
-        } else {
-          videoCount[datanum]++;
-        }
-      }
-      else if (logTarget.includes('simplePen black:true') || logTarget.includes('simplePen red:true') || logTarget.includes('penType')) {
-        penCount[datanum]++;
-      }
-      else if(logTarget.includes('draw' && 'pen') ){
-        penCount[datanum]++;
       }
     }
   }
@@ -188,7 +198,7 @@ function drawChartTarget2(result, time, startnum, finishnum) {
       let logt;
       if (loghour < 10) {
         logt = "0" + String(loghour) + ":" + logmin;
-      }else{
+      } else {
         logt = loghour + ":" + logmin;
       }
       // console.log(logt);
@@ -198,7 +208,7 @@ function drawChartTarget2(result, time, startnum, finishnum) {
         if (logTarget.includes('openBook index')) {
         } else {
           indexCount[datanum]++;
-        } 
+        }
       }
       else if (logTarget.includes('cp')) {
         let last = logTarget.slice(-2, -1);
@@ -239,7 +249,7 @@ function drawChartTarget2(result, time, startnum, finishnum) {
       else if (logTarget.includes('simplePen black:true') || logTarget.includes('simplePen red:true') || logTarget.includes('penType')) {
         penCount[datanum]++;
       }
-      else if(logTarget.includes('draw' && 'pen') ){
+      else if (logTarget.includes('draw' && 'pen')) {
         penCount[datanum]++;
       }
     }
@@ -792,16 +802,16 @@ function drawChartTarget2_noEng(result, time, startnum, finishnum) {
       let logt;
       if (loghour < 10) {
         logt = "0" + String(loghour) + ":" + logmin;
-      }else{
+      } else {
         logt = loghour + ":" + logmin;
       }
       datanum = time.indexOf(logt);
-      
+
       if (logTarget.includes('index')) { // indexの文字を含んでいるのかどうか
         if (logTarget.includes('openBook index')) {
         } else {
           indexCount[datanum]++;
-        } 
+        }
       }
       else if (logTarget.includes('cp')) {
         // console.log(logTarget);
@@ -832,7 +842,7 @@ function drawChartTarget2_noEng(result, time, startnum, finishnum) {
       else if (logTarget.includes('simplePen black: true') || logTarget.includes('simplePen red: true') || logTarget.includes('penType')) {
         penCount[datanum]++;
       }
-      else if(logTarget.includes('draw' && 'pen') ){
+      else if (logTarget.includes('draw' && 'pen')) {
         penCount[datanum]++;
       }
     }
